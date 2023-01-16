@@ -12,7 +12,6 @@ You will find a serial version, and four parallelized versions including OpenMP,
 gmres - translated by f2c and developed by Univ. of Tennessee and Oak Ridge National Laboratory in 1993.
 test_proteins - path to use and save .pqr and .xyzr files
 In readin.c files, find "fpath" to tune the location of test_proteins.
-In main*.c files, find "fname" and "density" to tune these two parameters. The default selection is "1ajj" and "1".
 
 ## Serial, OpenMP, MPI, CUDA and Kokkos
 common files: gl_constants.h gl_functions.h gl_variables.h pp_timer.c pp_timer.h readin.c msms
@@ -30,20 +29,31 @@ The CUDA version is developed by Jiahui Chen, who graduated in 2019 from SMU. Th
 The Kokkos uses C++ language, so this version mix compiles C and C++. It also computes on GPU. 
 
 Examples:
-Serial: 
-$ ./bimpb.exe 
-$ ./bimpb.exe 1ajj 1
-OpenMP:
-Login to HPC like ManeFrame II.
-$ export OMP_NUM_THREADS=4
-$ ./bimpb_omp.exe
+In main*.c files, find "fname" and "density" to tune these two parameters. The default selection is "1ajj" and "1".
+
 MPI:
 Login to HPC like ManeFrame II.
 $ salloc -p standard-mem-s -N8 -n256 --x11=first
-$ ./bimpb_mpi.exe
+$ module load gcc-9.2 hpcx
+$ srun -n 8 ./bimpb_mpi.exe
+Serial: 
+$ ./bimpb.exe (1ajj) (1)
+OpenMP:
+$ export OMP_NUM_THREADS=4
+$ ./bimpb_omp.exe
+
 CUDA:
 Login to HPC like ManeFrame II.
+$ module load nvhpc-22.2
 $ srun -p v100x8 --gres=gpu:1 ./bimpb_cuda.exe
-$ module load nvhpc-22.2 
+
 Kokkos:
+Login to HPC like ManeFrame II.
 $ srun -p development -c 4 --mem=16G --gres=gpu:volta:1 --pty $SHELL
+$ module load spack gcc-9.2
+$ . /hpc/spack/share/spack/setup-env.sh
+$ spack load kokkos/qu45u5v
+$ cmake .
+$ make
+$ ./bimpb_kokkos.exe
+
