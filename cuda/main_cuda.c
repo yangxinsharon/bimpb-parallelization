@@ -43,10 +43,10 @@ int main(int argc, char *argv[]) {
 	printf("%d %s %s \n",argc,argv[0],argv[1]);
 
 	/* read in structural information */
-    sprintf(fname,"1a63");
-    // sprintf(density,"1");
-//    sprintf(fname,argv[0]);
-   	sprintf(density,argv[1]);
+    sprintf(fname,"1ajj");
+    sprintf(density,"1");
+//    sprintf(fname,argv[1]);
+   	// sprintf(density,argv[2]);
 
 	readin(fname,density);
 	initGPU(); //locate memory

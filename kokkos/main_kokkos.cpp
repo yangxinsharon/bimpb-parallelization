@@ -29,7 +29,6 @@ extern double **atmpos;							// [3][natm/nchr]
 extern double *atmrad, *atmchr, *chrpos;	// [natm/nchr]
 extern double *work, *h;
 extern double *h_pot;
-// extern double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
 
 const double eps = 80.0;
 
@@ -88,10 +87,10 @@ int main(int argc, char *argv[]) {
 	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
 
 	/* read in structural information */
-   sprintf(fname, "1a63");
-   // sprintf(density, "1");
+   sprintf(fname, "1ajj");
+   sprintf(density, "1");
    // sprintf(fname,"%s",argv[1]);
-   sprintf(density,"%s",argv[1]);
+   // sprintf(density,"%s",argv[2]);
 	readin(fname, density);
 	comp_source_wrapper(); //wraps the solvation energy computation
 	Kokkos::fence();
