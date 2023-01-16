@@ -42,7 +42,8 @@ Login to HPC like ManeFrame II.
 $ salloc -p standard-mem-s -N8 -n256 --x11=first
 $ ./bimpb_mpi.exe
 CUDA:
-The CUDA version is developed by Jiahui Chen, who graduated in 2019 from SMU. 
+Login to HPC like ManeFrame II.
 $ srun -p v100x8 --gres=gpu:1 ./bimpb_cuda.exe
+$ module load nvhpc-22.2 
 Kokkos:
 $ srun -p development -c 4 --mem=16G --gres=gpu:volta:1 --pty $SHELL
