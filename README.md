@@ -53,5 +53,5 @@ $ . /hpc/spack/share/spack/setup-env.sh \
 $ spack load kokkos/qu45u5v \
 $ cmake . \
 $ make \
-$ ./bimpb_kokkos.exe \
+$ ./bimpb_kokkos.exe
 
