@@ -163,7 +163,8 @@ void readin(char fname[16], char density[16]) {
 	}
 
 	for (i=0;i<=nchr-1;i++){
-		fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
+		// fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
+		fscanf(fp,"%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf",&m,&n,&o,&p,&s, &a1,&a2,&a3,&b1,&r);
 		chrpos[3*i]=a1;
 		chrpos[3*i+1]=a2;
 		chrpos[3*i+2]=a3;

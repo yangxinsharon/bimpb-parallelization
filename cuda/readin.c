@@ -2,7 +2,6 @@
 #include <math.h>
 #include <string.h>
 #include "gl_functions.h"
-#include "gl_constants.h"
 
 extern int nface, nspt, natm, nchr;
 extern int **extr_v;						//[3][nspt]
@@ -15,7 +14,6 @@ extern double **atmpos;						//[3][natm/nchr];
 extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr]; 
 extern double *work, *h;
 extern double *h_pot;
-extern double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
 
 /* function computing the area of a triangle given vertices coodinates */
 double triangle_area(double v[3][3]) {
@@ -49,6 +47,11 @@ void readin(char fname[16], char density[16]) {
     double temp_x,temp_q,tchg,tpos[3],dist_local,area_local;
 	double cos_theta,G0,tp1,G1,r_s[3];
 	double xx[3],yy[3];
+
+ 	/*** change pqr 2 pqr */
+
+
+
 
 	/*read in vertices*/
 	sprintf(fpath,"../test_proteins/");
@@ -157,7 +160,8 @@ void readin(char fname[16], char density[16]) {
 	}
 
 	for (i=0;i<=nchr-1;i++){
-		fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
+		// fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
+		fscanf(fp,"%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf",&m,&n,&o,&p,&s, &a1,&a2,&a3,&b1,&r);
 		chrpos[3*i]=a1;
 		chrpos[3*i+1]=a2;
 		chrpos[3*i+2]=a3;
