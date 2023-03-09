@@ -48,6 +48,11 @@ void readin(char fname[16], char density[16]) {
 	double cos_theta,G0,tp1,G1,r_s[3];
 	double xx[3],yy[3];
 
+ 	/*** change pqr 2 pqr */
+
+
+
+
 	/*read in vertices*/
 	sprintf(fpath,"../test_proteins/");
 	sprintf(fname_tp,"./msms -if %s%s.xyzr -prob 1.4 -dens %s -of %s%s ",fpath,fname,density,fpath,fname);
@@ -155,7 +160,8 @@ void readin(char fname[16], char density[16]) {
 	}
 
 	for (i=0;i<=nchr-1;i++){
-		fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
+		// fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
+		fscanf(fp,"%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf",&m,&n,&o,&p,&s, &a1,&a2,&a3,&b1,&r);
 		chrpos[3*i]=a1;
 		chrpos[3*i+1]=a2;
 		chrpos[3*i+2]=a3;
