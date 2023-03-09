@@ -45,7 +45,8 @@ void readin(char fname[16], char density[16]) {
 	char fname_tp[256];
 
     int i,j,k,i1,i2,i3,j1,j2,j3,ii,jj,kk,namelength=4,nfacenew,ichanged;
-    double den,prob_rds,a1,a2,a3,b1,b2,b3,a_norm,r0_norm,v0_norm;
+    // double den,prob_rds,a1,a2,a3,b1,b2,b3,a_norm,r0_norm,v0_norm;
+    double den,prob_rds,a1,a2,a3,b1,b2,b3,a_norm,r0_norm,v0_norm,m,n,o,p,s,r;
 	double r0[3],v0[3],v[3][3],r[3][3];
 	int    idx[3],jface[3],iface[3];
     double rs,rd[3],pot=0.0,sum=0.0,pot_temp=0.0;
