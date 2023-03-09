@@ -46,7 +46,7 @@ void readin(char fname[16], char density[16]) {
 
     int i,j,k,i1,i2,i3,j1,j2,j3,ii,jj,kk,namelength=4,nfacenew,ichanged;
     // double den,prob_rds,a1,a2,a3,b1,b2,b3,a_norm,r0_norm,v0_norm;
-    double den,prob_rds,a1,a2,a3,b1,b2,b3,a_norm,r0_norm,v0_norm,m,n,o,p,s,r;
+    double den,prob_rds,a1,a2,a3,b1,b2,b3,a_norm,r0_norm,v0_norm,m,n,o,p,s,rrr;
 	double r0[3],v0[3],v[3][3],r[3][3];
 	int    idx[3],jface[3],iface[3];
     double rs,rd[3],pot=0.0,sum=0.0,pot_temp=0.0;
@@ -165,7 +165,7 @@ void readin(char fname[16], char density[16]) {
 
 	for (i=0;i<=nchr-1;i++){
 		// fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
-		fscanf(fp,"%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf",&m,&n,&o,&p,&s, &a1,&a2,&a3,&b1,&r);
+		fscanf(fp,"%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf",&m,&n,&o,&p,&s, &a1,&a2,&a3,&b1,&rrr);
 		chrpos[3*i]=a1;
 		chrpos[3*i+1]=a2;
 		chrpos[3*i+2]=a3;
