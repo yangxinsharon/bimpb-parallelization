@@ -77,15 +77,13 @@ void readin(char fname[16], char density[16]) {
 		// atmchr[i]=b1;
 		// atmrad[i]=b2;
 		// printf("%s %i \n",c,i);
-		sprintf(buff,"%7f %7f %7f %7f\n",a1,a2,a3,b2);
+		sprintf(buff,"%.3f\t %.3f\t %.3f\t %.4f\n",a1,a2,a3,b2);
 		fputs(buff,fpw);
-		// printf("%f %f %f %f",a1,a2,a3,b2);
-
 	}
 
 	fclose(fp);
 	fclose(fpw);
-	printf("finish reading pqr file...\n");
+	printf("finish reading pqr and writing xyzr file...\n");
 
 	/*read in vertices*/
 	sprintf(fname_tp,"./msms -if %s%s.xyzr -prob 1.4 -dens %s -of %s%s ",fpath,fname,density,fpath,fname);
