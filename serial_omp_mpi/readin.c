@@ -60,18 +60,19 @@ void readin(char fname[16], char density[16]) {
    	wfp=fopen(fname_tp,"w");
 
    	strcpy(key1,"ATOM");
+   	printf("%s \n",key1);
 	while(fgets(buff,256,fp)) {
 		sscanf(buff,"%4s",key2);
-		if (key1 == key2) {
-			printf("%s %s \n",key1,key2);
-			fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c,&i,&c,&c,&i,&a1,&a2,&a3,&b1,&b2);
-			chrpos[3*i]=a1;
-			chrpos[3*i+1]=a2;
-			chrpos[3*i+2]=a3;
-			atmchr[i]=b1;
-			atmchr[i]=b2;
-			printf("%s %i \n",c,i);
-		}
+		// if (key1 == key2) {
+		// 	printf("%s %s \n",key1,key2);
+		// 	fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c,&i,&c,&c,&i,&a1,&a2,&a3,&b1,&b2);
+		// 	chrpos[3*i]=a1;
+		// 	chrpos[3*i+1]=a2;
+		// 	chrpos[3*i+2]=a3;
+		// 	atmchr[i]=b1;
+		// 	atmchr[i]=b2;
+		// 	printf("%s %i \n",c,i);
+		// }
 	}
 
 
