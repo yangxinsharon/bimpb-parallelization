@@ -59,7 +59,7 @@ void readin(char fname[16], char density[16]) {
 	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
    	wfp=fopen(fname_tp,"w");
 
-   	strcpy(key1,"ATOM");
+   	sscanf("ATOM","%s",key1)
    	printf("%s \n",key1);
 	while(fgets(buff,256,fp)) {
 		printf("%s",buff)
