@@ -37,7 +37,7 @@ void readin(char fname[16], char density[16]) {
     FILE *fp;
     char c;
 	char fpath[256];
-	char fname_tp[256];
+	char fname_tp[256], fname_tp2[256];;
 	char buff[256];
 
     int i,j,k,i1,i2,i3,j1,j2,j3,ii,jj,kk,namelength=4,nfacenew,ichanged;
@@ -54,16 +54,19 @@ void readin(char fname[16], char density[16]) {
 	sprintf(fpath,"../test_proteins/");
 	sprintf(fname_tp, "%s%s.pqr",fpath,fname);
    	fp=fopen(fname_tp,"r");
+   	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
+   	fp=fopen(fname_tp2,"w");
+
 	while(fgets(buff,256,fp)){
-		if (buff[0] == "A"){
-			printf("%s", buff[0]);
+		// if (buff[0] == "A"){
+			// printf("%s", buff[0]);
 			fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c,&i,&c,&c,&i,&a1,&a2,&a3,&b1,&b2);
 			chrpos[3*i]=a1;
 			chrpos[3*i+1]=a2;
 			chrpos[3*i+2]=a3;
 			atmchr[i]=b1;
 			atmchr[i]=b2;
-		}
+		// }
     }
 	fclose(fp);
 	printf("finish reading pqr file...\n");
