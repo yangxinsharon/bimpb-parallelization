@@ -64,20 +64,21 @@ void readin(char fname[16], char density[16]) {
 	}
 	// printf("%d \n",count);
 	fclose(fp);
-	
+
 	fp=fopen(fname_tp,"r");
-	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
-   	fpw=fopen(fname_tp,"w");
+	// sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
+   	// fpw=fopen(fname_tp,"w");
 	for (i=0;i<count;i++) {
-		fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c,&i,&c,&c,&i,&a1,&a2,&a3,&b1,&b2);
+		// fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c,&i,&c,&c,&i,&a1,&a2,&a3,&b1,&b2);
 		// chrpos[3*i]=a1;
 		// chrpos[3*i+1]=a2;
 		// chrpos[3*i+2]=a3;
 		// atmchr[i]=b1;
 		// atmrad[i]=b2;
-		printf("%s %i \n",c,i);
-		sprintf(buff,"%7f %7f %7f %7f",a1,a2,a3,b2);
-		fputs(buff,fpw);
+		// printf("%s %i \n",c,i);
+		// sprintf(buff,"%7f %7f %7f %7f",a1,a2,a3,b2);
+		// fputs(buff,fpw);
+		printf("%d",i)
 
 	}
 
