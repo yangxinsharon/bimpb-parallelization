@@ -66,7 +66,7 @@ void readin(char fname[16], char density[16]) {
 	}
 	printf("%d \n",count);
 	fclose(fp);
-	
+
 	sprintf(fname_tp, "%s%s.pqr",fpath,fname);
 	fp=fopen(fname_tp,"r");
 	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
@@ -88,7 +88,7 @@ void readin(char fname[16], char density[16]) {
 		fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c1,&iii,&c2,&c3,&jjj,&a1,&a2,&a3,&b1,&b2);
 		sprintf(buff,"%.3f\t\t %.3f\t\t %.3f\t\t %.4f\n",a1,a2,a3,b2);
 		fputs(buff,fpw);
-		printf("%d\n",i)
+		printf("%d\n",i);
 		// chrpos[3*i]=a1;
 		// chrpos[3*i+1]=a2;
 		// chrpos[3*i+2]=a3;
