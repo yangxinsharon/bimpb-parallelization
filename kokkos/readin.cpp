@@ -68,7 +68,7 @@ void readin(char fname[16], char density[16]) {
 			count++;
 		}
 	}
-	// printf("%d \n",count);
+	printf("%d \n",count);
 	fclose(fp);
 
 	fp=fopen(fname_tp,"r");
@@ -98,7 +98,7 @@ void readin(char fname[16], char density[16]) {
 		atmpos[1][i]=a2;
 		atmpos[2][i]=a3;		
 		atmrad[i]=b2;
-
+		printf("%d",i)
 		sprintf(buff,"%.3f\t\t %.3f\t\t %.3f\t\t %.4f\n",a1,a2,a3,b2);
 		fputs(buff,fpw);
 	}
