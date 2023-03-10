@@ -59,13 +59,14 @@ void readin(char fname[16], char density[16]) {
 	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
    	wfp=fopen(fname_tp,"w");
 
-   	sscanf("ATOM","%s",key1);
-   	printf("%s \n",key1);
+   	// sscanf("ATOM","%s",key1);
+   	// printf("%s \n",key1);
 	while(fgets(buff,256,fp)) {
 		// printf("%s",buff);
-		sscanf(buff,"%4s",key2);
-		printf("%s \n",key2);
-		// if (key1 == key2) {
+		if (strstr(buff,"ATOM")!=NULL){
+		// sscanf(fgets(buff,256,fp),"%4s",key2);
+		// printf("%s \n",key2);
+			printf("%s \n",buff);
 		// 	printf("%s %s \n",key1,key2);
 		// 	fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c,&i,&c,&c,&i,&a1,&a2,&a3,&b1,&b2);
 		// 	chrpos[3*i]=a1;
@@ -74,7 +75,7 @@ void readin(char fname[16], char density[16]) {
 		// 	atmchr[i]=b1;
 		// 	atmchr[i]=b2;
 		// 	printf("%s %i \n",c,i);
-		// }
+		}
 	}
 
 
