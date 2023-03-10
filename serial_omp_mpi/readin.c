@@ -62,7 +62,7 @@ void readin(char fname[16], char density[16]) {
 	while(fgets(buff,256,fp)) {
 		if (strstr(buff,"ATOM")!=NULL){
 			// printf("%s \n",buff);
-			fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c,&i,&c,&c,&i,&a1,&a2,&a3,&b1,&b2);
+			fscanf(buff,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c,&i,&c,&c,&i,&a1,&a2,&a3,&b1,&b2);
 			chrpos[3*i]=a1;
 			chrpos[3*i+1]=a2;
 			chrpos[3*i+2]=a3;
