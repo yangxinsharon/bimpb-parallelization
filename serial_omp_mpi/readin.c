@@ -64,7 +64,7 @@ void readin(char fname[16], char density[16]) {
 		}
 	}
 	// printf("%d \n",count);
-	buff = NULL;
+	// buff = NULL;
 	fclose(fp);
 
 	fp=fopen(fname_tp,"r");
