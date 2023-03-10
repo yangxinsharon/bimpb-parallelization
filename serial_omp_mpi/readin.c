@@ -77,7 +77,7 @@ void readin(char fname[16], char density[16]) {
 		// atmchr[i]=b1;
 		// atmrad[i]=b2;
 		// printf("%s %i \n",c,i);
-		sprintf(buff,"%f %f %f %f",a1,a2,a3,b2);
+		sprintf(buff,"%7f %7f %7f %7f\n",a1,a2,a3,b2);
 		fputs(buff,fpw);
 		// printf("%f %f %f %f",a1,a2,a3,b2);
 
