@@ -65,8 +65,9 @@ void readin(char fname[16], char density[16]) {
    	count = 0;
 	while(fgets(buff,256,fp)) {
 		// if (strstr(buff,"ATOM")!=NULL) {
-			count++;
+			// count++;	
 		// }
+		count++;
 	}
 	printf("count is:%d\n",count); //yang
 	fclose(fp);
@@ -74,6 +75,7 @@ void readin(char fname[16], char density[16]) {
 	fp=fopen(fname_tp,"r");
 	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
    	fpw=fopen(fname_tp,"w");
+   	
    	// nchr = count;
    	// natm = count;
    	// if ((atmchr=(double *) malloc(nchr*sizeof(double)))==NULL){
