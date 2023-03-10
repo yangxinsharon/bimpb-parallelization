@@ -58,23 +58,24 @@ void readin(char fname[16], char density[16]) {
 	double xx[3],yy[3];
 
 
-	/*count atom lines*/
-	sprintf(fpath,"../test_proteins/");
-	sprintf(fname_tp, "%s%s.pqr",fpath,fname);
-   	fp=fopen(fname_tp,"r");
-   	count = 0;
-	while(fgets(buff,256,fp)) {
-		if (strstr(buff,"ATOM")!=NULL) {
-			count++;	
-		}
-	}
-	printf("count is:%d\n",count); //yang
-	fclose(fp);
+
+	// /*count atom lines*/
+	// sprintf(fpath,"../test_proteins/");
+	// sprintf(fname_tp, "%s%s.pqr",fpath,fname);
+   	// fp=fopen(fname_tp,"r");
+   	// count = 0;
+	// while(fgets(buff,256,fp)) {
+	// 	if (strstr(buff,"ATOM")!=NULL) {
+	// 		count++;	
+	// 	}
+	// }
+	// printf("count is:%d\n",count); //yang
+	// fclose(fp);
 
 
-	fp=fopen(fname_tp,"r");
-	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
-   	fpw=fopen(fname_tp,"w");
+	// fp=fopen(fname_tp,"r");
+	// sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
+   	// fpw=fopen(fname_tp,"w");
 
    	// nchr = count;
    	// natm = count;
@@ -90,24 +91,25 @@ void readin(char fname[16], char density[16]) {
 	// }
 
 
-	for (i=0;i<count;i++) {
-		fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c1,&iii,&c2,&c3,&jjj,&a1,&a2,&a3,&b1,&b2);
-		sprintf(buff,"%.3f\t\t %.3f\t\t %.3f\t\t %.4f\n",a1,a2,a3,b2);
-		fputs(buff,fpw);
-		// chrpos[3*i]=a1;
-		// chrpos[3*i+1]=a2;
-		// chrpos[3*i+2]=a3;
-		// atmchr[i]=b1;
+	// for (i=0;i<count;i++) {
+	// 	fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c1,&iii,&c2,&c3,&jjj,&a1,&a2,&a3,&b1,&b2);
+	// 	sprintf(buff,"%.3f\t\t %.3f\t\t %.3f\t\t %.4f\n",a1,a2,a3,b2);
+	// 	fputs(buff,fpw);
+	// 	chrpos[3*i]=a1;
+	// 	chrpos[3*i+1]=a2;
+	// 	chrpos[3*i+2]=a3;
+	// 	atmchr[i]=b1;
 
-		// atmpos[0][i]=a1;
-		// atmpos[1][i]=a2;
-		// atmpos[2][i]=a3;		
-		// atmrad[i]=b2;
-	}
+	// 	atmpos[0][i]=a1;
+	// 	atmpos[1][i]=a2;
+	// 	atmpos[2][i]=a3;		
+	// 	atmrad[i]=b2;
+	// }
 
-	fclose(fp);
-	fclose(fpw);
-	printf("finish reading pqr and writing xyzr file...\n");
+	// fclose(fp);
+	// fclose(fpw);
+	// printf("finish reading pqr and writing xyzr file...\n");
+
 
 
 	/*read in vertices*/
