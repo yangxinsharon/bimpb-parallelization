@@ -64,7 +64,7 @@ void readin(char fname[16], char density[16]) {
 			count++;
 		}
 	}
-	// printf("count is:%d\n",count); //yang
+	printf("count is:%d\n",count); //yang
 	fclose(fp);
 
 	fp=fopen(fname_tp,"r");
