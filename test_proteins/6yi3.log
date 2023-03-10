@@ -396,3 +396,25 @@ The pI is 10.21 (folded) and  9.82 (unfolded)
 2023-03-07 22:56:11,437 INFO:main.py:713:non_trivial:Regenerating headers.
 2023-03-07 22:56:11,438 INFO:main.py:738:non_trivial:Regenerating PDB lines.
 2023-03-07 22:56:11,455 WARNING:main.py:311:print_pqr:Ignoring 465 header lines in output.
+2023-03-09 22:57:17,765 INFO:main.py:240:print_splash_screen:PDB2PQR v3.5.2: biomolecular structure conversion software.
+2023-03-09 22:57:17,765 INFO:main.py:242:print_splash_screen:Please cite:  Jurrus E, et al.  Improvements to the APBS biomolecular solvation software suite.  Protein Sci 27 112-128 (2018).
+2023-03-09 22:57:17,765 INFO:main.py:242:print_splash_screen:Please cite:  Dolinsky TJ, et al.  PDB2PQR: expanding and upgrading automated preparation of biomolecular structures for molecular simulations. Nucleic Acids Res 35 W522-W525 (2007).
+2023-03-09 22:57:17,765 INFO:main.py:759:main_driver:Checking and transforming input arguments.
+2023-03-09 22:57:17,766 INFO:main.py:763:main_driver:Loading topology files.
+2023-03-09 22:57:17,841 INFO:main.py:765:main_driver:Loading molecule: 6yi3.pdb
+2023-03-09 22:57:18,424 INFO:main.py:768:main_driver:Dropping water from structure.
+2023-03-09 22:57:18,507 INFO:main.py:770:main_driver:Setting up molecule.
+2023-03-09 22:57:18,535 INFO:main.py:408:setup_molecule:Created biomolecule object with 140 residues and 2107 atoms.
+2023-03-09 22:57:18,535 INFO:main.py:774:main_driver:Setting termini states for biomolecule chains.
+2023-03-09 22:57:18,542 INFO:main.py:604:non_trivial:Loading forcefield.
+2023-03-09 22:57:18,556 INFO:main.py:608:non_trivial:Loading hydrogen topology definitions.
+2023-03-09 22:57:18,560 INFO:main.py:459:is_repairable:This biomolecule is clean.  No repair needed.
+2023-03-09 22:57:18,560 INFO:main.py:623:non_trivial:Updating disulfide bridges.
+2023-03-09 22:57:18,560 INFO:main.py:626:non_trivial:Debumping biomolecule.
+2023-03-09 22:57:18,618 INFO:main.py:649:non_trivial:Adding hydrogens to biomolecule.
+2023-03-09 22:57:18,619 INFO:main.py:652:non_trivial:Debumping biomolecule (again).
+2023-03-09 22:57:18,695 INFO:main.py:654:non_trivial:Optimizing hydrogen bonds
+2023-03-09 22:57:19,099 INFO:main.py:666:non_trivial:Applying force field to biomolecule states.
+2023-03-09 22:57:19,102 INFO:main.py:713:non_trivial:Regenerating headers.
+2023-03-09 22:57:19,103 INFO:main.py:738:non_trivial:Regenerating PDB lines.
+2023-03-09 22:57:19,120 WARNING:main.py:311:print_pqr:Ignoring 390 header lines in output.

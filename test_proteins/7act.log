@@ -433,3 +433,32 @@ The pI is 10.25 (folded) and  9.82 (unfolded)
 2023-03-07 22:55:02,855 INFO:main.py:738:non_trivial:Regenerating PDB lines.
 2023-03-07 22:55:02,874 WARNING:main.py:311:print_pqr:Ignoring 927 header lines in output.
 2023-03-07 22:55:02,874 WARNING:main.py:315:print_pqr:Ignoring 3 missing lines in output.
+2023-03-09 22:57:29,308 INFO:main.py:240:print_splash_screen:PDB2PQR v3.5.2: biomolecular structure conversion software.
+2023-03-09 22:57:29,308 INFO:main.py:242:print_splash_screen:Please cite:  Jurrus E, et al.  Improvements to the APBS biomolecular solvation software suite.  Protein Sci 27 112-128 (2018).
+2023-03-09 22:57:29,308 INFO:main.py:242:print_splash_screen:Please cite:  Dolinsky TJ, et al.  PDB2PQR: expanding and upgrading automated preparation of biomolecular structures for molecular simulations. Nucleic Acids Res 35 W522-W525 (2007).
+2023-03-09 22:57:29,308 INFO:main.py:759:main_driver:Checking and transforming input arguments.
+2023-03-09 22:57:29,309 INFO:main.py:763:main_driver:Loading topology files.
+2023-03-09 22:57:29,384 INFO:main.py:765:main_driver:Loading molecule: 7act.pdb
+2023-03-09 22:57:29,559 INFO:main.py:768:main_driver:Dropping water from structure.
+2023-03-09 22:57:29,582 INFO:main.py:770:main_driver:Setting up molecule.
+2023-03-09 22:57:29,603 INFO:main.py:408:setup_molecule:Created biomolecule object with 147 residues and 2390 atoms.
+2023-03-09 22:57:29,604 INFO:main.py:774:main_driver:Setting termini states for biomolecule chains.
+2023-03-09 22:57:29,611 INFO:main.py:604:non_trivial:Loading forcefield.
+2023-03-09 22:57:29,623 INFO:main.py:608:non_trivial:Loading hydrogen topology definitions.
+2023-03-09 22:57:29,626 INFO:main.py:459:is_repairable:This biomolecule is clean.  No repair needed.
+2023-03-09 22:57:29,627 INFO:main.py:623:non_trivial:Updating disulfide bridges.
+2023-03-09 22:57:29,627 INFO:main.py:626:non_trivial:Debumping biomolecule.
+2023-03-09 22:57:29,685 INFO:main.py:649:non_trivial:Adding hydrogens to biomolecule.
+2023-03-09 22:57:29,686 WARNING:biomolecule.py:373:add_hydrogens:Tetrahedral hydrogen reconstruction not available for nucleic acids. Some hydrogens may be missing (if so, this is a bug).
+2023-03-09 22:57:29,687 WARNING:biomolecule.py:373:add_hydrogens:Tetrahedral hydrogen reconstruction not available for nucleic acids. Some hydrogens may be missing (if so, this is a bug).
+2023-03-09 22:57:29,687 INFO:main.py:652:non_trivial:Debumping biomolecule (again).
+2023-03-09 22:57:29,745 INFO:main.py:654:non_trivial:Optimizing hydrogen bonds
+2023-03-09 22:57:30,092 INFO:main.py:666:non_trivial:Applying force field to biomolecule states.
+2023-03-09 22:57:30,095 WARNING:biomolecule.py:741:apply_force_field:Residue RU B 1 has non-integer charge: -0.3081 deviates by 0.3081 from integral, exceeding error tolerance 0.001. 
+2023-03-09 22:57:30,095 WARNING:biomolecule.py:741:apply_force_field:Residue RG B 10 has non-integer charge: -0.6919 deviates by 0.30810000000000004 from integral, exceeding error tolerance 0.001. 
+2023-03-09 22:57:30,096 WARNING:main.py:699:non_trivial:Residue RU B 1 has non-integer charge:  -0.3081 deviates by 0.3081 from integral, exceeding error tolerance 0.001
+2023-03-09 22:57:30,096 WARNING:main.py:699:non_trivial:Residue RG B 10 has non-integer charge:  -0.6919 deviates by 0.30810000000000004 from integral, exceeding error tolerance 0.001
+2023-03-09 22:57:30,096 INFO:main.py:713:non_trivial:Regenerating headers.
+2023-03-09 22:57:30,097 INFO:main.py:738:non_trivial:Regenerating PDB lines.
+2023-03-09 22:57:30,116 WARNING:main.py:311:print_pqr:Ignoring 885 header lines in output.
+2023-03-09 22:57:30,116 WARNING:main.py:315:print_pqr:Ignoring 4 missing lines in output.

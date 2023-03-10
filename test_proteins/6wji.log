@@ -1225,3 +1225,55 @@ The pI is  9.93 (folded) and  9.97 (unfolded)
 2023-03-07 22:59:37,094 INFO:main.py:738:non_trivial:Regenerating PDB lines.
 2023-03-07 22:59:37,199 WARNING:main.py:311:print_pqr:Ignoring 1121 header lines in output.
 2023-03-07 22:59:37,199 WARNING:main.py:315:print_pqr:Ignoring 9 missing lines in output.
+2023-03-09 22:57:02,860 INFO:main.py:240:print_splash_screen:PDB2PQR v3.5.2: biomolecular structure conversion software.
+2023-03-09 22:57:02,860 INFO:main.py:242:print_splash_screen:Please cite:  Jurrus E, et al.  Improvements to the APBS biomolecular solvation software suite.  Protein Sci 27 112-128 (2018).
+2023-03-09 22:57:02,860 INFO:main.py:242:print_splash_screen:Please cite:  Dolinsky TJ, et al.  PDB2PQR: expanding and upgrading automated preparation of biomolecular structures for molecular simulations. Nucleic Acids Res 35 W522-W525 (2007).
+2023-03-09 22:57:02,860 INFO:main.py:759:main_driver:Checking and transforming input arguments.
+2023-03-09 22:57:02,862 INFO:main.py:763:main_driver:Loading topology files.
+2023-03-09 22:57:02,936 INFO:main.py:765:main_driver:Loading molecule: 6wji.pdb
+2023-03-09 22:57:03,052 INFO:main.py:768:main_driver:Dropping water from structure.
+2023-03-09 22:57:03,063 INFO:main.py:770:main_driver:Setting up molecule.
+2023-03-09 22:57:03,109 WARNING:biomolecule.py:992:create_residue:Unable to find amino or nucleic acid definition for CL.  Parsing as new residue.
+2023-03-09 22:57:03,109 WARNING:biomolecule.py:992:create_residue:Unable to find amino or nucleic acid definition for CL.  Parsing as new residue.
+2023-03-09 22:57:03,109 WARNING:biomolecule.py:992:create_residue:Unable to find amino or nucleic acid definition for CL.  Parsing as new residue.
+2023-03-09 22:57:03,110 WARNING:biomolecule.py:992:create_residue:Unable to find amino or nucleic acid definition for CL.  Parsing as new residue.
+2023-03-09 22:57:03,110 WARNING:biomolecule.py:992:create_residue:Unable to find amino or nucleic acid definition for CL.  Parsing as new residue.
+2023-03-09 22:57:03,110 WARNING:biomolecule.py:992:create_residue:Unable to find amino or nucleic acid definition for CL.  Parsing as new residue.
+2023-03-09 22:57:03,110 WARNING:biomolecule.py:992:create_residue:Unable to find amino or nucleic acid definition for CL.  Parsing as new residue.
+2023-03-09 22:57:03,110 WARNING:biomolecule.py:992:create_residue:Unable to find amino or nucleic acid definition for CL.  Parsing as new residue.
+2023-03-09 22:57:03,110 WARNING:biomolecule.py:992:create_residue:Unable to find amino or nucleic acid definition for CL.  Parsing as new residue.
+2023-03-09 22:57:03,111 INFO:main.py:408:setup_molecule:Created biomolecule object with 657 residues and 5205 atoms.
+2023-03-09 22:57:03,111 WARNING:main.py:418:setup_molecule:Multiple occupancies found: N in LYS E 361.
+2023-03-09 22:57:03,111 WARNING:main.py:418:setup_molecule:Multiple occupancies found: CA in LYS E 361.
+2023-03-09 22:57:03,111 WARNING:main.py:418:setup_molecule:Multiple occupancies found: C in LYS E 361.
+2023-03-09 22:57:03,111 WARNING:main.py:418:setup_molecule:Multiple occupancies found: O in LYS E 361.
+2023-03-09 22:57:03,111 WARNING:main.py:418:setup_molecule:Multiple occupancies found: CB in LYS E 361.
+2023-03-09 22:57:03,112 WARNING:main.py:418:setup_molecule:Multiple occupancies found: CG in LYS E 361.
+2023-03-09 22:57:03,112 WARNING:main.py:418:setup_molecule:Multiple occupancies found: CD in LYS E 361.
+2023-03-09 22:57:03,112 WARNING:main.py:418:setup_molecule:Multiple occupancies found: CE in LYS E 361.
+2023-03-09 22:57:03,112 WARNING:main.py:418:setup_molecule:Multiple occupancies found: NZ in LYS E 361.
+2023-03-09 22:57:03,112 WARNING:main.py:424:setup_molecule:Multiple occupancies found in LYS E 361. At least one of the instances is being ignored.
+2023-03-09 22:57:03,112 WARNING:main.py:418:setup_molecule:Multiple occupancies found: N in LYS F 299.
+2023-03-09 22:57:03,112 WARNING:main.py:418:setup_molecule:Multiple occupancies found: CA in LYS F 299.
+2023-03-09 22:57:03,112 WARNING:main.py:418:setup_molecule:Multiple occupancies found: C in LYS F 299.
+2023-03-09 22:57:03,112 WARNING:main.py:418:setup_molecule:Multiple occupancies found: O in LYS F 299.
+2023-03-09 22:57:03,112 WARNING:main.py:418:setup_molecule:Multiple occupancies found: CB in LYS F 299.
+2023-03-09 22:57:03,112 WARNING:main.py:418:setup_molecule:Multiple occupancies found: CG in LYS F 299.
+2023-03-09 22:57:03,112 WARNING:main.py:418:setup_molecule:Multiple occupancies found: CD in LYS F 299.
+2023-03-09 22:57:03,112 WARNING:main.py:418:setup_molecule:Multiple occupancies found: CE in LYS F 299.
+2023-03-09 22:57:03,112 WARNING:main.py:418:setup_molecule:Multiple occupancies found: NZ in LYS F 299.
+2023-03-09 22:57:03,112 WARNING:main.py:424:setup_molecule:Multiple occupancies found in LYS F 299. At least one of the instances is being ignored.
+2023-03-09 22:57:03,112 INFO:main.py:774:main_driver:Setting termini states for biomolecule chains.
+2023-03-09 22:57:03,136 INFO:main.py:604:non_trivial:Loading forcefield.
+2023-03-09 22:57:03,147 INFO:main.py:608:non_trivial:Loading hydrogen topology definitions.
+2023-03-09 22:57:03,156 INFO:main.py:459:is_repairable:This biomolecule is clean.  No repair needed.
+2023-03-09 22:57:03,156 INFO:main.py:623:non_trivial:Updating disulfide bridges.
+2023-03-09 22:57:03,156 INFO:main.py:626:non_trivial:Debumping biomolecule.
+2023-03-09 22:57:03,366 INFO:main.py:649:non_trivial:Adding hydrogens to biomolecule.
+2023-03-09 22:57:04,292 INFO:main.py:652:non_trivial:Debumping biomolecule (again).
+2023-03-09 22:57:05,339 INFO:main.py:654:non_trivial:Optimizing hydrogen bonds
+2023-03-09 22:57:07,512 INFO:main.py:666:non_trivial:Applying force field to biomolecule states.
+2023-03-09 22:57:07,526 INFO:main.py:713:non_trivial:Regenerating headers.
+2023-03-09 22:57:07,529 INFO:main.py:738:non_trivial:Regenerating PDB lines.
+2023-03-09 22:57:07,608 WARNING:main.py:311:print_pqr:Ignoring 1047 header lines in output.
+2023-03-09 22:57:07,608 WARNING:main.py:315:print_pqr:Ignoring 9 missing lines in output.

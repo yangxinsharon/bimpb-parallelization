@@ -1436,3 +1436,93 @@ The pI is  9.54 (folded) and  9.37 (unfolded)
 2023-03-07 22:57:00,303 INFO:main.py:713:non_trivial:Regenerating headers.
 2023-03-07 22:57:00,307 INFO:main.py:738:non_trivial:Regenerating PDB lines.
 2023-03-07 22:57:00,434 WARNING:main.py:311:print_pqr:Ignoring 466 header lines in output.
+2023-03-09 22:58:18,741 INFO:main.py:240:print_splash_screen:PDB2PQR v3.5.2: biomolecular structure conversion software.
+2023-03-09 22:58:18,741 INFO:main.py:242:print_splash_screen:Please cite:  Jurrus E, et al.  Improvements to the APBS biomolecular solvation software suite.  Protein Sci 27 112-128 (2018).
+2023-03-09 22:58:18,741 INFO:main.py:242:print_splash_screen:Please cite:  Dolinsky TJ, et al.  PDB2PQR: expanding and upgrading automated preparation of biomolecular structures for molecular simulations. Nucleic Acids Res 35 W522-W525 (2007).
+2023-03-09 22:58:18,741 INFO:main.py:759:main_driver:Checking and transforming input arguments.
+2023-03-09 22:58:18,742 INFO:main.py:763:main_driver:Loading topology files.
+2023-03-09 22:58:18,817 INFO:main.py:765:main_driver:Loading molecule: 7sts.pdb
+2023-03-09 22:58:18,939 INFO:main.py:768:main_driver:Dropping water from structure.
+2023-03-09 22:58:18,955 INFO:main.py:770:main_driver:Setting up molecule.
+2023-03-09 22:58:19,030 INFO:main.py:408:setup_molecule:Created biomolecule object with 1074 residues and 8133 atoms.
+2023-03-09 22:58:19,030 WARNING:main.py:418:setup_molecule:Multiple occupancies found: N in ARG H 66.
+2023-03-09 22:58:19,030 WARNING:main.py:418:setup_molecule:Multiple occupancies found: CA in ARG H 66.
+2023-03-09 22:58:19,030 WARNING:main.py:418:setup_molecule:Multiple occupancies found: C in ARG H 66.
+2023-03-09 22:58:19,030 WARNING:main.py:418:setup_molecule:Multiple occupancies found: O in ARG H 66.
+2023-03-09 22:58:19,031 WARNING:main.py:418:setup_molecule:Multiple occupancies found: CB in ARG H 66.
+2023-03-09 22:58:19,031 WARNING:main.py:418:setup_molecule:Multiple occupancies found: CG in ARG H 66.
+2023-03-09 22:58:19,031 WARNING:main.py:418:setup_molecule:Multiple occupancies found: CD in ARG H 66.
+2023-03-09 22:58:19,031 WARNING:main.py:418:setup_molecule:Multiple occupancies found: NE in ARG H 66.
+2023-03-09 22:58:19,031 WARNING:main.py:418:setup_molecule:Multiple occupancies found: CZ in ARG H 66.
+2023-03-09 22:58:19,031 WARNING:main.py:418:setup_molecule:Multiple occupancies found: NH1 in ARG H 66.
+2023-03-09 22:58:19,031 WARNING:main.py:418:setup_molecule:Multiple occupancies found: NH2 in ARG H 66.
+2023-03-09 22:58:19,031 WARNING:main.py:424:setup_molecule:Multiple occupancies found in ARG H 66. At least one of the instances is being ignored.
+2023-03-09 22:58:19,031 WARNING:main.py:418:setup_molecule:Multiple occupancies found: N in ARG L 51.
+2023-03-09 22:58:19,031 WARNING:main.py:418:setup_molecule:Multiple occupancies found: CA in ARG L 51.
+2023-03-09 22:58:19,031 WARNING:main.py:418:setup_molecule:Multiple occupancies found: C in ARG L 51.
+2023-03-09 22:58:19,031 WARNING:main.py:418:setup_molecule:Multiple occupancies found: O in ARG L 51.
+2023-03-09 22:58:19,031 WARNING:main.py:418:setup_molecule:Multiple occupancies found: CB in ARG L 51.
+2023-03-09 22:58:19,031 WARNING:main.py:418:setup_molecule:Multiple occupancies found: CG in ARG L 51.
+2023-03-09 22:58:19,031 WARNING:main.py:418:setup_molecule:Multiple occupancies found: CD in ARG L 51.
+2023-03-09 22:58:19,032 WARNING:main.py:418:setup_molecule:Multiple occupancies found: NE in ARG L 51.
+2023-03-09 22:58:19,032 WARNING:main.py:418:setup_molecule:Multiple occupancies found: CZ in ARG L 51.
+2023-03-09 22:58:19,032 WARNING:main.py:418:setup_molecule:Multiple occupancies found: NH1 in ARG L 51.
+2023-03-09 22:58:19,032 WARNING:main.py:418:setup_molecule:Multiple occupancies found: NH2 in ARG L 51.
+2023-03-09 22:58:19,032 WARNING:main.py:424:setup_molecule:Multiple occupancies found in ARG L 51. At least one of the instances is being ignored.
+2023-03-09 22:58:19,032 INFO:main.py:774:main_driver:Setting termini states for biomolecule chains.
+2023-03-09 22:58:19,058 WARNING:biomolecule.py:615:update_bonds:Gap in backbone detected between PRO A 130 and GLY A 138!
+2023-03-09 22:58:19,058 WARNING:biomolecule.py:615:update_bonds:Gap in backbone detected between PRO A 189 and THR A 197!
+2023-03-09 22:58:19,061 WARNING:biomolecule.py:615:update_bonds:Gap in backbone detected between ARG C 44 and LEU C 59!
+2023-03-09 22:58:19,064 WARNING:biomolecule.py:615:update_bonds:Gap in backbone detected between PRO H 130 and THR H 139!
+2023-03-09 22:58:19,066 INFO:main.py:604:non_trivial:Loading forcefield.
+2023-03-09 22:58:19,079 INFO:main.py:608:non_trivial:Loading hydrogen topology definitions.
+2023-03-09 22:58:19,086 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OXT in residue LYS A 218
+2023-03-09 22:58:19,087 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OXT in residue PRO B 212
+2023-03-09 22:58:19,087 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OG1 in residue THR C 4
+2023-03-09 22:58:19,088 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom CG2 in residue THR C 4
+2023-03-09 22:58:19,088 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OXT in residue ALA C 128
+2023-03-09 22:58:19,088 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OG1 in residue THR D 4
+2023-03-09 22:58:19,088 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom CG2 in residue THR D 4
+2023-03-09 22:58:19,089 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OXT in residue ALA D 128
+2023-03-09 22:58:19,090 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OXT in residue LYS H 218
+2023-03-09 22:58:19,091 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OXT in residue PRO L 212
+2023-03-09 22:58:19,092 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OXT in residue LYS A 218
+2023-03-09 22:58:19,093 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OXT in residue PRO B 212
+2023-03-09 22:58:19,094 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OG1 in residue THR C 4
+2023-03-09 22:58:19,094 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom CG2 in residue THR C 4
+2023-03-09 22:58:19,094 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OXT in residue ALA C 128
+2023-03-09 22:58:19,094 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OG1 in residue THR D 4
+2023-03-09 22:58:19,094 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom CG2 in residue THR D 4
+2023-03-09 22:58:19,095 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OXT in residue ALA D 128
+2023-03-09 22:58:19,096 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OXT in residue LYS H 218
+2023-03-09 22:58:19,097 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OXT in residue PRO L 212
+2023-03-09 22:58:19,097 INFO:main.py:618:non_trivial:Attempting to repair 10 missing atoms in biomolecule.
+2023-03-09 22:58:19,099 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OXT in residue LYS A 218
+2023-03-09 22:58:19,100 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OXT in residue PRO B 212
+2023-03-09 22:58:19,100 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OG1 in residue THR C 4
+2023-03-09 22:58:19,100 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom CG2 in residue THR C 4
+2023-03-09 22:58:19,100 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OXT in residue ALA C 128
+2023-03-09 22:58:19,100 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OG1 in residue THR D 4
+2023-03-09 22:58:19,101 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom CG2 in residue THR D 4
+2023-03-09 22:58:19,101 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OXT in residue ALA D 128
+2023-03-09 22:58:19,102 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OXT in residue LYS H 218
+2023-03-09 22:58:19,103 WARNING:biomolecule.py:157:num_missing_heavy:Missing atom OXT in residue PRO L 212
+2023-03-09 22:58:19,105 INFO:biomolecule.py:1077:repair_heavy:Added atom OXT to residue LYS A 218 at coordinates 63.788, -84.804, -32.967
+2023-03-09 22:58:19,106 INFO:biomolecule.py:1077:repair_heavy:Added atom OXT to residue PRO B 212 at coordinates 75.799, -84.269, -26.084
+2023-03-09 22:58:19,106 INFO:biomolecule.py:1077:repair_heavy:Added atom OG1 to residue THR C 4 at coordinates 33.454, -13.727, 18.855
+2023-03-09 22:58:19,106 INFO:biomolecule.py:1077:repair_heavy:Added atom CG2 to residue THR C 4 at coordinates 35.376, -15.163, 18.205
+2023-03-09 22:58:19,107 INFO:biomolecule.py:1077:repair_heavy:Added atom OXT to residue ALA C 128 at coordinates 21.790, -4.460, 6.147
+2023-03-09 22:58:19,107 INFO:biomolecule.py:1077:repair_heavy:Added atom OG1 to residue THR D 4 at coordinates 23.677, -29.623, -20.802
+2023-03-09 22:58:19,108 INFO:biomolecule.py:1077:repair_heavy:Added atom CG2 to residue THR D 4 at coordinates 25.808, -30.782, -20.260
+2023-03-09 22:58:19,108 INFO:biomolecule.py:1077:repair_heavy:Added atom OXT to residue ALA D 128 at coordinates 9.777, -22.910, -6.627
+2023-03-09 22:58:19,109 INFO:biomolecule.py:1077:repair_heavy:Added atom OXT to residue LYS H 218 at coordinates 100.769, -20.715, 33.429
+2023-03-09 22:58:19,110 INFO:biomolecule.py:1077:repair_heavy:Added atom OXT to residue PRO L 212 at coordinates 104.160, -29.276, 26.821
+2023-03-09 22:58:19,110 INFO:main.py:623:non_trivial:Updating disulfide bridges.
+2023-03-09 22:58:19,115 INFO:main.py:626:non_trivial:Debumping biomolecule.
+2023-03-09 22:58:19,407 INFO:main.py:649:non_trivial:Adding hydrogens to biomolecule.
+2023-03-09 22:58:20,847 INFO:main.py:652:non_trivial:Debumping biomolecule (again).
+2023-03-09 22:58:22,470 INFO:main.py:654:non_trivial:Optimizing hydrogen bonds
+2023-03-09 22:58:27,914 INFO:main.py:666:non_trivial:Applying force field to biomolecule states.
+2023-03-09 22:58:27,937 INFO:main.py:713:non_trivial:Regenerating headers.
+2023-03-09 22:58:27,941 INFO:main.py:738:non_trivial:Regenerating PDB lines.
+2023-03-09 22:58:28,065 WARNING:main.py:311:print_pqr:Ignoring 391 header lines in output.
