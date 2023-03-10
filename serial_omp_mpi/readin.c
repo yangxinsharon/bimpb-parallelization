@@ -54,8 +54,9 @@ void readin(char fname[16], char density[16]) {
 	sprintf(fpath,"../test_proteins/");
 	sprintf(fname_tp, "%s%s.pqr",fpath,fname);
    	fp=fopen(fname_tp,"r");
-   	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
-   	fp=fopen(fname_tp2,"w");
+   	printf("%s\n",fname_tp);
+   	// sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
+   	// fp=fopen(fname_tp2,"w");
 
 	while(fgets(buff,256,fp)){
 		// if (buff[0] == "A"){
