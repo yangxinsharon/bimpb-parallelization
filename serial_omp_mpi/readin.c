@@ -34,11 +34,12 @@ double triangle_area(double v[3][3]) {
 
 /* function read in molecule information */
 void readin(char fname[16], char density[16]) {
-    FILE *fp, *wfp;
+    FILE *fp, *fpw; //yang
     char c;
 	char fpath[256];
 	char fname_tp[256];
-	char buff[256];
+	char buff[256]; //yang
+	int count = 0; //yang
 
 
     int i,j,k,i1,i2,i3,j1,j2,j3,ii,jj,kk,namelength=4,nfacenew,ichanged;
@@ -57,21 +58,27 @@ void readin(char fname[16], char density[16]) {
    	fp=fopen(fname_tp,"r");
 
 	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
-   	wfp=fopen(fname_tp,"w");
+   	fpw=fopen(fname_tp,"w");
 
 	while(fgets(buff,256,fp)) {
-		if (strstr(buff,"ATOM")!=NULL){
-			// printf("%s \n",buff);
-			fscanf(buff,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c,&i,&c,&c,&i,&a1,&a2,&a3,&b1,&b2);
-			// chrpos[3*i]=a1;
-			// chrpos[3*i+1]=a2;
-			// chrpos[3*i+2]=a3;
-			// atmchr[i]=b1;
-			// atmchr[i]=b2;
-			// printf("%s %i \n",c,i);
+		if (strstr(buff,"ATOM")!=NULL) {
+			count++;
 		}
+		printf("%d \n",count);
 	}
 
+	for (i=0;i<count;i++) {
+		fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c,&i,&c,&c,&i,&a1,&a2,&a3,&b1,&b2);
+		// chrpos[3*i]=a1;
+		// chrpos[3*i+1]=a2;
+		// chrpos[3*i+2]=a3;
+		// atmchr[i]=b1;
+		// atmrad[i]=b2;
+		printf("%s %i \n",c,i);
+		sprintf(buff,"%7f %7f %7f %7f",a1,a2,a3,b2);
+		fputs(buff,fpw);
+
+	}
 
 	fclose(fp);
 	printf("finish reading pqr file...\n");
