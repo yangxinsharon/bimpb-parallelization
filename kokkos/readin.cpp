@@ -64,9 +64,9 @@ void readin(char fname[16], char density[16]) {
    	fp=fopen(fname_tp,"r");
    	count = 0;
 	while(fgets(buff,256,fp)) {
-		if (strstr(buff,"ATOM")!=NULL) {
+		// if (strstr(buff,"ATOM")!=NULL) {
 			count++;
-		}
+		// }
 	}
 	printf("count is:%d\n",count); //yang
 	fclose(fp);
