@@ -35,7 +35,7 @@ double triangle_area(double v[3][3]) {
 /* function read in molecule information */
 void readin(char fname[16], char density[16]) {
     FILE *fp, *wfp;
-    char c,key1,key2;
+    char c;
 	char fpath[256];
 	char fname_tp[256];
 	char buff[256];
@@ -59,22 +59,16 @@ void readin(char fname[16], char density[16]) {
 	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
    	wfp=fopen(fname_tp,"w");
 
-   	// sscanf("ATOM","%s",key1);
-   	// printf("%s \n",key1);
 	while(fgets(buff,256,fp)) {
-		// printf("%s",buff);
 		if (strstr(buff,"ATOM")!=NULL){
-		// sscanf(fgets(buff,256,fp),"%4s",key2);
-		// printf("%s \n",key2);
-			printf("%s \n",buff);
-		// 	printf("%s %s \n",key1,key2);
-		// 	fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c,&i,&c,&c,&i,&a1,&a2,&a3,&b1,&b2);
-		// 	chrpos[3*i]=a1;
-		// 	chrpos[3*i+1]=a2;
-		// 	chrpos[3*i+2]=a3;
-		// 	atmchr[i]=b1;
-		// 	atmchr[i]=b2;
-		// 	printf("%s %i \n",c,i);
+			// printf("%s \n",buff);
+			fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c,&i,&c,&c,&i,&a1,&a2,&a3,&b1,&b2);
+			chrpos[3*i]=a1;
+			chrpos[3*i+1]=a2;
+			chrpos[3*i+2]=a3;
+			atmchr[i]=b1;
+			atmchr[i]=b2;
+			printf("%s %i \n",c,i);
 		}
 	}
 
