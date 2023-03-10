@@ -67,32 +67,24 @@ void readin(char fname[16], char density[16]) {
 	fclose(fp);
 
 	fp=fopen(fname_tp,"r");
-	// sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
-   	// fpw=fopen(fname_tp,"w");
+	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
+   	fpw=fopen(fname_tp,"w");
 	for (i=0;i<count;i++) {
-		fscanf(fp,"%s %d %s %s %d %f %f %f %f %f",&c1,&iii,&c2,&c3,&jjj,&a1,&a2,&a3,&b1,&b2);
+		fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c1,&iii,&c2,&c3,&jjj,&a1,&a2,&a3,&b1,&b2);
 		// chrpos[3*i]=a1;
 		// chrpos[3*i+1]=a2;
 		// chrpos[3*i+2]=a3;
 		// atmchr[i]=b1;
 		// atmrad[i]=b2;
 		// printf("%s %i \n",c,i);
-		// sprintf(buff,"%f\t %f\t %f\t %f\n",a1,a2,a3,b2);
-		// fputs(buff,fpw);
-		printf("%f %f %f %f",a1,a2,a3,b2);
+		sprintf(buff,"%f %f %f %f",a1,a2,a3,b2);
+		fputs(buff,fpw);
+		// printf("%f %f %f %f",a1,a2,a3,b2);
 
 	}
 
-	for (i=0;i<=nchr-1;i++){
-		fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
-		chrpos[3*i]=a1;
-		chrpos[3*i+1]=a2;
-		chrpos[3*i+2]=a3;
-		atmchr[i]=b1;
-    }
 	fclose(fp);
-
-	fclose(fp);
+	fclose(fpw);
 	printf("finish reading pqr file...\n");
 
 	/*read in vertices*/
