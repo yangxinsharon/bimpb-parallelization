@@ -34,11 +34,11 @@ double triangle_area(double v[3][3]) {
 
 /* function read in molecule information */
 void readin(char fname[16], char density[16]) {
-    FILE *fp;
+    FILE *fp, *wfp;
     char c;
 	char fpath[256];
-	char fname_tp[256], fname_tp2[256];;
-	char buff[256];
+	char fname_tp[256];
+	char buff[256], key[4];
 
     int i,j,k,i1,i2,i3,j1,j2,j3,ii,jj,kk,namelength=4,nfacenew,ichanged;
     double den,prob_rds,a1,a2,a3,b1,b2,b3,a_norm,r0_norm,v0_norm;
@@ -54,22 +54,24 @@ void readin(char fname[16], char density[16]) {
 	sprintf(fpath,"../test_proteins/");
 	sprintf(fname_tp, "%s%s.pqr",fpath,fname);
    	fp=fopen(fname_tp,"r");
-   	printf("%s\n",fname_tp);
-   	// sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
-   	// fp=fopen(fname_tp2,"w");
 
-	// while(fgets(buff,256,fp)){
-	// 	// if (buff[0] == "A"){
-	// 		// printf("%s", buff[0]);
-	// 		fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c,&i,&c,&c,&i,&a1,&a2,&a3,&b1,&b2);
-	// 		chrpos[3*i]=a1;
-	// 		chrpos[3*i+1]=a2;
-	// 		chrpos[3*i+2]=a3;
-	// 		atmchr[i]=b1;
-	// 		atmchr[i]=b2;
-	// 	// }
-    // }
-	// fclose(fp);
+	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
+   	wfp=fopen(fname_tp,"w");
+
+	while(fgets(buff,256,fp)) {
+		if (sscanf(buff,"%4s",key == "ATOM")) {
+			fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c,&i,&c,&c,&i,&a1,&a2,&a3,&b1,&b2);
+			chrpos[3*i]=a1;
+			chrpos[3*i+1]=a2;
+			chrpos[3*i+2]=a3;
+			atmchr[i]=b1;
+			atmchr[i]=b2;
+			printf("%s %i \n",c,i);
+		}
+	}
+
+
+	fclose(fp);
 	printf("finish reading pqr file...\n");
 
 	/*read in vertices*/
