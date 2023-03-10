@@ -59,6 +59,7 @@ void readin(char fname[16], char density[16]) {
    	wfp=fopen(fname_tp,"w");
 
 	while(fgets(buff,256,fp)) {
+		printf("%s \n",buff);
 		if (sscanf(buff,"%4s",key == "ATOM")) {
 			fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c,&i,&c,&c,&i,&a1,&a2,&a3,&b1,&b2);
 			chrpos[3*i]=a1;
