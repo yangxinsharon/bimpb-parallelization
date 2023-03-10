@@ -76,43 +76,33 @@ void readin(char fname[16], char density[16]) {
 	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
    	fpw=fopen(fname_tp,"w");
 
-   	nchr = count;
-   	natm = count;
-	if ((atmrad=(double *) (Kokkos::kokkos_malloc(natm*sizeof(double))))==NULL) {
-		printf("error in allcating atmrad");
-	}
-	atmpos=Make2DDoubleArray(3,natm,(char*) "atmpos");
-	if ((atmchr=(double *) (Kokkos::kokkos_malloc(nchr*sizeof(double))))==NULL) {
-		printf("error in allcating atmchr");
-	}
-	if ((chrpos=(double *) (Kokkos::kokkos_malloc(3*nchr*sizeof(double))))==NULL) { 
-		printf("error in allcating chrpos");
-	}
-
-   	// if ((atmchr=(double *) malloc(nchr*sizeof(double)))==NULL){
-	// 	printf("error in allcating atmchr");
-	// }
-	// if ((chrpos=(double *) malloc(3*nchr*sizeof(double)))==NULL){
-	// 	printf("error in allcating chrpos");
-	// }
-	// if ((atmrad=(double *) malloc(natm*sizeof(double)))==NULL) {
+   	// nchr = count;
+   	// natm = count;
+	// if ((atmrad=(double *) (Kokkos::kokkos_malloc(natm*sizeof(double))))==NULL) {
 	// 	printf("error in allcating atmrad");
 	// }
-	// atmpos=Make2DDoubleArray(3,natm,"atmpos");
+	// atmpos=Make2DDoubleArray(3,natm,(char*) "atmpos");
+	// if ((atmchr=(double *) (Kokkos::kokkos_malloc(nchr*sizeof(double))))==NULL) {
+	// 	printf("error in allcating atmchr");
+	// }
+	// if ((chrpos=(double *) (Kokkos::kokkos_malloc(3*nchr*sizeof(double))))==NULL) { 
+	// 	printf("error in allcating chrpos");
+	// }
+
 
 	for (i=0;i<count;i++) {
 		fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c1,&iii,&c2,&c3,&jjj,&a1,&a2,&a3,&b1,&b2);
 		sprintf(buff,"%.3f\t\t %.3f\t\t %.3f\t\t %.4f\n",a1,a2,a3,b2);
 		fputs(buff,fpw);
-		chrpos[3*i]=a1;
-		chrpos[3*i+1]=a2;
-		chrpos[3*i+2]=a3;
-		atmchr[i]=b1;
+		// chrpos[3*i]=a1;
+		// chrpos[3*i+1]=a2;
+		// chrpos[3*i+2]=a3;
+		// atmchr[i]=b1;
 
-		atmpos[0][i]=a1;
-		atmpos[1][i]=a2;
-		atmpos[2][i]=a3;		
-		atmrad[i]=b2;
+		// atmpos[0][i]=a1;
+		// atmpos[1][i]=a2;
+		// atmpos[2][i]=a3;		
+		// atmrad[i]=b2;
 	}
 
 	fclose(fp);
@@ -195,52 +185,52 @@ void readin(char fname[16], char density[16]) {
     fclose(fp);
 	printf("finish reading face file...\n");
 
-	// /*read atom coodinates and radius */
-	// sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
-	// fp=fopen(fname_tp,"r");
+	/*read atom coodinates and radius */
+	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
+	fp=fopen(fname_tp,"r");
 
-	// if ((atmrad=(double *) malloc(natm*sizeof(double)))==NULL) {
-	// // if ((atmrad=(double *) (Kokkos::kokkos_malloc(natm*sizeof(double))))==NULL) {
-	// 	printf("error in allcating atmrad");
-	// }
-	// atmpos=Make2DDoubleArray(3,natm,(char*) "atmpos");
+	if ((atmrad=(double *) malloc(natm*sizeof(double)))==NULL) {
+	// if ((atmrad=(double *) (Kokkos::kokkos_malloc(natm*sizeof(double))))==NULL) {
+		printf("error in allcating atmrad");
+	}
+	atmpos=Make2DDoubleArray(3,natm,(char*) "atmpos");
 
-	// printf("natm is:%d\n",natm); //yang
-	// for (i=0;i<=natm-1;i++){
-	// 	fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
-	// 	atmpos[0][i]=a1;
-	// 	atmpos[1][i]=a2;
-	// 	atmpos[2][i]=a3;
-	// 	atmrad[i]=b1;
-    // }
-	// fclose(fp);
-	// printf("finish reading position file...\n");
+	printf("natm is:%d\n",natm); //yang
+	for (i=0;i<=natm-1;i++){
+		fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
+		atmpos[0][i]=a1;
+		atmpos[1][i]=a2;
+		atmpos[2][i]=a3;
+		atmrad[i]=b1;
+    }
+	fclose(fp);
+	printf("finish reading position file...\n");
 
-	// /*read charge coodinates and radius */
-	// sprintf(fname_tp, "%s%s.pqr",fpath,fname);
-	// fp=fopen(fname_tp,"r");
+	/*read charge coodinates and radius */
+	sprintf(fname_tp, "%s%s.pqr",fpath,fname);
+	fp=fopen(fname_tp,"r");
 
-	// nchr=natm;
-	// printf("nchr is:%d\n",nchr); //yang
-	// // if ((atmchr=(double *) malloc(nchr*sizeof(double)))==NULL){
-	// if ((atmchr=(double *) (Kokkos::kokkos_malloc(nchr*sizeof(double))))==NULL) {
-	// 	printf("error in allcating atmchr");
-	// }
-	// // if ((chrpos=(double *) malloc(3*nchr*sizeof(double)))==NULL){
-	// if ((chrpos=(double *) (Kokkos::kokkos_malloc(3*nchr*sizeof(double))))==NULL) { 
-	// 	printf("error in allcating chrpos");
-	// }
+	nchr=natm;
+	printf("nchr is:%d\n",nchr); //yang
+	// if ((atmchr=(double *) malloc(nchr*sizeof(double)))==NULL){
+	if ((atmchr=(double *) (Kokkos::kokkos_malloc(nchr*sizeof(double))))==NULL) {
+		printf("error in allcating atmchr");
+	}
+	// if ((chrpos=(double *) malloc(3*nchr*sizeof(double)))==NULL){
+	if ((chrpos=(double *) (Kokkos::kokkos_malloc(3*nchr*sizeof(double))))==NULL) { 
+		printf("error in allcating chrpos");
+	}
 
-	// for (i=0;i<=nchr-1;i++){
-	// 	// fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
-	// 	fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c1,&iii,&c2,&c3,&jjj,&a1,&a2,&a3,&b1,&b2);
-	// 	chrpos[3*i]=a1;
-	// 	chrpos[3*i+1]=a2;
-	// 	chrpos[3*i+2]=a3;
-	// 	atmchr[i]=b1;
-    // }
-	// fclose(fp);
-	// printf("finish reading charge file...\n");
+	for (i=0;i<=nchr-1;i++){
+		// fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
+		fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c1,&iii,&c2,&c3,&jjj,&a1,&a2,&a3,&b1,&b2);
+		chrpos[3*i]=a1;
+		chrpos[3*i+1]=a2;
+		chrpos[3*i+2]=a3;
+		atmchr[i]=b1;
+    }
+	fclose(fp);
+	printf("finish reading charge file...\n");
 
 	/* delele triangles with extreme small areas and closed to each other */
 	nfacenew=nface;
