@@ -59,7 +59,6 @@ void readin(char fname[16], char density[16]) {
    	wfp=fopen(fname_tp,"w");
 
 	while(fgets(buff,256,fp)) {
-		printf("%s \n",buff);
 		sscanf(buff,"%4s",key);
 		printf("%s \n",key);
 		if (key == "ATOM") {
