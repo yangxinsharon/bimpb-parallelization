@@ -38,6 +38,7 @@ void readin(char fname[16], char density[16]) {
     char c;
 	char fpath[256];
 	char fname_tp[256];
+	char buff[256];
 
     int i,j,k,i1,i2,i3,j1,j2,j3,ii,jj,kk,namelength=4,nfacenew,ichanged;
     double den,prob_rds,a1,a2,a3,b1,b2,b3,a_norm,r0_norm,v0_norm;
@@ -48,13 +49,26 @@ void readin(char fname[16], char density[16]) {
 	double cos_theta,G0,tp1,G1,r_s[3];
 	double xx[3],yy[3];
 
- 	/*** change pqr 2 pqr */
 
-
-
+	/*read in pqr*/
+	sprintf(fpath,"../test_proteins/");
+	sprintf(fname_tp, "%s%s.pqr",fpath,fname);
+   	fp=fopen(fname_tp,"r");
+	while(fgets(buff,256,fp)){
+		if buff[0:3] == "ATOM"{
+			printf("%s", buff[0:3])
+			fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c,&i,&c,&c,&i,&a1,&a2,&a3,&b1,&b2);
+			chrpos[3*i]=a1;
+			chrpos[3*i+1]=a2;
+			chrpos[3*i+2]=a3;
+			atmchr[i]=b1;
+			atmchr[i]=b2;
+		}
+    }
+	fclose(fp);
+	printf("finish reading pqr file...\n");
 
 	/*read in vertices*/
-	sprintf(fpath,"../test_proteins/");
 	sprintf(fname_tp,"./msms -if %s%s.xyzr -prob 1.4 -dens %s -of %s%s ",fpath,fname,density,fpath,fname);
 	printf("%s\n",fname_tp);
 
@@ -147,7 +161,7 @@ void readin(char fname[16], char density[16]) {
 	fclose(fp);
 	printf("finish reading position file...\n");
 
-	/*read charge coodinates and radius */
+	/*read charge coodinates and charge */
 	sprintf(fname_tp, "%s%s.pqr",fpath,fname);
 	fp=fopen(fname_tp,"r");
 
@@ -160,8 +174,7 @@ void readin(char fname[16], char density[16]) {
 	}
 
 	for (i=0;i<=nchr-1;i++){
-		// fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
-		fscanf(fp,"%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf",&m,&n,&o,&p,&s, &a1,&a2,&a3,&b1,&r);
+		fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
 		chrpos[3*i]=a1;
 		chrpos[3*i+1]=a2;
 		chrpos[3*i+2]=a3;
