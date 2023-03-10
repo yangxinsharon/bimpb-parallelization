@@ -53,7 +53,7 @@ void readin(char fname[16], char density[16]) {
 	double xx[3],yy[3];
 
 
-	/*read in pqr*/
+	/*count atom lines*/
 	sprintf(fpath,"../test_proteins/");
 	sprintf(fname_tp, "%s%s.pqr",fpath,fname);
    	fp=fopen(fname_tp,"r");
@@ -77,11 +77,20 @@ void readin(char fname[16], char density[16]) {
 		// atmchr[i]=b1;
 		// atmrad[i]=b2;
 		// printf("%s %i \n",c,i);
-		sprintf(buff,"%f\t %f\t %f\t %f\n",a1,a2,a3,b2);
+		// sprintf(buff,"%f\t %f\t %f\t %f\n",a1,a2,a3,b2);
 		// fputs(buff,fpw);
-		printf("%f",buff);
+		printf("%f %f %f %f",a1,a2,a3,b2);
 
 	}
+
+	for (i=0;i<=nchr-1;i++){
+		fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
+		chrpos[3*i]=a1;
+		chrpos[3*i+1]=a2;
+		chrpos[3*i+2]=a3;
+		atmchr[i]=b1;
+    }
+	fclose(fp);
 
 	fclose(fp);
 	printf("finish reading pqr file...\n");
