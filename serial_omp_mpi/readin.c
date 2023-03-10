@@ -55,7 +55,7 @@ void readin(char fname[16], char density[16]) {
 	sprintf(fname_tp, "%s%s.pqr",fpath,fname);
    	fp=fopen(fname_tp,"r");
 	while(fgets(buff,256,fp)){
-		if buff[0:3] == "ATOM"{
+		if (buff[0:3] == "ATOM"){
 			printf("%s", buff[0:3]);
 			fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c,&i,&c,&c,&i,&a1,&a2,&a3,&b1,&b2);
 			chrpos[3*i]=a1;
