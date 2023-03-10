@@ -75,7 +75,7 @@ void readin(char fname[16], char density[16]) {
 	fp=fopen(fname_tp,"r");
 	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
    	fpw=fopen(fname_tp,"w");
-   	
+
    	// nchr = count;
    	// natm = count;
    	// if ((atmchr=(double *) malloc(nchr*sizeof(double)))==NULL){
@@ -221,8 +221,7 @@ void readin(char fname[16], char density[16]) {
 	}
 
 	for (i=0;i<=nchr-1;i++){
-		// fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
-		fscanf(fp,"%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf",&aa,&bb,&cc,&dd,&ee, &a1,&a2,&a3,&b1,&rr);
+		fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
 		chrpos[3*i]=a1;
 		chrpos[3*i+1]=a2;
 		chrpos[3*i+2]=a3;
