@@ -78,7 +78,7 @@ void readin(char fname[16], char density[16]) {
 		// printf("%s %i \n",c,i);
 		// sprintf(buff,"%7f %7f %7f %7f",a1,a2,a3,b2);
 		// fputs(buff,fpw);
-		printf("%d",i)
+		printf("%d",i);
 
 	}
 
