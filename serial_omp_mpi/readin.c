@@ -35,10 +35,11 @@ double triangle_area(double v[3][3]) {
 /* function read in molecule information */
 void readin(char fname[16], char density[16]) {
     FILE *fp, *wfp;
-    char c;
+    char c,key1,key2;
 	char fpath[256];
 	char fname_tp[256];
-	char buff[256], key[4];
+	char buff[256];
+
 
     int i,j,k,i1,i2,i3,j1,j2,j3,ii,jj,kk,namelength=4,nfacenew,ichanged;
     double den,prob_rds,a1,a2,a3,b1,b2,b3,a_norm,r0_norm,v0_norm;
@@ -58,9 +59,10 @@ void readin(char fname[16], char density[16]) {
 	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
    	wfp=fopen(fname_tp,"w");
 
+   	strcpy(key1,"ATOM")
 	while(fgets(buff,256,fp)) {
-		sscanf(buff,"%4s",key);
-		if (key == str("ATOM")) {
+		sscanf(buff,"%4s",key2);
+		if (key1 == key2) {
 			printf("%s \n",key);
 			fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c,&i,&c,&c,&i,&a1,&a2,&a3,&b1,&b2);
 			chrpos[3*i]=a1;
