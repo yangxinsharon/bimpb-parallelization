@@ -64,10 +64,9 @@ void readin(char fname[16], char density[16]) {
 			count++;
 		}
 	}
-	printf("%d \n",count);
+	printf("count is:%d\n",count); //yang
 	fclose(fp);
 
-	sprintf(fname_tp, "%s%s.pqr",fpath,fname);
 	fp=fopen(fname_tp,"r");
 	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
    	fpw=fopen(fname_tp,"w");
@@ -88,7 +87,7 @@ void readin(char fname[16], char density[16]) {
 		fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c1,&iii,&c2,&c3,&jjj,&a1,&a2,&a3,&b1,&b2);
 		sprintf(buff,"%.3f\t\t %.3f\t\t %.3f\t\t %.4f\n",a1,a2,a3,b2);
 		fputs(buff,fpw);
-		printf("%d\n",i);
+		// printf("%d\n",i);
 		// chrpos[3*i]=a1;
 		// chrpos[3*i+1]=a2;
 		// chrpos[3*i+2]=a3;
@@ -190,6 +189,7 @@ void readin(char fname[16], char density[16]) {
 	}
 	atmpos=Make2DDoubleArray(3,natm,"atmpos");
 
+	printf("natm is:%d\n",natm); //yang
 	for (i=0;i<=natm-1;i++){
 		fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
 		atmpos[0][i]=a1;
@@ -205,6 +205,7 @@ void readin(char fname[16], char density[16]) {
 	fp=fopen(fname_tp,"r");
 
 	nchr=natm;
+	printf("nchr is:%d\n",nchr); //yang
 	if ((atmchr=(double *) malloc(nchr*sizeof(double)))==NULL){
 		printf("error in allcating atmchr");
 	}
