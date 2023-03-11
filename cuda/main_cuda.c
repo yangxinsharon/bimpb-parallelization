@@ -15,7 +15,7 @@ extern double *atmrad, *atmchr, *chrpos; //[natm/nchr];
 extern double *work, *h;
 extern double *h_pot;
 extern double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
-extern const double eps;
+extern double eps;
 
 int main(int argc, char *argv[]) {
 	/*variables local to main*/
@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
 
 	/* read in structural information */
     // sprintf(fname,"1ajj");
-    sprintf(density,"1");
+    // sprintf(density,"1");
    	sprintf(fname,argv[1]);
    	// sprintf(density,argv[2]);
 
