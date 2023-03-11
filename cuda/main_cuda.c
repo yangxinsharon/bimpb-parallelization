@@ -120,6 +120,7 @@ int *psolve(double *z, double *r) {
 /*r as original while z as scaled*/
 	int i;
 	double scale1,scale2;
+	double eps =80.0;
 	scale1=0.5*(1.0+eps);
 	scale2=0.5*(1.0+1.0/eps);
 	for (i=0;i<nface;i++){
