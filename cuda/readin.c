@@ -70,33 +70,34 @@ void readin(char fname[16], char density[16]) {
 	fp=fopen(fname_tp,"r");
 	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
    	fpw=fopen(fname_tp,"w");
-   	// nchr = count;
-   	// natm = count;
-   	// if ((atmchr=(double *) malloc(nchr*sizeof(double)))==NULL){
-	// 	printf("error in allcating atmchr");
-	// }
-	// if ((chrpos=(double *) malloc(3*nchr*sizeof(double)))==NULL){
-	// 	printf("error in allcating chrpos");
-	// }
-	// if ((atmrad=(double *) malloc(natm*sizeof(double)))==NULL) {
-	// 	printf("error in allcating atmrad");
-	// }
-	// atmpos=Make2DDoubleArray(3,natm,"atmpos");
+   	
+   	nchr = count;
+   	natm = count;
+   	if ((atmchr=(double *) malloc(nchr*sizeof(double)))==NULL){
+		printf("error in allcating atmchr");
+	}
+	if ((chrpos=(double *) malloc(3*nchr*sizeof(double)))==NULL){
+		printf("error in allcating chrpos");
+	}
+	if ((atmrad=(double *) malloc(natm*sizeof(double)))==NULL) {
+		printf("error in allcating atmrad");
+	}
+	atmpos=Make2DDoubleArray(3,natm,"atmpos");
 
 	for (i=0;i<count;i++) {
 		fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c1,&iii,&c2,&c3,&jjj,&a1,&a2,&a3,&b1,&b2);
 		sprintf(buff,"%.3f\t\t %.3f\t\t %.3f\t\t %.4f\n",a1,a2,a3,b2);
 		fputs(buff,fpw);
 		// printf("%d\n",i);
-		// chrpos[3*i]=a1;
-		// chrpos[3*i+1]=a2;
-		// chrpos[3*i+2]=a3;
-		// atmchr[i]=b1;
+		chrpos[3*i]=a1;
+		chrpos[3*i+1]=a2;
+		chrpos[3*i+2]=a3;
+		atmchr[i]=b1;
 
-		// atmpos[0][i]=a1;
-		// atmpos[1][i]=a2;
-		// atmpos[2][i]=a3;		
-		// atmrad[i]=b2;
+		atmpos[0][i]=a1;
+		atmpos[1][i]=a2;
+		atmpos[2][i]=a3;		
+		atmrad[i]=b2;
 
 	}
 
@@ -105,6 +106,7 @@ void readin(char fname[16], char density[16]) {
 	printf("finish reading pqr and writing xyzr file...\n");
 
 	/*read in vertices*/
+	sprintf(fpath,"../test_proteins/");
 	sprintf(fname_tp,"./msms -if %s%s.xyzr -prob 1.4 -dens %s -of %s%s ",fpath,fname,density,fpath,fname);
 	printf("%s\n",fname_tp);
 
@@ -178,49 +180,49 @@ void readin(char fname[16], char density[16]) {
     fclose(fp);
 	printf("finish reading face file...\n");
 
-	/*read atom coodinates and radius */
-	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
-	fp=fopen(fname_tp,"r");
+	// /*read atom coodinates and radius */
+	// sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
+	// fp=fopen(fname_tp,"r");
 
-	if ((atmrad=(double *) malloc(natm*sizeof(double)))==NULL) {
-		printf("error in allcating atmrad");
-	}
-	atmpos=Make2DDoubleArray(3,natm,"atmpos");
+	// if ((atmrad=(double *) malloc(natm*sizeof(double)))==NULL) {
+	// 	printf("error in allcating atmrad");
+	// }
+	// atmpos=Make2DDoubleArray(3,natm,"atmpos");
 
-	printf("natm is:%d\n",natm); //yang
-	for (i=0;i<=natm-1;i++){
-		fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
-		atmpos[0][i]=a1;
-		atmpos[1][i]=a2;
-		atmpos[2][i]=a3;
-		atmrad[i]=b1;
-    }
-	fclose(fp);
-	printf("finish reading position file...\n");
+	// printf("natm is:%d\n",natm); //yang
+	// for (i=0;i<=natm-1;i++){
+	// 	fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
+	// 	atmpos[0][i]=a1;
+	// 	atmpos[1][i]=a2;
+	// 	atmpos[2][i]=a3;
+	// 	atmrad[i]=b1;
+    // }
+	// fclose(fp);
+	// printf("finish reading position file...\n");
 
-	/*read charge coodinates and charge */
-	sprintf(fname_tp, "%s%s.pqr",fpath,fname);
-	fp=fopen(fname_tp,"r");
+	// /*read charge coodinates and charge */
+	// sprintf(fname_tp, "%s%s.pqr",fpath,fname);
+	// fp=fopen(fname_tp,"r");
 
-	nchr=natm;
-	printf("nchr is:%d\n",nchr); //yang
-	if ((atmchr=(double *) malloc(nchr*sizeof(double)))==NULL){
-		printf("error in allcating atmchr");
-	}
-	if ((chrpos=(double *) malloc(3*nchr*sizeof(double)))==NULL){
-		printf("error in allcating chrpos");
-	}
+	// nchr=natm;
+	// printf("nchr is:%d\n",nchr); //yang
+	// if ((atmchr=(double *) malloc(nchr*sizeof(double)))==NULL){
+	// 	printf("error in allcating atmchr");
+	// }
+	// if ((chrpos=(double *) malloc(3*nchr*sizeof(double)))==NULL){
+	// 	printf("error in allcating chrpos");
+	// }
 
-	for (i=0;i<=nchr-1;i++){
-		// fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
-		fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c1,&iii,&c2,&c3,&jjj,&a1,&a2,&a3,&b1,&b2);
-		chrpos[3*i]=a1;
-		chrpos[3*i+1]=a2;
-		chrpos[3*i+2]=a3;
-		atmchr[i]=b1;
-    }
-	fclose(fp);
-	printf("finish reading charge file...\n");
+	// for (i=0;i<=nchr-1;i++){
+	// 	// fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
+	// 	fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c1,&iii,&c2,&c3,&jjj,&a1,&a2,&a3,&b1,&b2);
+	// 	chrpos[3*i]=a1;
+	// 	chrpos[3*i+1]=a2;
+	// 	chrpos[3*i+2]=a3;
+	// 	atmchr[i]=b1;
+    // }
+	// fclose(fp);
+	// printf("finish reading charge file...\n");
 
 	/* delele triangles with extreme small areas and closed to each other */
 	nfacenew=nface;
