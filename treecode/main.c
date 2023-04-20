@@ -119,278 +119,272 @@ int main(int argc, char *argv[]) {
 }
 
 // ****************************************************************
-int *psolve(double *z, double *r) {
-/*r as original while z as scaled*/
-	int i;
-	double scale1,scale2;
-	scale1=0.5*(1.0+eps);
-	scale2=0.5*(1.0+1.0/eps);
-	for (i=0; i<nface; i++){
-		z[i]=r[i]/scale1;
-		z[i+nface]=r[i+nface]/scale2;
-	}
-	return 0;
+// int *psolve(double *z, double *r) {
+// /*r as original while z as scaled*/
+// 	int i;
+// 	double scale1,scale2;
+// 	scale1=0.5*(1.0+eps);
+// 	scale2=0.5*(1.0+1.0/eps);
+// 	for (i=0; i<nface; i++){
+// 		z[i]=r[i]/scale1;
+// 		z[i+nface]=r[i+nface]/scale2;
+// 	}
+// 	return 0;
 
+// }
+
+
+
+
+/**********************************************************/
+/* lapack provide lu decomposition, however, something    */
+/* is wrong with cmake ************************************/
+/**********************************************************/
+int lu_decomp( double **A, int N, int *ipiv ) {
+
+	int i, j, k, imax;
+	double maxA, *ptr, absA, Tol = 1.0e-14;
+
+  	for ( i = 0; i <= N; i++ )
+   	ipiv[i] = i; // record pivoting number
+
+  	for ( i = 0; i < N; i++ ) {
+   	maxA = 0.0;
+   	imax = i;
+   	for (k = i; k < N; k++)
+   	  	if ((absA = fabs(A[k][i])) > maxA) {
+   	   	maxA = absA;
+   	    	imax = k;
+   	  	}	
+   	if (maxA < Tol) return 0; //failure, matrix is degenerate	
+   	if (imax != i) {
+   	  	//pivoting P
+   	  	j = ipiv[i];
+   	  	ipiv[i] = ipiv[imax];
+   	  	ipiv[imax] = j;	
+   	  	//pivoting rows of A
+   	  	ptr = A[i];
+   	  	A[i] = A[imax];
+   	  	A[imax] = ptr;	
+   	  	//counting pivots starting from N (for determinant)
+   	  	ipiv[N]++;
+   	}	
+   	for (j = i + 1; j < N; j++) {
+   	  	A[j][i] /= A[i][i];	
+   	  	for (k = i + 1; k < N; k++)
+   	   A[j][k] -= A[j][i] * A[i][k];
+   	}
+  	}
+
+  	return 1;
 }
 
+void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
+  	/* b will contain the solution */
+  	double *xtemp;
 
+  	make_vector(xtemp, N);
 
+  	for (int i = 0; i < N; i++) {
+   	xtemp[i] = rhs[ipiv[i]];
 
-// /**********************************************************/
-// /* lapack provide lu decomposition, however, something    */
-// /* is wrong with cmake ************************************/
-// /**********************************************************/
-// int lu_decomp( double **A, int N, int *ipiv ) {
+   	for (int k = 0; k < i; k++)
+      	xtemp[i] -= matrixA[i][k] * xtemp[k];
+  	}
 
-//   int i, j, k, imax;
-//   double maxA, *ptr, absA, Tol = 1.0e-14;
+  	for (int i = N - 1; i >= 0; i--) {
+    	for (int k = i + 1; k < N; k++)
+      	xtemp[i] -= matrixA[i][k] * xtemp[k];
 
-//   for ( i = 0; i <= N; i++ )
-//     ipiv[i] = i; // record pivoting number
+    	xtemp[i] = xtemp[i] / matrixA[i][i];
+  	}
 
-//   for ( i = 0; i < N; i++ ) {
-//     maxA = 0.0;
-//     imax = i;
-//     for (k = i; k < N; k++)
-//       if ((absA = fabs(A[k][i])) > maxA) {
-//         maxA = absA;
-//         imax = k;
-//       }
-
-//     if (maxA < Tol) return 0; //failure, matrix is degenerate
-
-//     if (imax != i) {
-//       //pivoting P
-//       j = ipiv[i];
-//       ipiv[i] = ipiv[imax];
-//       ipiv[imax] = j;
-
-//       //pivoting rows of A
-//       ptr = A[i];
-//       A[i] = A[imax];
-//       A[imax] = ptr;
-
-//       //counting pivots starting from N (for determinant)
-//       ipiv[N]++;
-//     }
-
-//     for (j = i + 1; j < N; j++) {
-//       A[j][i] /= A[i][i];
-
-//       for (k = i + 1; k < N; k++)
-//         A[j][k] -= A[j][i] * A[i][k];
-//     }
-//   }
-
-//   return 1;
-// }
-// void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
-//   /* b will contain the solution */
-//   double *xtemp;
-
-//   make_vector(xtemp, N);
-
-//   for (int i = 0; i < N; i++) {
-//     xtemp[i] = rhs[ipiv[i]];
-
-//     for (int k = 0; k < i; k++)
-//       xtemp[i] -= matrixA[i][k] * xtemp[k];
-//   }
-
-//   for (int i = N - 1; i >= 0; i--) {
-//     for (int k = i + 1; k < N; k++)
-//       xtemp[i] -= matrixA[i][k] * xtemp[k];
-
-//     xtemp[i] = xtemp[i] / matrixA[i][i];
-//   }
-
-//   for (int i = 0; i < N; i++) {
-//     rhs[i] = xtemp[i];
-//   }
-//   free_vector(xtemp);
-// }
-// /**********************************************************/
-// int *psolve(double *z, double *r) {
-// /* r as original while z as scaled */
+  	for (int i = 0; i < N; i++) {
+    	rhs[i] = xtemp[i];
+  	}
+  	free_vector(xtemp);
+}
+/**********************************************************/
+int *psolve(double *z, double *r) {
+/* r as original while z as scaled */
   
-//   clock_t start_p,finish_p;
-//   double total_p = 0;
-//   start_p = clock();
+  	clock_t start_p,finish_p;
+  	double total_p = 0;
+  	start_p = clock();
+	
+  	int i, j, idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
+  	int *ipiv, inc;
+  	double **matrixA, *rhs;
+  	double L1, L2, L3, L4, area;
+  	double tp[3], tq[3], sp[3], sq[3];
+  	double r_s[3], rs, irs, sumrs;
+  	double G0, kappa_rs, exp_kappa_rs, Gk;
+  	double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
+  	double G10, G20, G1, G2, G3, G4;
+  	double pre1, pre2;
+	
+  	pre1 = 0.5*(1.0+s_eps);
+  	pre2 = 0.5*(1.0+1.0/s_eps);
 
-//   int i, j, idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
-//   int *ipiv, inc;
-//   double **matrixA, *rhs;
-//   double L1, L2, L3, L4, area;
-//   double tp[3], tq[3], sp[3], sq[3];
-//   double r_s[3], rs, irs, sumrs;
-//   double G0, kappa_rs, exp_kappa_rs, Gk;
-//   double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
-//   double G10, G20, G1, G2, G3, G4;
-//   double pre1, pre2;
+  	/*
+  	make_matrix(matrixA, 3, 3);
+  	make_vector(rhs, 3);
+  	matrixA[0][0] = 1.0; matrixA[0][1] = 2.0; matrixA[0][2] = 3.0;
+  	matrixA[1][0] = 3.0; matrixA[1][1] = 2.0; matrixA[1][2] = 4.0;
+  	matrixA[2][0] = 1.0; matrixA[2][1] = 5.0; matrixA[2][2] = 6.0;
+  	rhs[0] = 1.0; rhs[1] = 2.0; rhs[2] = 3.0;
+  	printf("%f %f %f\n",rhs[0],rhs[1],rhs[2]);
+  	inc = lu_decomp( matrixA, 3, ipiv );
+  	printf("%d %d %d\n",ipiv[0],ipiv[1],ipiv[2]);
+  	lu_solve( matrixA, 3, ipiv, rhs );
+  	printf("%f %f %f\n",rhs[0],rhs[1],rhs[2]);
+  	free_matrix(matrixA);
+  	free_vector(rhs);
+  	exit(0);
+  	*/
 
-//   pre1 = 0.5*(1.0+s_eps);
-//   pre2 = 0.5*(1.0+1.0/s_eps);
+  	make_matrix(matrixA, 2*s_max_per_leaf, 2*s_max_per_leaf);
+  	make_vector(ipiv, 2*s_max_per_leaf);
+  	make_vector(rhs, 2*s_max_per_leaf);
 
-//   /*
-//   make_matrix(matrixA, 3, 3);
-//   make_vector(rhs, 3);
-//   matrixA[0][0] = 1.0; matrixA[0][1] = 2.0; matrixA[0][2] = 3.0;
-//   matrixA[1][0] = 3.0; matrixA[1][1] = 2.0; matrixA[1][2] = 4.0;
-//   matrixA[2][0] = 1.0; matrixA[2][1] = 5.0; matrixA[2][2] = 6.0;
-//   rhs[0] = 1.0; rhs[1] = 2.0; rhs[2] = 3.0;
-//   printf("%f %f %f\n",rhs[0],rhs[1],rhs[2]);
-//   inc = lu_decomp( matrixA, 3, ipiv );
-//   printf("%d %d %d\n",ipiv[0],ipiv[1],ipiv[2]);
-//   lu_solve( matrixA, 3, ipiv, rhs );
-//   printf("%f %f %f\n",rhs[0],rhs[1],rhs[2]);
-//   free_matrix(matrixA);
-//   free_vector(rhs);
-//   exit(0);
-//   */
+  	while ( idx < s_numpars ) {
+    	leaflength(s_tree_root, idx);
+    	nrow  = Nrow;
+    	nrow2 = nrow*2;
+    	ibeg  = idx;
+    	iend  = idx + nrow - 1;
 
-//   make_matrix(matrixA, 2*s_max_per_leaf, 2*s_max_per_leaf);
-//   make_vector(ipiv, 2*s_max_per_leaf);
-//   make_vector(rhs, 2*s_max_per_leaf);
+    	for ( i = ibeg; i <= iend; i++ ) {
+      	tp[0] = s_particle_position[0][i];
+      	tp[1] = s_particle_position[1][i];
+      	tp[2] = s_particle_position[2][i];
+      	tq[0] = s_particle_normal[0][i];
+      	tq[1] = s_particle_normal[1][i];
+      	tq[2] = s_particle_normal[2][i];
 
-//   while ( idx < s_numpars ) {
-//     leaflength(s_tree_root, idx);
-//     nrow  = Nrow;
-//     nrow2 = nrow*2;
-//     ibeg  = idx;
-//     iend  = idx + nrow - 1;
+      	for ( j = ibeg; j < i; j++ ) {
+        		sp[0] = s_particle_position[0][j];
+        		sp[1] = s_particle_position[1][j];
+        		sp[2] = s_particle_position[2][j];
+        		sq[0] = s_particle_normal[0][j];
+        		sq[1] = s_particle_normal[1][j];
+        		sq[2] = s_particle_normal[2][j];
 
-//     for ( i = ibeg; i <= iend; i++ ) {
-//       tp[0] = s_particle_position[0][i];
-//       tp[1] = s_particle_position[1][i];
-//       tp[2] = s_particle_position[2][i];
-//       tq[0] = s_particle_normal[0][i];
-//       tq[1] = s_particle_normal[1][i];
-//       tq[2] = s_particle_normal[2][i];
+        		r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
+        		sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
+        		rs = sqrt(sumrs);
+        		irs = 1.0/rs;
+        		G0 = ONE_OVER_4PI * irs;
+        		kappa_rs = s_kappa * rs;
+        		exp_kappa_rs = exp(-kappa_rs);
+        		Gk = exp_kappa_rs * G0;
+		
+        		cos_theta  = (sq[0]*r_s[0] + sq[1]*r_s[1] + sq[2]*r_s[2]) * irs;
+        		cos_theta0 = (tq[0]*r_s[0] + tq[1]*r_s[1] + tq[2]*r_s[2]) * irs;
+        		tp1 = G0* irs;
+        		tp2 = (1.0 + kappa_rs) * exp_kappa_rs;
+		
+        		G10 = cos_theta0 * tp1;
+        		G20 = tp2 * G10;
+		
+        		G1 = cos_theta * tp1;
+        		G2 = tp2 * G1;
+		
+        		dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
+        		G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
+        		G4 = tp2*G3 - s_kappa2*cos_theta0*cos_theta*Gk;
+		
+        		area = s_particle_area[j];
+		
+        		L1 = G1 - s_eps*G2;
+        		L2 = G0 - Gk;
+        		L3 = G4 - G3;
+        		L4 = G10 - G20/s_eps;
 
-//       for ( j = ibeg; j < i; j++ ) {
-//         sp[0] = s_particle_position[0][j];
-//         sp[1] = s_particle_position[1][j];
-//         sp[2] = s_particle_position[2][j];
-//         sq[0] = s_particle_normal[0][j];
-//         sq[1] = s_particle_normal[1][j];
-//         sq[2] = s_particle_normal[2][j];
+        		matrixA[i-ibeg][j-ibeg] = -L1*area;
+        		matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
+        		matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
+        		matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
+      	}
 
-//         r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
-//         sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
-//         rs = sqrt(sumrs);
-//         irs = 1.0/rs;
-//         G0 = ONE_OVER_4PI * irs;
-//         kappa_rs = s_kappa * rs;
-//         exp_kappa_rs = exp(-kappa_rs);
-//         Gk = exp_kappa_rs * G0;
+      	matrixA[i-ibeg][i-ibeg] = pre1;
+      	matrixA[i+nrow-ibeg][i+nrow-ibeg] = pre2;
 
-//         cos_theta  = (sq[0]*r_s[0] + sq[1]*r_s[1] + sq[2]*r_s[2]) * irs;
-//         cos_theta0 = (tq[0]*r_s[0] + tq[1]*r_s[1] + tq[2]*r_s[2]) * irs;
-//         tp1 = G0* irs;
-//         tp2 = (1.0 + kappa_rs) * exp_kappa_rs;
+      	for ( j = i+1; j <= iend; j++ ) {
+        		sp[0] = s_particle_position[0][j];
+        		sp[1] = s_particle_position[1][j];
+        		sp[2] = s_particle_position[2][j];
+        		sq[0] = s_particle_normal[0][j];
+        		sq[1] = s_particle_normal[1][j];
+        		sq[2] = s_particle_normal[2][j];
 
-//         G10 = cos_theta0 * tp1;
-//         G20 = tp2 * G10;
+        		r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
+        		sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
+        		rs = sqrt(sumrs);
+        		irs = 1.0/rs;
+        		G0 = ONE_OVER_4PI * irs;
+        		kappa_rs = s_kappa * rs;
+        		exp_kappa_rs = exp(-kappa_rs);
+        		Gk = exp_kappa_rs * G0;
 
-//         G1 = cos_theta * tp1;
-//         G2 = tp2 * G1;
+        		cos_theta  = (sq[0]*r_s[0] + sq[1]*r_s[1] + sq[2]*r_s[2]) * irs;
+        		cos_theta0 = (tq[0]*r_s[0] + tq[1]*r_s[1] + tq[2]*r_s[2]) * irs;
+        		tp1 = G0* irs;
+        		tp2 = (1.0 + kappa_rs) * exp_kappa_rs;
+		
+        		G10 = cos_theta0 * tp1;
+        		G20 = tp2 * G10;
+		
+        		G1 = cos_theta * tp1;
+        		G2 = tp2 * G1;
+		
+        		dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
+        		G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
+        		G4 = tp2*G3 - s_kappa2*cos_theta0*cos_theta*Gk;
 
-//         dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
-//         G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
-//         G4 = tp2*G3 - s_kappa2*cos_theta0*cos_theta*Gk;
+        		area = s_particle_area[j];
+		
+        		L1 = G1 - s_eps*G2;
+        		L2 = G0 - Gk;
+        		L3 = G4 - G3;
+        		L4 = G10 - G20/s_eps;
+		
+        		matrixA[i-ibeg][j-ibeg] = -L1*area;
+        		matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
+        		matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
+        		matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
+      	}
+    	}
 
-//         area = s_particle_area[j];
+    	for ( i = 0; i < nrow; i++) {
+      	rhs[i] = r[i+ibeg];
+      	rhs[i+nrow] = r[i+ibeg+s_numpars];
+    	}
 
-//         L1 = G1 - s_eps*G2;
-//         L2 = G0 - Gk;
-//         L3 = G4 - G3;
-//         L4 = G10 - G20/s_eps;
+    	inc = lu_decomp( matrixA, nrow2, ipiv );
+    	lu_solve( matrixA, nrow2, ipiv, rhs );
 
-//         matrixA[i-ibeg][j-ibeg] = -L1*area;
-//         matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
-//         matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
-//         matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
-//       }
+    	for ( i = 0; i < nrow; i++) {
+      	z[i+ibeg] = rhs[i];
+      	z[i+ibeg+s_numpars] = rhs[i+nrow];
+    	}
 
-//       matrixA[i-ibeg][i-ibeg] = pre1;
-//       matrixA[i+nrow-ibeg][i+nrow-ibeg] = pre2;
+    	//printf("%d %d %d %d\n", idx, ibeg, iend, nrow);
 
-//       for ( j = i+1; j <= iend; j++ ) {
-//         sp[0] = s_particle_position[0][j];
-//         sp[1] = s_particle_position[1][j];
-//         sp[2] = s_particle_position[2][j];
-//         sq[0] = s_particle_normal[0][j];
-//         sq[1] = s_particle_normal[1][j];
-//         sq[2] = s_particle_normal[2][j];
+    	idx += nrow;
 
-//         r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
-//         sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
-//         rs = sqrt(sumrs);
-//         irs = 1.0/rs;
-//         G0 = ONE_OVER_4PI * irs;
-//         kappa_rs = s_kappa * rs;
-//         exp_kappa_rs = exp(-kappa_rs);
-//         Gk = exp_kappa_rs * G0;
+  	}
+  	free_matrix(matrixA);
+  	free_vector(rhs);
+  	free_vector(ipiv);
 
-//         cos_theta  = (sq[0]*r_s[0] + sq[1]*r_s[1] + sq[2]*r_s[2]) * irs;
-//         cos_theta0 = (tq[0]*r_s[0] + tq[1]*r_s[1] + tq[2]*r_s[2]) * irs;
-//         tp1 = G0* irs;
-//         tp2 = (1.0 + kappa_rs) * exp_kappa_rs;
+  	// for ( i = 0; i < s_numpars; i++) {
+  	//   z[i] = r[i]/pre1;
+  	//   z[i+s_numpars] = r[i+s_numpars]/pre2;
+  	// }
+  	finish_p = clock();
+  	total_p = (double)(finish_p - start_p);
+  	printf("psolve time is %f\n", total_p);
+  	// return 0;
 
-//         G10 = cos_theta0 * tp1;
-//         G20 = tp2 * G10;
-
-//         G1 = cos_theta * tp1;
-//         G2 = tp2 * G1;
-
-//         dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
-//         G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
-//         G4 = tp2*G3 - s_kappa2*cos_theta0*cos_theta*Gk;
-
-//         area = s_particle_area[j];
-
-//         L1 = G1 - s_eps*G2;
-//         L2 = G0 - Gk;
-//         L3 = G4 - G3;
-//         L4 = G10 - G20/s_eps;
-
-//         matrixA[i-ibeg][j-ibeg] = -L1*area;
-//         matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
-//         matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
-//         matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
-//       }
-//     }
-
-//     for ( i = 0; i < nrow; i++) {
-//       rhs[i] = r[i+ibeg];
-//       rhs[i+nrow] = r[i+ibeg+s_numpars];
-//     }
-
-//     inc = lu_decomp( matrixA, nrow2, ipiv );
-//     lu_solve( matrixA, nrow2, ipiv, rhs );
-
-//     for ( i = 0; i < nrow; i++) {
-//       z[i+ibeg] = rhs[i];
-//       z[i+ibeg+s_numpars] = rhs[i+nrow];
-//     }
-
-//     //printf("%d %d %d %d\n", idx, ibeg, iend, nrow);
-
-//     idx += nrow;
-
-//   }
-//   free_matrix(matrixA);
-//   free_vector(rhs);
-//   free_vector(ipiv);
-
-//   // for ( i = 0; i < s_numpars; i++) {
-//   //   z[i] = r[i]/pre1;
-//   //   z[i+s_numpars] = r[i+s_numpars]/pre2;
-//   // }
-//   finish_p = clock();
-//   total_p = (double)(finish_p - start_p);
-//   printf("psolve time is %f\n", total_p);
-//   // return 0;
-
-
-// }
+}
