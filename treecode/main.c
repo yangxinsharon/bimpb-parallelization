@@ -246,6 +246,7 @@ int *psolve(double *z, double *r) {
   	exit(0);
   	*/
 
+  	int s_max_per_leaf =50;
   	make_matrix(matrixA, 2*s_max_per_leaf, 2*s_max_per_leaf);
   	make_vector(ipiv, 2*s_max_per_leaf);
   	make_vector(rhs, 2*s_max_per_leaf);
