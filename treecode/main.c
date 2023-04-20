@@ -26,6 +26,7 @@ extern double *work, *h;
 extern double *h_pot;
 extern const double eps;
 extern struct tnode troot;
+extern int Nrow;
 
 int main(int argc, char *argv[]) {
 	/*variables local to main*/
@@ -214,7 +215,9 @@ int *psolve(double *z, double *r) {
   	clock_t start_p,finish_p;
   	double total_p = 0;
   	start_p = clock();
-	
+
+	int s_numpars=nface;
+
   	int i, j, idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
   	int *ipiv, inc;
   	double **matrixA, *rhs;
@@ -252,7 +255,7 @@ int *psolve(double *z, double *r) {
   	make_vector(rhs, 2*s_max_per_leaf);
 
   	while ( idx < s_numpars ) {
-    	leaflength(troot, idx);
+    	Nrow = leaflength(troot, idx);
     	nrow  = Nrow;
     	nrow2 = nrow*2;
     	ibeg  = idx;

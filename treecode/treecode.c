@@ -35,7 +35,7 @@ tnode troot;
 
 /* preconditioning calculation */
 int Nrow;
-void leaflength(tnode *P, int idx) {
+int leaflength(tnode *P, int idx) {
 	/* find the leaf length */
 
 	if (idx == P->ibeg && P->num_children == 0 ) {
@@ -48,6 +48,7 @@ void leaflength(tnode *P, int idx) {
       	}
     	}
   	}
+  	return Nrow;
 }
 
 
