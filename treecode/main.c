@@ -263,23 +263,20 @@ int *psolve(double *z, double *r) {
       	// tq[0] = s_particle_normal[0][i];
       	// tq[1] = s_particle_normal[1][i];
       	// tq[2] = s_particle_normal[2][i];
-      	tp[3] = {tr_xyz[3*i], tr_xyz[3*i+1], tr_xyz[3*i+2]};
-			tq[3] = {tr_q[3*i], tr_q[3*i+1], tr_q[3*i+2]};
+      	tp[3]={tr_xyz[3*i], tr_xyz[3*i+1], tr_xyz[3*i+2]};
+			tq[3]={tr_q[3*i], tr_q[3*i+1], tr_q[3*i+2]};
 
       	for ( j = ibeg; j < i; j++ ) {
-        		// sp[0] = s_particle_position[0][j];
-        		// sp[1] = s_particle_position[1][j];
-        		// sp[2] = s_particle_position[2][j];
-        		// sq[0] = s_particle_normal[0][j];
-        		// sq[1] = s_particle_normal[1][j];
-        		// sq[2] = s_particle_normal[2][j];
+        		sp[0] = tr_xyz[3*j]; //s_particle_position[0][j];
+        		sp[1] = tr_xyz[3*j+1]; //s_particle_position[1][j];
+        		sp[2] = tr_xyz[3*j+2]; //s_particle_position[2][j];
+        		sq[0] = tr_q[3*j]; //s_particle_normal[0][j];
+        		sq[1] = tr_q[3*j+1]; //s_particle_normal[1][j];
+        		sq[2] = tr_q[3*j+2]; //s_particle_normal[2][j];
 
-        		// r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
-        		// sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
-        		sp[3] = {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
-				sq[3] = {tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};
-				r_s[3] = {sp[0]-tp[0], sp[1]-tp[1], sp[2]-tp[2]};
-				sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
+        		r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
+        		sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
+
         		rs = sqrt(sumrs);
         		irs = 1.0/rs;
         		G0 = one_over_4pi * irs;
@@ -319,18 +316,15 @@ int *psolve(double *z, double *r) {
       	matrixA[i+nrow-ibeg][i+nrow-ibeg] = pre2;
 
       	for ( j = i+1; j <= iend; j++ ) {
-        		// sp[0] = s_particle_position[0][j];
-        		// sp[1] = s_particle_position[1][j];
-        		// sp[2] = s_particle_position[2][j];
-        		// sq[0] = s_particle_normal[0][j];
-        		// sq[1] = s_particle_normal[1][j];
-        		// sq[2] = s_particle_normal[2][j];
+        		sp[0] = tr_xyz[3*j]; //s_particle_position[0][j];
+        		sp[1] = tr_xyz[3*j+1]; //s_particle_position[1][j];
+        		sp[2] = tr_xyz[3*j+2]; //s_particle_position[2][j];
+        		sq[0] = tr_q[3*j]; //s_particle_normal[0][j];
+        		sq[1] = tr_q[3*j+1]; //s_particle_normal[1][j];
+        		sq[2] = tr_q[3*j+2]; //s_particle_normal[2][j];
 
-        		// r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
-        		// sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
-        		sp[3]={tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
-				sq[3]={tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};
-				r_s[3]={sp[0]-tp[0], sp[1]-tp[1], sp[2]-tp[2]};
+        		r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
+
 				sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
         		rs = sqrt(sumrs);
         		irs = 1.0/rs;
@@ -356,7 +350,7 @@ int *psolve(double *z, double *r) {
 
         		area = tr_area[j];
 		
-        		L1 = G1 - s_eps*G2;
+        		L1 = G1 - eps*G2;
         		L2 = G0 - Gk;
         		L3 = G4 - G3;
         		L4 = G10 - G20/s_eps;
