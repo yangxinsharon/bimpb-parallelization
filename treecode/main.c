@@ -9,8 +9,8 @@
 #include "pp_timer.h"
 
 
-// #include "array.h"
-// #include <time.h> // yang
+#include "array.h"
+#include <time.h> // yang
 #include "gl_constants.h"
 
 extern int nface, nspt, natm, nchr;			// number of faces, points, atoms, and charges
