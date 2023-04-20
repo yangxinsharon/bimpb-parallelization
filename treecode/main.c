@@ -8,8 +8,10 @@
 #include <math.h>
 #include "pp_timer.h"
 
+
 // #include "array.h"
 // #include <time.h> // yang
+#include "gl_constants.h"
 
 extern int nface, nspt, natm, nchr;			// number of faces, points, atoms, and charges
 extern int **extr_v;								// [3][nspt]
@@ -184,16 +186,16 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
   	double *xtemp;
 
   	make_vector(xtemp, N);
-  	int i;
+  	int i, k ;
   	for (i = 0; i < N; i++) {
    	xtemp[i] = rhs[ipiv[i]];
 
-   	for (int k = 0; k < i; k++)
+   	for (k = 0; k < i; k++)
       	xtemp[i] -= matrixA[i][k] * xtemp[k];
   	}
 
   	for (i = N - 1; i >= 0; i--) {
-    	for (int k = i + 1; k < N; k++)
+    	for (k = i + 1; k < N; k++)
       	xtemp[i] -= matrixA[i][k] * xtemp[k];
 
     	xtemp[i] = xtemp[i] / matrixA[i][i];
@@ -326,9 +328,9 @@ int *psolve(double *z, double *r) {
 
         		// r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
         		// sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
-        		sp[3] = {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
-				sq[3] = {tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};
-				r_s[3] = {sp[0]-tp[0], sp[1]-tp[1], sp[2]-tp[2]};
+        		sp[3]={tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
+				sq[3]={tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};
+				r_s[3]={sp[0]-tp[0], sp[1]-tp[1], sp[2]-tp[2]};
 				sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
         		rs = sqrt(sumrs);
         		irs = 1.0/rs;
@@ -350,7 +352,7 @@ int *psolve(double *z, double *r) {
 		
         		dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
         		G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
-        		G4 = tp2*G3 - s_kappa2*cos_theta0*cos_theta*Gk;
+        		G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
 
         		area = tr_area[j];
 		
