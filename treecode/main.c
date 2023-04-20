@@ -257,14 +257,13 @@ int *psolve(double *z, double *r) {
     	iend  = idx + nrow - 1;
 
     	for ( i = ibeg; i <= iend; i++ ) {
-      	// tp[0] = s_particle_position[0][i];
-      	// tp[1] = s_particle_position[1][i];
-      	// tp[2] = s_particle_position[2][i];
-      	// tq[0] = s_particle_normal[0][i];
-      	// tq[1] = s_particle_normal[1][i];
-      	// tq[2] = s_particle_normal[2][i];
-      	tp[3]={tr_xyz[3*i], tr_xyz[3*i+1], tr_xyz[3*i+2]};
-			tq[3]={tr_q[3*i], tr_q[3*i+1], tr_q[3*i+2]};
+      	tp[0] = tr_xyz[3*i];//s_particle_position[0][i];
+      	tp[1] = tr_xyz[3*i+1]; //s_particle_position[1][i];
+      	tp[2] = tr_xyz[3*i+2];//s_particle_position[2][i];
+      	tq[0] = tr_q[3*i]; //s_particle_normal[0][i];
+      	tq[1] = tr_q[3*i+1]; //s_particle_normal[1][i];
+      	tq[2] = tr_q[3*i+2];//s_particle_normal[2][i];
+
 
       	for ( j = ibeg; j < i; j++ ) {
         		sp[0] = tr_xyz[3*j]; //s_particle_position[0][j];
@@ -280,7 +279,7 @@ int *psolve(double *z, double *r) {
         		rs = sqrt(sumrs);
         		irs = 1.0/rs;
         		G0 = one_over_4pi * irs;
-        		kappa_rs = s_kappa * rs;
+        		kappa_rs = kappa * rs;
         		exp_kappa_rs = exp(-kappa_rs);
         		Gk = exp_kappa_rs * G0;
 		
@@ -297,7 +296,7 @@ int *psolve(double *z, double *r) {
 		
         		dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
         		G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
-        		G4 = tp2*G3 - s_kappa2*cos_theta0*cos_theta*Gk;
+        		G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
 		
         		area = tr_area[j];
 		
@@ -353,7 +352,7 @@ int *psolve(double *z, double *r) {
         		L1 = G1 - eps*G2;
         		L2 = G0 - Gk;
         		L3 = G4 - G3;
-        		L4 = G10 - G20/s_eps;
+        		L4 = G10 - G20/eps;
 		
         		matrixA[i-ibeg][j-ibeg] = -L1*area;
         		matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
