@@ -30,7 +30,7 @@ typedef struct tnode {
 	tnode_pointer child[8]; //dim(8)
 };
 
-tnode troot;
+tnode *troot = NULL;
 
 
 /* preconditioning calculation */

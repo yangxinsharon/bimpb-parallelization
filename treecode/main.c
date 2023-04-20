@@ -25,7 +25,7 @@ extern double *atmrad, *atmchr, *chrpos;	// [natm/nchr]
 extern double *work, *h;
 extern double *h_pot;
 extern const double eps;
-extern struct tnode troot;
+extern struct tnode *troot;
 extern int Nrow;
 
 int main(int argc, char *argv[]) {
