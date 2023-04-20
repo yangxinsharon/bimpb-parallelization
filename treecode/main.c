@@ -25,6 +25,7 @@ extern double *atmrad, *atmchr, *chrpos;	// [natm/nchr]
 extern double *work, *h;
 extern double *h_pot;
 extern const double eps;
+extern tnode troot;
 
 int main(int argc, char *argv[]) {
 	/*variables local to main*/
