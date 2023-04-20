@@ -250,7 +250,7 @@ int *psolve(double *z, double *r) {
   	make_vector(rhs, 2*s_max_per_leaf);
 
   	while ( idx < s_numpars ) {
-    	leaflength(s_tree_root, idx);
+    	leaflength(troot, idx);
     	nrow  = Nrow;
     	nrow2 = nrow*2;
     	ibeg  = idx;
