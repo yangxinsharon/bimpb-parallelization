@@ -1,24 +1,24 @@
 ###################################################################
 #  Makefile for screened coulombic potential computation 
-#  for serial, openMP, and MPI
+#  with treecode
 #  Xin (Sharon) Yang
 #  SMU Mathematics
-#  Math 6370 Project: bimpb with Weihua Geng, Jiahui Chen
+#  bimpb with Weihua Geng, Jiahui Chen
 ###################################################################
 
 # compilers
 # CC = clang # on MacOS
 CC = gcc # on Linux, i.e., HPC-M2
-MPICC = mpicc
+# MPICC = mpicc
 
 # flags
 CFLAGS = -c -O3
 OMPFLAGS = -fopenmp
 
 # makefile targets
-all: bimpb.exe #bimpb_omp.exe bimpb_mpi.exe 
+all: bimpb_tc.exe #bimpb_omp.exe bimpb_mpi.exe 
 
-bimpb.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec.o pp_timer.o
+bimpb_tc.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec.o treecode.o pp_timer.o
 	$(CC) -p -o $@ $^ -lm
 # bimpb_omp.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_omp.o pp_timer.o
 # 	$(CC) $(OMPFLAGS) -p -o $@ $^ -lm
@@ -36,15 +36,15 @@ matvec.o: matvec.c
 main.o: main.c
 	$(CC) $(CFLAGS) main.c
 
-matvec_omp.o: matvec_omp.c
-	$(CC) $(CFLAGS) $(OMPFLAGS) matvec_omp.c
-main_omp.o: main_omp.c
-	$(CC) $(CFLAGS) $(OMPFLAGS) main_omp.c
+# matvec_omp.o: matvec_omp.c
+# 	$(CC) $(CFLAGS) $(OMPFLAGS) matvec_omp.c
+# main_omp.o: main_omp.c
+# 	$(CC) $(CFLAGS) $(OMPFLAGS) main_omp.c
 
-matvec_mpi.o: matvec_mpi.c
-	$(MPICC) $(CFLAGS) matvec_mpi.c
-main_mpi.o: main_mpi.c
-	$(MPICC) $(CFLAGS) main_mpi.c
+# matvec_mpi.o: matvec_mpi.c
+# 	$(MPICC) $(CFLAGS) matvec_mpi.c
+# main_mpi.o: main_mpi.c
+# 	$(MPICC) $(CFLAGS) main_mpi.c
 
 d_sign.o: gmres/d_sign.c
 	$(CC) $(CFLAGS) gmres/d_sign.c
