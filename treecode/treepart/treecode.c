@@ -57,15 +57,15 @@ static int s_PartitionEight(double xyzmms[6][8], double xl, double yl,
 
 
 
-
+int TreecodeInitialization() {
 	// transfer tr_xyz 1D to 2D
 	int i,j;
 	double tr_xyz2D[3][nface];
-	for (j=0;j<nface;j++){
-		for (i=0;i<3;i++){
-			tr_xyz2D[i][j] = tr_xyz[3*j+i];
-		}
-	}
+	// for (j=0;j<nface;j++){
+	// 	for (i=0;i<3;i++){
+	// 		tr_xyz2D[i][j] = tr_xyz[3*j+i];
+	// 	}
+	// }
 
 
 	int s_numpars;
@@ -78,8 +78,8 @@ static int s_PartitionEight(double xyzmms[6][8], double xl, double yl,
 	s_Setup(xyzminmax);
 	s_tree_root = (TreeNode*)calloc(1, sizeof(TreeNode));
 	s_CreateTree(s_tree_root, 0, s_numpars-1, xyzminmax, level);
-
-
+	return 0;
+}
 
 /* preconditioning calculation */
 int Nrow;
