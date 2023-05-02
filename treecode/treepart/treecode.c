@@ -61,6 +61,7 @@ int TreecodeInitialization() {
 	// transfer tr_xyz 1D to 2D
 	int i,j;
 	// double tr_xyz2D[3][nface];
+	double **tr_xyz2D;
 	tr_xyz2D=(double**)calloc(3,sizeof(double*));
 	for (j=0;j<nface;j++){
 		for (i=0;i<3;i++){
