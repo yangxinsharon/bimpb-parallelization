@@ -29,7 +29,7 @@ extern double **atmpos;						//[3][natm/nchr];
 extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr]; 
 extern double *work, *h;
 extern double *h_pot;
-extern double **tr_xyz2D;
+// extern double **tr_xyz2D;
 
 /* runtime treecode parameters */
 static int s_numpars;
@@ -372,7 +372,7 @@ int s_Setup(double *xyzminmax) {
 /*	the smallest box containing the particles is determined. The particle
 	postions and charges are copied so that they can be restored upon exit.
 */
-
+	extern double **tr_xyz2D;
 	int i;
 	// find bounds of Cartesian box enclosing the particles 
 	xyzminmax[0] = MinVal(tr_xyz2D[0],s_numpars);
@@ -616,7 +616,7 @@ int s_CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6], int level)
 
         numposchild = s_PartitionEight(xyzmms, xl, yl, zl, lmax,
                                        x_mid, y_mid, z_mid, ind);
-
+        extern double **tr_xyz2D;
 /* Shrink the box */
         for (i = 0; i < 8; i++) {
             if (ind[i][0] < ind[i][1]) {
@@ -734,6 +734,7 @@ static int s_PartitionEight(double xyzmms[6][8], double xl, double yl,
 
     numposchild = 1;
     critlen = lmax/sqrt(2.0);
+    extern double **tr_xyz2D;
 
     if (xl >= critlen) {
         temp_ind = Partition(tr_xyz2D[0],tr_xyz2D[1],tr_xyz2D[2], s_order_arr, ind[0][0], ind[0][1], x_mid);
