@@ -11,7 +11,7 @@
 
 // #include "array.h"
 #include <time.h> // yang
-#include "gl_constants.h"
+// #include "gl_constants.h"
 
 extern int nface, nspt, natm, nchr;			// number of faces, points, atoms, and charges
 extern int **extr_v;								// [3][nspt]
