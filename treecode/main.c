@@ -9,7 +9,7 @@
 #include "pp_timer.h"
 
 
-#include "array.h"
+// #include "array.h"
 #include <time.h> // yang
 #include "gl_constants.h"
 
