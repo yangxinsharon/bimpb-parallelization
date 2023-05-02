@@ -296,7 +296,7 @@ exit:	ichanged=nface-nfacenew;
 	free(face_copy);
 
 //tr_xyz: The position of the particles on surface
-//tr_q:	  The normail direction at the particle location
+//tr_q:	  The normal direction at the particle location
 //tr_area: the triangular area of each element
 	tr_xyz=(double *) calloc(3*nface, sizeof(double));
 	tr_q=(double *) calloc(3*nface, sizeof(double));
