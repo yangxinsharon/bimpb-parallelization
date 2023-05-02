@@ -27,7 +27,7 @@ bimpb_tc.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o dr
 treecode.o: treepart/treecode.c
 	$(CC) $(CFLAGS) treepart/treecode.c
 
-utilities.o: utilities.c
+utilities.o: treepart/utilities.c
 	$(CC) $(CFLAGS) treepart/utilities.c
 
 pp_timer.o: pp_timer.c
