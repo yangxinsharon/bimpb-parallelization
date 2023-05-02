@@ -57,7 +57,7 @@ static int s_PartitionEight(double xyzmms[6][8], double xl, double yl,
 
 
 
-int TreecodeInitialization() {
+
 	// transfer tr_xyz 1D to 2D
 	int i,j;
 	double tr_xyz2D[3][nface];
@@ -78,8 +78,8 @@ int TreecodeInitialization() {
 	s_Setup(xyzminmax);
 	s_tree_root = (TreeNode*)calloc(1, sizeof(TreeNode));
 	s_CreateTree(s_tree_root, 0, s_numpars-1, xyzminmax, level);
-	return 0;
-}
+
+
 
 /* preconditioning calculation */
 int Nrow;
