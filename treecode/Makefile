@@ -18,7 +18,7 @@ OMPFLAGS = -fopenmp
 # makefile targets
 all: bimpb_tc.exe #bimpb_omp.exe bimpb_mpi.exe 
 
-bimpb_tc.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec.o treecode.o pp_timer.o
+bimpb_tc.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec.o treecode.o utilities.o pp_timer.o
 	$(CC) -p -o $@ $^ -lm
 # bimpb_omp.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_omp.o pp_timer.o
 # 	$(CC) $(OMPFLAGS) -p -o $@ $^ -lm
@@ -26,6 +26,9 @@ bimpb_tc.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o dr
 # 	$(MPICC) -o $@ $^ -lm
 treecode.o: treepart/treecode.c
 	$(CC) $(CFLAGS) treepart/treecode.c
+
+utilities.o: utilities.c
+	$(CC) $(CFLAGS) treepart/utilities.c
 
 pp_timer.o: pp_timer.c
 	$(CC) $(CFLAGS) pp_timer.c
