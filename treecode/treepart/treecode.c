@@ -29,6 +29,7 @@ extern double **atmpos;						//[3][natm/nchr];
 extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr]; 
 extern double *work, *h;
 extern double *h_pot;
+extern double **tr_xyz2D;
 
 /* runtime treecode parameters */
 static int s_numpars;
