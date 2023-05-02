@@ -25,7 +25,7 @@
 
 #include <math.h>
 
-#include "utilities.h"
+#include "../treepart/utilities.h"
 
 /**********************************************************/
 double MinVal(double *variables, int number) 
