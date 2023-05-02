@@ -31,14 +31,14 @@ extern double *work, *h;
 extern double *h_pot;
 
 /* runtime treecode parameters */
-// static int s_numpars;
+static int s_numpars;
 static int s_order;
 static int s_max_per_leaf;
 static double theta;
 
 /* variables for tracking tree information */
-// static int s_min_level;
-// static int s_max_level;
+static int s_min_level;
+static int s_max_level;
 
 /* global variables for reordering arrays */
 static int *s_order_arr = NULL;
@@ -60,12 +60,13 @@ static int s_PartitionEight(double xyzmms[6][8], double xl, double yl,
 int TreecodeInitialization() {
 	// transfer tr_xyz 1D to 2D
 	int i,j;
-	double tr_xyz2D[3][nface];
-	// for (j=0;j<nface;j++){
-	// 	for (i=0;i<3;i++){
-	// 		tr_xyz2D[i][j] = tr_xyz[3*j+i];
-	// 	}
-	// }
+	// double tr_xyz2D[3][nface];
+	tr_xyz2D=(double**)calloc(3,sizeof(double*));
+	for (j=0;j<nface;j++){
+		for (i=0;i<3;i++){
+			tr_xyz2D[i][j] = tr_xyz[3*j+i];
+		}
+	}
 
 
 	int s_numpars;
@@ -790,6 +791,7 @@ int Partition(double *a, double *b, double *c, int *indarr,
 	// local variables 
 	double ta, tb, tc;
 	int lower, upper, tind;
+	int midind;
 
 	if (ibeg < iend) {
 
@@ -819,7 +821,6 @@ int Partition(double *a, double *b, double *c, int *indarr,
         		a[lower] = a[upper];
          		b[lower] = b[upper];
             	c[lower] = c[upper];
-            	q[lower] = q[upper];
             	indarr[lower] = indarr[upper];
         	}
     	}
@@ -832,7 +833,6 @@ int Partition(double *a, double *b, double *c, int *indarr,
       	a[upper] = ta;
       	b[upper] = tb;
       	c[upper] = tc;
-      	q[upper] = tq;
       	indarr[upper] = tind;
    	}
 
