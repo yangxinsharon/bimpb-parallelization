@@ -68,7 +68,8 @@ for (j=0;j<nface;j++){
 }
 
 
-int s_numpars = nface;
+int s_numpars;
+s_numpars = nface;
 int s_min_level = 50000;
 int s_max_level = 0;
 int level = 0;
@@ -369,18 +370,18 @@ int s_Setup(double *xyzminmax) {
 
 	int i;
 	// find bounds of Cartesian box enclosing the particles 
-	xyzminmax[0] = MinVal(tr_xyz2D[0],numpars);
-	xyzminmax[1] = MaxVal(tr_xyz2D[0],numpars);
-	xyzminmax[2] = MinVal(tr_xyz2D[1],numpars);
-	xyzminmax[3] = MaxVal(tr_xyz2D[1],numpars);
-	xyzminmax[4] = MinVal(tr_xyz2D[2],numpars);
-	xyzminmax[5] = MaxVal(tr_xyz2D[2],numpars);
+	xyzminmax[0] = MinVal(tr_xyz2D[0],s_numpars);
+	xyzminmax[1] = MaxVal(tr_xyz2D[0],s_numpars);
+	xyzminmax[2] = MinVal(tr_xyz2D[1],s_numpars);
+	xyzminmax[3] = MaxVal(tr_xyz2D[1],s_numpars);
+	xyzminmax[4] = MinVal(tr_xyz2D[2],s_numpars);
+	xyzminmax[5] = MaxVal(tr_xyz2D[2],s_numpars);
 
    // if ((orderarr=(int *) malloc(numpars*sizeof(int)))==NULL) {
 	// 	printf("Error allocating copy variables!");
 	// }
-   	make_vector(order_arr, numpars);
-	for (i=0; i<numpars; i++) {
+   	make_vector(order_arr, s_numpars);
+	for (i=0; i<s_numpars; i++) {
 		orderarr[i] = i;
 	}
 	return 0;
