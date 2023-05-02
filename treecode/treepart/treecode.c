@@ -385,9 +385,9 @@ int s_Setup(double *xyzminmax) {
    // if ((orderarr=(int *) malloc(numpars*sizeof(int)))==NULL) {
 	// 	printf("Error allocating copy variables!");
 	// }
-   	make_vector(order_arr, s_numpars);
+   	make_vector(s_order_arr, s_numpars);
 	for (i=0; i<s_numpars; i++) {
-		orderarr[i] = i;
+		s_order_arr[i] = i;
 	}
 	return 0;
 }
