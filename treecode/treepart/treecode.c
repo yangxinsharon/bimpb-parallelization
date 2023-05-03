@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include "../gl_variables.h"
-#include "../gl_constants.h"
+// #include "../gl_variables.h"
+// #include "../gl_constants.h"
 
 
 #include "utilities.h"
@@ -30,6 +30,17 @@ extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr];
 extern double *work, *h;
 extern double *h_pot;
 // extern double **tr_xyz2D;
+extern double pi;
+extern double one_over_4pi;
+extern double bulk_coef;
+extern double units_coef;
+extern double epsw;
+extern double epsp;
+extern double eps;
+extern double bulk_strength;  	
+extern double kappa2;	
+extern double kappa;
+
 
 /* runtime treecode parameters */
 static int s_numpars;
