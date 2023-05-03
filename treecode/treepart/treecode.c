@@ -83,7 +83,7 @@ int TreecodeInitialization() {
 	int level = 0;
 
 	double *xyzminmax;
-	xyzminmax = {0,0,0,0,0,0};
+	xyzminmax = (double*)calloc(6,sizeof(double));
 	s_Setup(xyzminmax);
 	s_tree_root = (TreeNode*)calloc(1, sizeof(TreeNode));
 	s_CreateTree(s_tree_root, 0, s_numpars-1, xyzminmax, level);
