@@ -746,7 +746,7 @@ static int s_PartitionEight(double xyzmms[6][8], double xl, double yl,
 
     numposchild = 1;
     critlen = lmax/sqrt(2.0);
-    extern double **tr_xyz2D;
+
 
     if (xl >= critlen) {
         temp_ind = Partition(tr_xyz2D[0],tr_xyz2D[1],tr_xyz2D[2], s_order_arr, ind[0][0], ind[0][1], x_mid);
