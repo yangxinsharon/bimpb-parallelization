@@ -40,7 +40,7 @@ extern double eps;
 extern double bulk_strength;  	
 extern double kappa2;	
 extern double kappa;
-
+extern double **tr_xyz2D;
 
 /* runtime treecode parameters */
 static int s_numpars;
@@ -73,13 +73,7 @@ int TreecodeInitialization() {
 	// transfer tr_xyz 1D to 2D
 	int i,j;
 	// double tr_xyz2D[3][nface];
-	double **tr_xyz2D;
-	tr_xyz2D=(double**)calloc(3,sizeof(double*));
-	for (j=0;j<nface;j++){
-		for (i=0;i<3;i++){
-			tr_xyz2D[i][j] = tr_xyz[3*j+i];
-		}
-	}
+
 
 
 	int s_numpars;
@@ -88,7 +82,8 @@ int TreecodeInitialization() {
 	int s_max_level = 0;
 	int level = 0;
 
-	double *xyzminmax[6];
+	double *xyzminmax;
+	xyzminmax = {0,0,0,0,0,0};
 	s_Setup(xyzminmax);
 	s_tree_root = (TreeNode*)calloc(1, sizeof(TreeNode));
 	s_CreateTree(s_tree_root, 0, s_numpars-1, xyzminmax, level);
@@ -383,7 +378,7 @@ int s_Setup(double *xyzminmax) {
 /*	the smallest box containing the particles is determined. The particle
 	postions and charges are copied so that they can be restored upon exit.
 */
-	extern double **tr_xyz2D;
+
 	int i;
 	// find bounds of Cartesian box enclosing the particles 
 	xyzminmax[0] = MinVal(tr_xyz2D[0],s_numpars);
@@ -392,6 +387,12 @@ int s_Setup(double *xyzminmax) {
 	xyzminmax[3] = MaxVal(tr_xyz2D[1],s_numpars);
 	xyzminmax[4] = MinVal(tr_xyz2D[2],s_numpars);
 	xyzminmax[5] = MaxVal(tr_xyz2D[2],s_numpars);
+	// xyzminmax[0] = MinVal(x,s_numpars);
+	// xyzminmax[1] = MaxVal(x,s_numpars);
+	// xyzminmax[2] = MinVal(y,s_numpars);
+	// xyzminmax[3] = MaxVal(y,s_numpars);
+	// xyzminmax[4] = MinVal(z,s_numpars);
+	// xyzminmax[5] = MaxVal(z,s_numpars);
 
    // if ((orderarr=(int *) malloc(numpars*sizeof(int)))==NULL) {
 	// 	printf("Error allocating copy variables!");
@@ -627,7 +628,7 @@ int s_CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6], int level)
 
         numposchild = s_PartitionEight(xyzmms, xl, yl, zl, lmax,
                                        x_mid, y_mid, z_mid, ind);
-        extern double **tr_xyz2D;
+
 /* Shrink the box */
         for (i = 0; i < 8; i++) {
             if (ind[i][0] < ind[i][1]) {

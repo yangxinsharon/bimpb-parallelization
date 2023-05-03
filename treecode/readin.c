@@ -337,4 +337,12 @@ exit:	ichanged=nface-nfacenew;
         sum=sum+tr_area[i];
 	}
     printf("total area = %f\n",sum);
+
+    double **tr_xyz2D;
+	tr_xyz2D=(double**)calloc(3,sizeof(double*));
+	for (j=0;j<nface;j++){
+		for (i=0;i<3;i++){
+			tr_xyz2D[i][j] = tr_xyz[3*j+i];
+		}
+	}
 }
