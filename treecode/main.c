@@ -126,10 +126,10 @@ int main(int argc, char *argv[]) {
 	free(atmchr);
 	free(chrpos);
 
-	for(i=0;i<3;i++) {
-		free(tr_xyz2D[i]);
-	}	
-	free(tr_xyz2D);
+	// for(i=0;i<3;i++) {
+	// 	free(tr_xyz2D[i]);
+	// }	
+	// free(tr_xyz2D);
 
    return 0;
 }
