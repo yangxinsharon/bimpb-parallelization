@@ -126,25 +126,25 @@ int main(int argc, char *argv[]) {
 	free(atmchr);
 	free(chrpos);
 
-	// for(i=0;i<3;i++) {
-	// 	free(tr_xyz2D[i]);
-	// }	
-	// free(tr_xyz2D);
+	for(i=0;i<3;i++) {
+		free(tr_xyz2D[i]);
+	}	
+	free(tr_xyz2D);
 
    return 0;
 }
 
 // ****************************************************************
-int *psolve(double *z, double *r) {
-/*r as original while z as scaled*/
-	int i;
-	double scale1,scale2;
-	scale1=0.5*(1.0+eps);
-	scale2=0.5*(1.0+1.0/eps);
-	for (i=0; i<nface; i++){
-		z[i]=r[i]/scale1;
-		z[i+nface]=r[i+nface]/scale2;
-	}
-	return 0;
+// int *psolve(double *z, double *r) {
+// /*r as original while z as scaled*/
+// 	int i;
+// 	double scale1,scale2;
+// 	scale1=0.5*(1.0+eps);
+// 	scale2=0.5*(1.0+1.0/eps);
+// 	for (i=0; i<nface; i++){
+// 		z[i]=r[i]/scale1;
+// 		z[i+nface]=r[i+nface]/scale2;
+// 	}
+// 	return 0;
 
-}
+// }
