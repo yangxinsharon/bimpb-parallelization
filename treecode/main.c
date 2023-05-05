@@ -8,7 +8,6 @@
 #include <math.h>
 #include "pp_timer.h"
 
-
 extern int nface, nspt, natm, nchr;			// number of faces, points, atoms, and charges
 extern int **extr_v;								// [3][nspt]
 extern int **extr_f;								// [2][nface]
