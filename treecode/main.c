@@ -9,10 +9,6 @@
 #include "pp_timer.h"
 
 
-// #include "array.h"
-#include <time.h> // yang
-// #include "gl_constants.h"
-
 extern int nface, nspt, natm, nchr;			// number of faces, points, atoms, and charges
 extern int **extr_v;								// [3][nspt]
 extern int **extr_f;								// [2][nface]
@@ -25,8 +21,7 @@ extern double *atmrad, *atmchr, *chrpos;	// [natm/nchr]
 extern double *work, *h;
 extern double *h_pot;
 extern const double eps;
-extern struct tnode *troot;
-extern int Nrow;
+
 extern double **tr_xyz2D;
 
 int main(int argc, char *argv[]) {
@@ -75,9 +70,6 @@ int main(int argc, char *argv[]) {
 
 	// extern int TreecodeInitialization();
 	// TreecodeInitialization();
-
-
-
 
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 
@@ -135,16 +127,16 @@ int main(int argc, char *argv[]) {
 }
 
 // ****************************************************************
-// int *psolve(double *z, double *r) {
-// /*r as original while z as scaled*/
-// 	int i;
-// 	double scale1,scale2;
-// 	scale1=0.5*(1.0+eps);
-// 	scale2=0.5*(1.0+1.0/eps);
-// 	for (i=0; i<nface; i++){
-// 		z[i]=r[i]/scale1;
-// 		z[i+nface]=r[i+nface]/scale2;
-// 	}
-// 	return 0;
+int *psolve(double *z, double *r) {
+/*r as original while z as scaled*/
+	int i;
+	double scale1,scale2;
+	scale1=0.5*(1.0+eps);
+	scale2=0.5*(1.0+1.0/eps);
+	for (i=0; i<nface; i++){
+		z[i]=r[i]/scale1;
+		z[i+nface]=r[i+nface]/scale2;
+	}
+	return 0;
 
-// }
+}
