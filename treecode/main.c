@@ -67,8 +67,8 @@ int main(int argc, char *argv[]) {
 	work=(double *) calloc (ldw*(RESTRT+4), sizeof(double));
 	h=(double *) calloc (ldh*(RESTRT+2), sizeof(double));
 
-	// extern int TreecodeInitialization();
-	// TreecodeInitialization();
+	extern int TreecodeInitialization();
+	TreecodeInitialization();
 
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 
