@@ -21,7 +21,7 @@ extern double *work, *h;
 extern double *h_pot;
 extern const double eps;
 
-extern double **tr_xyz2D;
+// extern double **tr_xyz2D;
 
 int main(int argc, char *argv[]) {
 	/*variables local to main*/
@@ -117,10 +117,10 @@ int main(int argc, char *argv[]) {
 	free(atmchr);
 	free(chrpos);
 
-	for(i=0;i<3;i++) {
-		free(tr_xyz2D[i]);
-	}	
-	free(tr_xyz2D);
+	// for(i=0;i<3;i++) {
+	// 	free(tr_xyz2D[i]);
+	// }	
+	// free(tr_xyz2D);
 
    return 0;
 }
