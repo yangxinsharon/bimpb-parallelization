@@ -138,8 +138,8 @@ int TreecodeFinalization()
 
 /***********reorder particles*************/
 
-    make_matrix(temp_position, 3, s_numpars);
-    make_matrix(temp_normal, 3, s_numpars);
+    // make_matrix(temp_position, 3, s_numpars);
+    // make_matrix(temp_normal, 3, s_numpars);
     make_vector(temp_area, s_numpars);
     make_vector(temp_source, 2 * s_numpars);
     make_vector(temp_xvct, 2 * s_numpars);

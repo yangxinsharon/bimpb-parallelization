@@ -21,7 +21,7 @@ extern double *work, *h;
 extern double *h_pot;
 extern const double eps;
 
-extern double **tr_xyz2D;
+extern double **tr_xyz2D, **tr_q2D, **temp_normal, **temp_position;
 
 int main(int argc, char *argv[]) {
 	/*variables local to main*/
@@ -67,8 +67,8 @@ int main(int argc, char *argv[]) {
 	work=(double *) calloc (ldw*(RESTRT+4), sizeof(double));
 	h=(double *) calloc (ldh*(RESTRT+2), sizeof(double));
 
-	// extern int TreecodeInitialization();
-	// TreecodeInitialization();
+	extern int TreecodeInitialization();
+	TreecodeInitialization();
 
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 
@@ -77,8 +77,8 @@ int main(int argc, char *argv[]) {
 	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
 	timer_end();
 
-	// extern int TreecodeFinalization();
-	// TreecodeFinalization();
+	extern int TreecodeFinalization();
+	TreecodeFinalization();
 
 	/* free memory */
 	for(i=0;i<3;i++) {
@@ -122,8 +122,10 @@ int main(int argc, char *argv[]) {
 
 	for(i=0;i<3;i++) {
 		free(tr_xyz2D[i]);
+		free(tr_q2D[i]);
 	}	
 	free(tr_xyz2D);
+	free(tr_q2D);
 
    return 0;
 }
