@@ -64,14 +64,13 @@ static int s_CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6],
 static int s_PartitionEight(double xyzmms[6][8], double xl, double yl,
                             double zl, double lmax, double x_mid, double y_mid,
                             double z_mid, int ind[8][2]);
-
+static int s_RemoveNode(TreeNode *p);
 
 
 int TreecodeInitialization() {
 	// transfer tr_xyz 1D to 2D
 	int i,j;
 	// double tr_xyz2D[3][nface];
-
 
 
 	int s_numpars;
@@ -86,6 +85,31 @@ int TreecodeInitialization() {
 	s_tree_root = (TreeNode*)calloc(1, sizeof(TreeNode));
 	s_CreateTree(s_tree_root, 0, s_numpars-1, xyzminmax, level);
 	return 0;
+}
+
+int TreecodeFinalization(){
+    s_RemoveNode(s_tree_root);
+	free(s_tree_root);
+	free_vector(s_order_arr);
+    return 0;
+}
+
+/********************************************************/
+static int s_RemoveNode(TreeNode *p)
+{
+/* REMOVE_NODE recursively removes each node from the
+ * tree and deallocates its memory for MS array if it exits. */
+    int i;
+
+    if (p->num_children > 0) {
+        for (i = 0; i < 8; i++) {
+            s_RemoveNode(p->child[i]);
+            free(p->child[i]);
+        }
+        free(p->child);
+    }
+
+    return 0;
 }
 
 /* preconditioning calculation */
