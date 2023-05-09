@@ -75,7 +75,8 @@ int TreecodeInitialization() {
 
     /* variables needed for reorder */
     double *temp_area, *temp_source;
-    double **temp_normal;
+    // double **temp_normal;
+    temp_normal=Make2DDoubleArray(3,nface,"temp_normal");
 
     double xyz_limits[6];
 
