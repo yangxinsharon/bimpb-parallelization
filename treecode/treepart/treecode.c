@@ -38,7 +38,7 @@ extern double eps;
 extern double bulk_strength;  	
 extern double kappa2;	
 extern double kappa;
-extern double **tr_xyz2D, **tr_q2D;
+extern double **tr_xyz2D, **tr_q2D, **temp_normal, **temp_position;
 extern int maxparnode;
 extern int order;
 
@@ -132,7 +132,9 @@ int TreecodeFinalization()
 
     int i;
     double *temp_area, *temp_source, *temp_xvct;
-    double **temp_normal, **temp_position;
+    // double **temp_normal, **temp_position;
+    temp_normal=Make2DDoubleArray(3,nface,"temp_normal");
+    temp_position=Make2DDoubleArray(3,nface,"temp_position");
 
 /***********reorder particles*************/
 
