@@ -77,6 +77,9 @@ int main(int argc, char *argv[]) {
 	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
 	timer_end();
 
+	extern int TreecodeFinalization();
+	TreecodeFinalization();
+
 	/* free memory */
 	for(i=0;i<3;i++) {
 		free(extr_v[i]);
