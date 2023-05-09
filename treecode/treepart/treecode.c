@@ -38,7 +38,9 @@ extern double eps;
 extern double bulk_strength;  	
 extern double kappa2;	
 extern double kappa;
-extern double **tr_xyz2D;
+extern double **tr_xyz2D, **tr_q2D;
+extern int maxparnode;
+extern int order;
 
 /* runtime treecode parameters */
 static int s_numpars;
@@ -68,29 +70,119 @@ static int s_RemoveNode(TreeNode *p);
 
 
 int TreecodeInitialization() {
-	// transfer tr_xyz 1D to 2D
-	int i,j;
-	// double tr_xyz2D[3][nface];
+    
+    int level, i, j, k, mm, nn, idx, ijk[3];
+
+    /* variables needed for reorder */
+    double *temp_area, *temp_source;
+    double **temp_normal;
+
+    double xyz_limits[6];
+
+    /* setting variables global to file */
+    s_numpars = nface;
+    s_order = order;
+    s_max_per_leaf = maxparnode;
+
+    s_min_level = 50000;
+    s_max_level = 0;
+
+    level = 0;
+
+    make_matrix(temp_normal, 3, s_numpars);
+    make_vector(temp_area, s_numpars);
+    make_vector(temp_source, 2 * s_numpars);
 
 
-	int s_numpars;
-	s_numpars = nface;
-	int s_min_level = 50000;
-	int s_max_level = 0;
-	int level = 0;
-
-	double *xyzminmax;
-	xyzminmax = (double*)calloc(6,sizeof(double));
-	s_Setup(xyzminmax);
+	// double *xyzminmax;
+	// xyzminmax = (double*)calloc(6,sizeof(double));
+	// s_Setup(xyzminmax);
+	s_Setup(xyz_limits);
 	s_tree_root = (TreeNode*)calloc(1, sizeof(TreeNode));
-	s_CreateTree(s_tree_root, 0, s_numpars-1, xyzminmax, level);
+	
+	// s_CreateTree(s_tree_root, 0, s_numpars-1, xyzminmax, level);
+	s_CreateTree(s_tree_root, 0, s_numpars-1, xyz_limits, level);
+	
+    memcpy(temp_normal[0], tr_q2D[0], s_numpars*sizeof(double));
+    memcpy(temp_normal[1], tr_q2D[1], s_numpars*sizeof(double));
+    memcpy(temp_normal[2], tr_q2D[2], s_numpars*sizeof(double));
+    memcpy(temp_area, tr_area, s_numpars*sizeof(double));
+    memcpy(temp_source, bvct, 2*s_numpars*sizeof(double));
+
+    for (i = 0; i < s_numpars; i++) {
+        tr_q2D[0][i]    = temp_normal[0][s_order_arr[i]];
+        tr_q2D[1][i]    = temp_normal[1][s_order_arr[i]];
+        tr_q2D[2][i]    = temp_normal[2][s_order_arr[i]];
+        tr_area[i]         = temp_area[s_order_arr[i]];
+        bvct[i]           = temp_source[s_order_arr[i]];
+        bvct[i + s_numpars] = temp_source[s_order_arr[i] + s_numpars];
+    }
+
+    free_matrix(temp_normal);
+    free_vector(temp_area);
+    free_vector(temp_source);
+
 	return 0;
 }
 
-int TreecodeFinalization(){
+/********************************************************/
+int TreecodeFinalization()
+{
+
+    int i;
+    double *temp_area, *temp_source, *temp_xvct;
+    double **temp_normal, **temp_position;
+
+/***********reorder particles*************/
+
+    make_matrix(temp_position, 3, s_numpars);
+    make_matrix(temp_normal, 3, s_numpars);
+    make_vector(temp_area, s_numpars);
+    make_vector(temp_source, 2 * s_numpars);
+    make_vector(temp_xvct, 2 * s_numpars);
+
+    memcpy(temp_position[0], tr_xyz2D[0], s_numpars*sizeof(double));
+    memcpy(temp_position[1], tr_xyz2D[1], s_numpars*sizeof(double));
+    memcpy(temp_position[2], tr_xyz2D[2], s_numpars*sizeof(double));
+    memcpy(temp_normal[0], tr_q2D[0], s_numpars*sizeof(double));
+    memcpy(temp_normal[1], tr_q2D[1], s_numpars*sizeof(double));
+    memcpy(temp_normal[2], tr_q2D[2], s_numpars*sizeof(double));
+    memcpy(temp_area, tr_area, s_numpars*sizeof(double));
+    memcpy(temp_source, bvct, 2*s_numpars*sizeof(double));
+    memcpy(temp_xvct, xvct, 2*s_numpars*sizeof(double));
+
+    for (i = 0; i < s_numpars; i++) {
+        tr_xyz2D[0][s_order_arr[i]]  = temp_position[0][i];
+        tr_xyz2D[1][s_order_arr[i]]  = temp_position[1][i];
+        tr_xyz2D[2][s_order_arr[i]]  = temp_position[2][i];
+        tr_q2D[0][s_order_arr[i]]    = temp_normal[0][i];
+        tr_q2D[1][s_order_arr[i]]    = temp_normal[1][i];
+        tr_q2D[2][s_order_arr[i]]    = temp_normal[2][i];
+        tr_area[s_order_arr[i]]         = temp_area[i];
+        bvct[s_order_arr[i]]  = temp_source[i];
+        bvct[s_order_arr[i] + s_numpars] = temp_source[i + s_numpars];
+       	xvct[s_order_arr[i]]         = temp_xvct[i];
+        xvct[s_order_arr[i] + s_numpars] = temp_xvct[i + s_numpars];
+    }
+
+    free_matrix(temp_position);
+    free_matrix(temp_normal);
+    free_vector(temp_area);
+    free_vector(temp_source);
+    free_vector(temp_xvct);
+
+
+/***********clean tree structure**********/
+
     s_RemoveNode(s_tree_root);
-	free(s_tree_root);
-	free_vector(s_order_arr);
+    free(s_tree_root);
+
+
+    free_vector(s_order_arr);
+/*****************************************/
+
+    printf("\nTABIPB tree structure has been deallocated.\n\n");
+
     return 0;
 }
 

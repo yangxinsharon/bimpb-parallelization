@@ -16,6 +16,7 @@ extern double *work, *h;
 extern double *h_pot;
 
 extern double **tr_xyz2D;
+extern double **tr_q2D;
 
 /* function computing the area of a triangle given vertices coodinates */
 double triangle_area(double v[3][3]) {
@@ -340,11 +341,13 @@ exit:	ichanged=nface-nfacenew;
 	}
     printf("total area = %f\n",sum);
 
-    // transform tr_xyz 1D to 2D
+    // transform tr_xyz, tr_q 1D to 2D
     tr_xyz2D=Make2DDoubleArray(3,nface,"tr_xyz2D");
+    tr_q2D=Make2DDoubleArray(3,nface,"tr_q2D");
 	for (j=0;j<nface;j++){
 		for (i=0;i<3;i++){
 			tr_xyz2D[i][j] = tr_xyz[3*j+i];
+			tr_q2D[i][j] = tr_q[3*j+i];
 		}
 	}
 }

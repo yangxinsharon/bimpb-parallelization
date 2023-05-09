@@ -50,5 +50,5 @@ double *work, *h;
 /*device pointers*/
 double *h_pot;
 double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
-double **tr_xyz2D;
+double **tr_xyz2D, **tr_q2D;
 #endif
