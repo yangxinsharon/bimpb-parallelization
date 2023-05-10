@@ -21,7 +21,7 @@ extern double *work, *h;
 extern double *h_pot;
 extern const double eps;
 
-extern double **tr_xyz2D, **tr_q2D, **temp_normal, **temp_position;
+extern double **tr_xyz2D, **tr_q2D;
 
 int main(int argc, char *argv[]) {
 	/*variables local to main*/

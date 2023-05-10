@@ -76,7 +76,7 @@ int TreecodeInitialization() {
     /* variables needed for reorder */
     double *temp_area, *temp_source;
     // double **temp_normal;
-    temp_normal=Make2DDoubleArray(3,nface,"temp_normal");
+    // temp_normal=Make2DDoubleArray(3,nface,"temp_normal");
 
     double xyz_limits[6];
 
@@ -90,7 +90,8 @@ int TreecodeInitialization() {
 
     level = 0;
 
-    make_matrix(temp_normal, 3, s_numpars);
+    // make_matrix(temp_normal, 3, s_numpars);
+    temp_normal=Make2DDoubleArray(3,nface,"temp_normal");
     make_vector(temp_area, s_numpars);
     make_vector(temp_source, 2 * s_numpars);
 
@@ -119,7 +120,12 @@ int TreecodeInitialization() {
         bvct[i + s_numpars] = temp_source[s_order_arr[i] + s_numpars];
     }
 
-    free_matrix(temp_normal);
+    // free_matrix(temp_normal);
+	for(i=0;i<3;i++) {
+		free(temp_normal[i]);
+	}	
+	free(temp_normal);
+
     free_vector(temp_area);
     free_vector(temp_source);
 
@@ -168,8 +174,15 @@ int TreecodeFinalization()
         xvct[s_order_arr[i] + s_numpars] = temp_xvct[i + s_numpars];
     }
 
-    free_matrix(temp_position);
-    free_matrix(temp_normal);
+    // free_matrix(temp_position);
+    // free_matrix(temp_normal);
+    for(i=0;i<3;i++) {
+		free(temp_position[i]);
+		free(temp_normal[i]);
+	}	
+	free(temp_position);
+	free(temp_normal);
+
     free_vector(temp_area);
     free_vector(temp_source);
     free_vector(temp_xvct);
