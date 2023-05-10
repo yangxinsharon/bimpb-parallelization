@@ -38,7 +38,7 @@ extern double eps;
 extern double bulk_strength;  	
 extern double kappa2;	
 extern double kappa;
-extern double **tr_xyz2D, **tr_q2D, **temp_normal, **temp_position;
+extern double **tr_xyz2D, **tr_q2D, **temp_normal, **temp_position, **matrixA;
 extern int maxparnode;
 extern int order;
 
