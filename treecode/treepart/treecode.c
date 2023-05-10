@@ -360,7 +360,6 @@ int *psolve(double *z, double *r) {
 
   	matrixA=Make2DDoubleArray(2*s_max_per_leaf,2*s_max_per_leaf,"matrixA");
 
-
   	make_vector(ipiv, 2*s_max_per_leaf);
   	make_vector(rhs, 2*s_max_per_leaf);
 
@@ -372,21 +371,35 @@ int *psolve(double *z, double *r) {
     	iend  = idx + nrow - 1;
 
     	for ( i = ibeg; i <= iend; i++ ) {
-	      	tp[0] = tr_xyz[3*j]; //
-	      	tp[1] = tr_xyz[3*j+1]; 
-	      	tp[2] = tr_xyz[3*j+2]; 
-      		tq[0] = tr_q[3*j]; //
-      		tq[1] = tr_q[3*j+1]; //
-      		tq[2] = tr_q[3*j+2]; //
+    		tp[0] = tr_xyz2D[0][i];
+			tp[1] = tr_xyz2D[1][i];
+			tp[2] = tr_xyz2D[2][i];
+			tq[0] = tr_q2D[0][i];
+			tq[1] = tr_q2D[1][i];
+			tq[2] = tr_q2D[2][i];
+
+	      	// tp[0] = tr_xyz[3*j]; 	
+	      	// tp[1] = tr_xyz[3*j+1]; 	
+	      	// tp[2] = tr_xyz[3*j+2]; 	
+      		// tq[0] = tr_q[3*j]; 		
+      		// tq[1] = tr_q[3*j+1]; 	
+      		// tq[2] = tr_q[3*j+2]; 	
 
 
       		for ( j = ibeg; j < i; j++ ) {
-        		sp[0] = tr_xyz[3*j]; //s_particle_position[0][j];
-        		sp[1] = tr_xyz[3*j+1]; //s_particle_position[1][j];
-        		sp[2] = tr_xyz[3*j+2]; //s_particle_position[2][j];
-        		sq[0] = tr_q[3*j]; //s_particle_normal[0][j];
-        		sq[1] = tr_q[3*j+1]; //s_particle_normal[1][j];
-        		sq[2] = tr_q[3*j+2]; //s_particle_normal[2][j];
+        		sp[0] = tr_xyz2D[0][j];
+        		sp[1] = tr_xyz2D[1][j];
+        		sp[2] = tr_xyz2D[2][j];
+        		sq[0] = tr_q2D[0][j];
+        		sq[1] = tr_q2D[1][j];
+        		sq[2] = tr_q2D[2][j];    			
+				
+        		// sp[0] = tr_xyz[3*j]; //s_particle_position[0][j];
+        		// sp[1] = tr_xyz[3*j+1]; //s_particle_position[1][j];
+        		// sp[2] = tr_xyz[3*j+2]; //s_particle_position[2][j];
+        		// sq[0] = tr_q[3*j]; //s_particle_normal[0][j];
+        		// sq[1] = tr_q[3*j+1]; //s_particle_normal[1][j];
+        		// sq[2] = tr_q[3*j+2]; //s_particle_normal[2][j];
 
         		r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
         		sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
@@ -430,12 +443,18 @@ int *psolve(double *z, double *r) {
       		matrixA[i+nrow-ibeg][i+nrow-ibeg] = pre2;
 
       		for ( j = i+1; j <= iend; j++ ) {
-	        	sp[0] = tr_xyz[3*j]; //s_particle_position[0][j];
-	        	sp[1] = tr_xyz[3*j+1]; //s_particle_position[1][j];
-	        	sp[2] = tr_xyz[3*j+2]; //s_particle_position[2][j];
-	        	sq[0] = tr_q[3*j]; //s_particle_normal[0][j];
-	        	sq[1] = tr_q[3*j+1]; //s_particle_normal[1][j];
-	        	sq[2] = tr_q[3*j+2]; //s_particle_normal[2][j];
+        		sp[0] = tr_xyz2D[0][j];
+        		sp[1] = tr_xyz2D[1][j];
+        		sp[2] = tr_xyz2D[2][j];
+        		sq[0] = tr_q2D[0][j];
+        		sq[1] = tr_q2D[1][j];
+        		sq[2] = tr_q2D[2][j];      			
+	        	// sp[0] = tr_xyz[3*j]; //s_particle_position[0][j];
+	        	// sp[1] = tr_xyz[3*j+1]; //s_particle_position[1][j];
+	        	// sp[2] = tr_xyz[3*j+2]; //s_particle_position[2][j];
+	        	// sq[0] = tr_q[3*j]; //s_particle_normal[0][j];
+	        	// sq[1] = tr_q[3*j+1]; //s_particle_normal[1][j];
+	        	// sq[2] = tr_q[3*j+2]; //s_particle_normal[2][j];
 	        	
 	        	r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
 				sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
