@@ -325,7 +325,8 @@ int *psolve(double *z, double *r) {
 
   	int i, j, idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
   	int *ipiv, inc;
-  	double **matrixA, *rhs;
+  	// double **matrixA, 
+  	double *rhs;
   	double L1, L2, L3, L4, area;
   	double tp[3], tq[3], sp[3], sq[3];
   	double r_s[3], rs, irs, sumrs;
@@ -354,7 +355,12 @@ int *psolve(double *z, double *r) {
   	exit(0);
   	*/
 
-  	make_matrix(matrixA, 2*s_max_per_leaf, 2*s_max_per_leaf);
+
+  	// make_matrix(matrixA, 2*s_max_per_leaf, 2*s_max_per_leaf);
+
+  	matrixA=Make2DDoubleArray(2*s_max_per_leaf,2*s_max_per_leaf,"matrixA");
+
+
   	make_vector(ipiv, 2*s_max_per_leaf);
   	make_vector(rhs, 2*s_max_per_leaf);
 
@@ -486,7 +492,13 @@ int *psolve(double *z, double *r) {
     	idx += nrow;
 
   	}
-  	free_matrix(matrixA);
+  	// free_matrix(matrixA);
+
+    for(i=0;i<2*s_max_per_leaf;i++) {
+		free(matrixA[i]);
+	}	
+	free(matrixA);
+
   	free_vector(rhs);
   	free_vector(ipiv);
 
@@ -504,19 +516,20 @@ int *psolve(double *z, double *r) {
 
 
 
-int s_Setup(double *xyzminmax) {
+// int s_Setup(double *xyzminmax) {
+int s_Setup(double xyz_limits[6]) {
 /*	the smallest box containing the particles is determined. The particle
 	postions and charges are copied so that they can be restored upon exit.
 */
 
 	int i;
 	// find bounds of Cartesian box enclosing the particles 
-	xyzminmax[0] = MinVal(tr_xyz2D[0],s_numpars);
-	xyzminmax[1] = MaxVal(tr_xyz2D[0],s_numpars);
-	xyzminmax[2] = MinVal(tr_xyz2D[1],s_numpars);
-	xyzminmax[3] = MaxVal(tr_xyz2D[1],s_numpars);
-	xyzminmax[4] = MinVal(tr_xyz2D[2],s_numpars);
-	xyzminmax[5] = MaxVal(tr_xyz2D[2],s_numpars);
+	xyz_limits[0] = MinVal(tr_xyz2D[0],s_numpars);
+	xyz_limits[1] = MaxVal(tr_xyz2D[0],s_numpars);
+	xyz_limits[2] = MinVal(tr_xyz2D[1],s_numpars);
+	xyz_limits[3] = MaxVal(tr_xyz2D[1],s_numpars);
+	xyz_limits[4] = MinVal(tr_xyz2D[2],s_numpars);
+	xyz_limits[5] = MaxVal(tr_xyz2D[2],s_numpars);
 	// xyzminmax[0] = MinVal(x,s_numpars);
 	// xyzminmax[1] = MaxVal(x,s_numpars);
 	// xyzminmax[2] = MinVal(y,s_numpars);
