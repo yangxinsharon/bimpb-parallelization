@@ -343,6 +343,7 @@ int *psolve(double *z, double *r) {
 
   	matrixA=Make2DDoubleArray(2*s_max_per_leaf, 2*s_max_per_leaf, "matrixA");
 
+  	printf("s_max_per_leaf is %d\n", s_max_per_leaf);
   	make_vector(ipiv, 2*s_max_per_leaf);
   	make_vector(rhs, 2*s_max_per_leaf);
 
