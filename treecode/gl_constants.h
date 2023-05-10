@@ -11,6 +11,6 @@ const double bulk_strength=0.15;   	//ion_strength in M
 const double kappa2=0.0158068602;	//kappa2=bulk_coef*bulk_strength/epsw;
 const double kappa=0.1257253365;
 
-const int order=2;
-const int maxparnode=50;
+const int order=3;
+const int maxparnode=100;
 #endif
