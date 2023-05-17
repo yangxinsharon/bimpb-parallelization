@@ -89,11 +89,11 @@ int TreecodeInitialization() {
     temp_source=(double *) calloc(2*nface, sizeof(double));
 
 
-	s_Setup(xyz_limits);
+	Setup(xyz_limits);
 	s_tree_root = (TreeNode*)calloc(1, sizeof(TreeNode));
 	
 	// s_CreateTree(s_tree_root, 0, nface-1, xyzminmax, level);
-	s_CreateTree(s_tree_root, 0, nface-1, xyz_limits, level);
+	CreateTree(s_tree_root, 0, nface-1, xyz_limits, level);
     printf("Created tree for %d particles with max %d per node.\n\n",
            nface, maxparnode);
 	
