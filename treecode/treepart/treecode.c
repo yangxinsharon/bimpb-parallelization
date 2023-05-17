@@ -55,13 +55,12 @@ static TreeNode *s_tree_root = NULL;
 
 
 /* internal functions */
-static int s_Setup(double *xyzminmax);
-static int s_CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6],
-                        int level);
-static int s_PartitionEight(double xyzmms[6][8], double xl, double yl,
-                            double zl, double lmax, double x_mid, double y_mid,
-                            double z_mid, int ind[8][2]);
-static int s_RemoveNode(TreeNode *p);
+int Setup(double xyz_limits[6]);
+int CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6],int level);
+int PartitionEight(double xyzmms[6][8], double xl, double yl,
+	double zl, double lmax, double x_mid, double y_mid,
+	double z_mid, int ind[8][2]);
+int RemoveNode(TreeNode *p);
 
 
 int TreecodeInitialization() {
