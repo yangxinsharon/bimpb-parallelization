@@ -24,7 +24,7 @@ bimpb_tc.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o dr
 # 	$(CC) $(OMPFLAGS) -p -o $@ $^ -lm
 # bimpb_mpi.exe: main_mpi.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_mpi.o pp_timer.o 
 # 	$(MPICC) -o $@ $^ -lm
-treecode.o: treepart/treecode.c
+treecode.o: treepart/treecodef.c
 	$(CC) $(CFLAGS) treepart/treecode.c
 utilities.o: treepart/utilities.c
 	$(CC) $(CFLAGS) treepart/utilities.c

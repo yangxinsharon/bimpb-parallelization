@@ -223,7 +223,7 @@ int TreecodeInitialization() {
 // }
 
 /* preconditioning calculation */
-// int Nrow;
+int nrow;
 void leaflength(TreeNode *p, int idx, int ibeg, int iend, int nrow) {
 	/* find the leaf length */
 	int i;
@@ -325,69 +325,53 @@ int *psolve(double *z, double *r) {
 
 	int Nt2, N;
   	int i, j, idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
-  	int matidx1, matidx2, matidx3, matidx4;
+  	// int matidx1, matidx2, matidx3, matidx4;
   	int *ipiv, inc;
-  	// double **matrixA; 
-  	double *rhs;
-  	double L1, L2, L3, L4, area;
-  	double tp[3], tq[3], sp[3], sq[3];
+  	double **matrixA; 
+  	double *rhs,*r2s;
+  	double L1, L2, L3, L4;
+
   	double r_s[3], rs, irs, sumrs;
   	double G0, kappa_rs, exp_kappa_rs, Gk;
   	double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
   	double G10, G20, G1, G2, G3, G4;
   	double pre1, pre2;
+  	double tarxyz[3], tarcha[3], tempx, temp_area;
+  	double r[3], v[3];
 	
-
 	N = Nt2/2;
   	pre1 = 0.5*(1.0+eps);
   	pre2 = 0.5*(1.0+1.0/eps);
 
-  	// make_matrix(matrixA, 2*s_max_per_leaf, 2*s_max_per_leaf);
-
-  	matrixA=Make2DDoubleArray(2*s_max_per_leaf, 2*s_max_per_leaf, "matrixA");
-
-  	make_vector(ipiv, 2*s_max_per_leaf);
-  	make_vector(rhs, 2*s_max_per_leaf);
-
-  	while ( idx < s_numpars ) {
-    	leaflength(s_tree_root, idx);
-    	nrow  = Nrow;
+  	while ( idx < N ) {
+    	leaflength(p, idx, ibeg, iend, nrow)
     	nrow2 = nrow*2;
-    	ibeg  = idx;
-    	iend  = idx + nrow - 1;
+  		matrixA=Make2DDoubleArray(nrow2, nrow2, "matrixA");    	
+  		ipiv=(double *) calloc(nrow2, sizeof(double));
+  		r2s=(double *) calloc(nrow2, sizeof(double));
+
+  		for (i = ibeg; i <= iend; i++ ) {
+  			r2s[i-ibeg]=rhs[i];
+  			r2s[i-ibeg+N]=rhs[i+N];
+  		} //yang checkup
 
     	for ( i = ibeg; i <= iend; i++ ) {
-    		tp[0] = tr_xyz2D[0][i];
-			tp[1] = tr_xyz2D[1][i];
-			tp[2] = tr_xyz2D[2][i];
-			tq[0] = tr_q2D[0][i];
-			tq[1] = tr_q2D[1][i];
-			tq[2] = tr_q2D[2][i];
-
-	      	// tp[0] = tr_xyz[3*j]; 	
-	      	// tp[1] = tr_xyz[3*j+1]; 	
-	      	// tp[2] = tr_xyz[3*j+2]; 	
-      		// tq[0] = tr_q[3*j]; 		
-      		// tq[1] = tr_q[3*j+1]; 	
-      		// tq[2] = tr_q[3*j+2]; 	
-
+    		tarxyz[0] = x[i];
+    		tarxyz[1] = y[i];
+    		tarxyz[2] = z[i];
+    		tarcha[0] = tr_q2D[0][i];
+    		tarcha[1] = tr_q2D[1][i];
+    		tarcha[2] = tr_q2D[2][i];
 
       		for ( j = ibeg; j < i; j++ ) {
-        		sp[0] = tr_xyz2D[0][j];
-        		sp[1] = tr_xyz2D[1][j];
-        		sp[2] = tr_xyz2D[2][j];
-        		sq[0] = tr_q2D[0][j];
-        		sq[1] = tr_q2D[1][j];
-        		sq[2] = tr_q2D[2][j];    			
-				
-        		// sp[0] = tr_xyz[3*j]; //s_particle_position[0][j];
-        		// sp[1] = tr_xyz[3*j+1]; //s_particle_position[1][j];
-        		// sp[2] = tr_xyz[3*j+2]; //s_particle_position[2][j];
-        		// sq[0] = tr_q[3*j]; //s_particle_normal[0][j];
-        		// sq[1] = tr_q[3*j+1]; //s_particle_normal[1][j];
-        		// sq[2] = tr_q[3*j+2]; //s_particle_normal[2][j];
-
-        		r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
+      			r[0] = x[j];
+      			r[1] = y[j];
+      			r[2] = z[j];
+        		v[0] = tr_q2D[0][j];
+        		v[1] = tr_q2D[1][j];
+        		v[2] = tr_q2D[2][j];    			
+	
+        		r_s[0] = r[0]-tarxyz[0]; r_s[1] = r[1]-tarxyz[1]; r_s[2] = r[2]-tarxyz[2];
         		sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
 
         		rs = sqrt(sumrs);
@@ -397,8 +381,8 @@ int *psolve(double *z, double *r) {
         		exp_kappa_rs = exp(-kappa_rs);
         		Gk = exp_kappa_rs * G0;
 		
-        		cos_theta  = (sq[0]*r_s[0] + sq[1]*r_s[1] + sq[2]*r_s[2]) * irs;
-        		cos_theta0 = (tq[0]*r_s[0] + tq[1]*r_s[1] + tq[2]*r_s[2]) * irs;
+        		cos_theta  = (v[0]*r_s[0] + v[1]*r_s[1] + v[2]*r_s[2]) * irs;
+        		cos_theta0 = (tarcha[0]*r_s[0] + tarcha[1]*r_s[1] + tarcha[2]*r_s[2]) * irs;
         		tp1 = G0* irs;
         		tp2 = (1.0 + kappa_rs) * exp_kappa_rs;
 		
@@ -408,41 +392,34 @@ int *psolve(double *z, double *r) {
         		G1 = cos_theta * tp1;
         		G2 = tp2 * G1;
 		
-        		dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
+        		dot_tqsq = tarcha[0]*v[0] + tarcha[1]*v[1] + tarcha[2]*v[2];
         		G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
         		G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
-		
-        		area = tr_area[j]; // s_particle_area[j];
 		
         		L1 = G1 - eps*G2;
         		L2 = G0 - Gk;
         		L3 = G4 - G3;
         		L4 = G10 - G20/eps;
 
-        		matrixA[i-ibeg][j-ibeg] = -L1*area;
-        		matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
-        		matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
-        		matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
+        		matrixA[i-ibeg][j-ibeg] = -L1*tr_area[j];
+        		matrixA[i-ibeg][j+nrow-ibeg] = -L2*tr_area[j];
+        		matrixA[i+nrow-ibeg][j-ibeg] = -L3*tr_area[j];
+        		matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*tr_area[j];
+        		// yang checkup
       		}
 
       		matrixA[i-ibeg][i-ibeg] = pre1;
       		matrixA[i+nrow-ibeg][i+nrow-ibeg] = pre2;
 
       		for ( j = i+1; j <= iend; j++ ) {
-        		sp[0] = tr_xyz2D[0][j];
-        		sp[1] = tr_xyz2D[1][j];
-        		sp[2] = tr_xyz2D[2][j];
-        		sq[0] = tr_q2D[0][j];
-        		sq[1] = tr_q2D[1][j];
-        		sq[2] = tr_q2D[2][j];      			
-	        	// sp[0] = tr_xyz[3*j]; //s_particle_position[0][j];
-	        	// sp[1] = tr_xyz[3*j+1]; //s_particle_position[1][j];
-	        	// sp[2] = tr_xyz[3*j+2]; //s_particle_position[2][j];
-	        	// sq[0] = tr_q[3*j]; //s_particle_normal[0][j];
-	        	// sq[1] = tr_q[3*j+1]; //s_particle_normal[1][j];
-	        	// sq[2] = tr_q[3*j+2]; //s_particle_normal[2][j];
-	        	
-	        	r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
+        		r[0] = x[j];
+        		r[1] = y[j];
+        		r[2] = z[j];
+        		v[0] = tr_q2D[0][j];
+        		v[1] = tr_q2D[1][j];
+        		v[2] = tr_q2D[2][j];      			
+
+	        	r_s[0] = r[0]-tarxyz[0]; r_s[1] = r[1]-tarxyz[1]; r_s[2] = r[2]-tarxyz[2];
 				sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
 	        	rs = sqrt(sumrs);
 	        	irs = 1.0/rs;
@@ -451,8 +428,8 @@ int *psolve(double *z, double *r) {
 	        	exp_kappa_rs = exp(-kappa_rs);
 	        	Gk = exp_kappa_rs * G0;
 	        	
-	        	cos_theta  = (sq[0]*r_s[0] + sq[1]*r_s[1] + sq[2]*r_s[2]) * irs;
-	        	cos_theta0 = (tq[0]*r_s[0] + tq[1]*r_s[1] + tq[2]*r_s[2]) * irs;
+	        	cos_theta  = (v[0]*r_s[0] + v[1]*r_s[1] + v[2]*r_s[2]) * irs;
+	        	cos_theta0 = (tarcha[0]*r_s[0] + tarcha[1]*r_s[1] + tarcha[2]*r_s[2]) * irs;
 	        	tp1 = G0* irs;
 	        	tp2 = (1.0 + kappa_rs) * exp_kappa_rs;
 		
@@ -462,20 +439,20 @@ int *psolve(double *z, double *r) {
 	        	G1 = cos_theta * tp1;
 	        	G2 = tp2 * G1;
 			
-	        	dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
+	        	dot_tqsq = tarcha[0]*v[0] + tarcha[1]*v[1] + tarcha[2]*v[2];
 	        	G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
 	        	G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
-	        	area = tr_area[j];
 		
 	        	L1 = G1 - eps*G2;
 	        	L2 = G0 - Gk;
 	        	L3 = G4 - G3;
 	        	L4 = G10 - G20/eps;
 		
-	        	matrixA[i-ibeg][j-ibeg] = -L1*area;
-	        	matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
-	        	matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
-	        	matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
+	        	matrixA[i-ibeg][j-ibeg] = -L1*tr_area[j];
+	        	matrixA[i-ibeg][j+nrow-ibeg] = -L2*tr_area[j];
+	        	matrixA[i+nrow-ibeg][j-ibeg] = -L3*tr_area[j];
+	        	matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*tr_area[j];
+	        	//yang checkup
       		}
     	}
 
@@ -488,60 +465,52 @@ int *psolve(double *z, double *r) {
     	lu_solve( matrixA, nrow2, ipiv, rhs );
 
     	for ( i = 0; i < nrow; i++) {
-      		z[i+ibeg] = rhs[i];
-      		z[i+ibeg+s_numpars] = rhs[i+nrow];
+      		z[i+ibeg] = r2s[i];
+      		z[i+ibeg+N] = r2s[i+nrow];
     	}
 
     	//printf("%d %d %d %d\n", idx, ibeg, iend, nrow);
 
-    	idx += nrow;
+    	idx = iend+1;
 
   	}
   	// free_matrix(matrixA);
 
-    for(i=0;i<2*s_max_per_leaf;i++) {
+    for(i=0;i<2*nrow;i++) {
 		free(matrixA[i]);
 	}	
 	free(matrixA);
 
-  	free_vector(rhs);
-  	free_vector(ipiv);
+  	free(r2s);
+  	free(ipiv);
 
-  	// for ( i = 0; i < s_numpars; i++) {
-  	//   z[i] = r[i]/pre1;
-  	//   z[i+s_numpars] = r[i+s_numpars]/pre2;
-  	// }
-  	// finish_p = clock();
-  	// total_p = (double)(finish_p - start_p);
-  	// printf("psolve time is %f\n", total_p);
   	return 0;
 
 }
 
 
 
-
-// int Setup(double *xyzminmax) {
-int Setup(double *x, double *y, double *z, double *q, double xyz_limits[6]) {
+int Setup(double *x, double *y, double *z, double *q, int numpars, int order, int iflag, double *xyzminmax) {
 /*	the smallest box containing the particles is determined. The particle
 	postions and charges are copied so that they can be restored upon exit.
 */
 
 	int i;
 	// find bounds of Cartesian box enclosing the particles 
-	xyzminmax[0] = MinVal(x,s_numpars);
-	xyzminmax[1] = MaxVal(x,s_numpars);
-	xyzminmax[2] = MinVal(y,s_numpars);
-	xyzminmax[3] = MaxVal(y,s_numpars);
-	xyzminmax[4] = MinVal(z,s_numpars);
-	xyzminmax[5] = MaxVal(z,s_numpars);
+	xyzminmax[0] = MinVal(x,numpars);
+	xyzminmax[1] = MaxVal(x,numpars);
+	xyzminmax[2] = MinVal(y,numpars);
+	xyzminmax[3] = MaxVal(y,numpars);
+	xyzminmax[4] = MinVal(z,numpars);
+	xyzminmax[5] = MaxVal(z,numpars);
 
    // if ((orderarr=(int *) malloc(numpars*sizeof(int)))==NULL) {
 	// 	printf("Error allocating copy variables!");
 	// }
-   	make_vector(s_order_arr, s_numpars);
-	for (i=0; i<s_numpars; i++) {
-		s_order_arr[i] = i;
+	double *orderarr;
+   	make_vector(orderarr, numpars);
+	for (i=0; i<numpars; i++) {
+		orderarr[i] = i;
 	}
 	return 0;
 }
