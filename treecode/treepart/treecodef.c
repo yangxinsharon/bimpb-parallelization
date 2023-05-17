@@ -319,7 +319,9 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 int *psolve(double *z, double *r) {
 /* r as original while z as scaled */
 
+	int Nt2, N;
   	int i, j, idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
+  	int matidx1, matidx2, matidx3, matidx4;
   	int *ipiv, inc;
   	// double **matrixA; 
   	double *rhs;
@@ -331,6 +333,8 @@ int *psolve(double *z, double *r) {
   	double G10, G20, G1, G2, G3, G4;
   	double pre1, pre2;
 	
+
+	N = Nt2/2;
   	pre1 = 0.5*(1.0+eps);
   	pre2 = 0.5*(1.0+1.0/eps);
 
@@ -513,26 +517,20 @@ int *psolve(double *z, double *r) {
 
 
 
-// int s_Setup(double *xyzminmax) {
-int s_Setup(double xyz_limits[6]) {
+// int Setup(double *xyzminmax) {
+int Setup(double *x, double *y, double *z, double *q, double xyz_limits[6]) {
 /*	the smallest box containing the particles is determined. The particle
 	postions and charges are copied so that they can be restored upon exit.
 */
 
 	int i;
 	// find bounds of Cartesian box enclosing the particles 
-	xyz_limits[0] = MinVal(tr_xyz2D[0],s_numpars);
-	xyz_limits[1] = MaxVal(tr_xyz2D[0],s_numpars);
-	xyz_limits[2] = MinVal(tr_xyz2D[1],s_numpars);
-	xyz_limits[3] = MaxVal(tr_xyz2D[1],s_numpars);
-	xyz_limits[4] = MinVal(tr_xyz2D[2],s_numpars);
-	xyz_limits[5] = MaxVal(tr_xyz2D[2],s_numpars);
-	// xyzminmax[0] = MinVal(x,s_numpars);
-	// xyzminmax[1] = MaxVal(x,s_numpars);
-	// xyzminmax[2] = MinVal(y,s_numpars);
-	// xyzminmax[3] = MaxVal(y,s_numpars);
-	// xyzminmax[4] = MinVal(z,s_numpars);
-	// xyzminmax[5] = MaxVal(z,s_numpars);
+	xyzminmax[0] = MinVal(x,s_numpars);
+	xyzminmax[1] = MaxVal(x,s_numpars);
+	xyzminmax[2] = MinVal(y,s_numpars);
+	xyzminmax[3] = MaxVal(y,s_numpars);
+	xyzminmax[4] = MinVal(z,s_numpars);
+	xyzminmax[5] = MaxVal(z,s_numpars);
 
    // if ((orderarr=(int *) malloc(numpars*sizeof(int)))==NULL) {
 	// 	printf("Error allocating copy variables!");
@@ -547,163 +545,38 @@ int s_Setup(double xyz_limits[6]) {
 
 
 // Node P is input, which contains particles indexed from IBEG to IEND.
-//fortran
-// int create_tree(TreeNode *p, int ibeg, int iend, double *x, double *y, double *z, double *q, 
-// 	int maxparnode, double xyzmm[6], int level, int numpars) {
-// 	/*CREATE_TREE recursively create the tree structure. Node P is
-// 	input, which contains particles indexed from IBEG to IEND. After
-// 	the node parameters are set, subdivision occurs if IEND-IBEG+1 > MAXPARNODE.
-// 	Real array XYZMM contains the min and max values of the coordinates
-// 	of the particle in P, thus defining the box.*/
 
-// 	// local variables
-// 	double x_mid, y_mid, z_mid, xl, yl, zl, lmax, t1, t2, t3;
-// 	int ind[8][2]={0};
-// 	double xyzmms[6][8];
-// 	int i, j, limin, limax, err, loclev, numposchild;
-// 	double lxyzmm[6];
+int CreateTree(TreeNode *p, int ibeg, int iend, double *x, double *y, double *z, double *q, 
+	int maxparnode, double xyzmm[6], int level, int numpars) {
+	/*CREATE_TREE recursively create the tree structure. Node P is
+	input, which contains particles indexed from IBEG to IEND. After
+	the node parameters are set, subdivision occurs if IEND-IBEG+1 > MAXPARNODE.
+	Real array XYZMM contains the min and max values of the coordinates
+	of the particle in P, thus defining the box.*/
 
-// 	// allocate pointer
+	// local variables
+	double x_mid, y_mid, z_mid, xl, yl, zl, lmax, t1, t2, t3;
+	int ind[8][2];
+	double xyzmms[6][8];
+	int i, j, limin, limax, err, loclev, numposchild;
+	double lxyzmm[6];
+
+
 	
-// 	// set node fields: number of particle, exist_ms and xyz bounds
-// 	p->numpar = iend-ibeg+1;
-// 	p->exist_ms = 0;
-//    	p->x_min = xyzmm[0];
-//    	p->x_max = xyzmm[1];
-// 	p->y_min = xyzmm[2];
-//    	p->y_max = xyzmm[3];
-//    	p->z_min = xyzmm[4];
-//    	p->z_max = xyzmm[5];
-// 	// compute aspect ratio
-//    	xl = p->x_max - p->x_min;
-//    	yl = p->y_max - p->y_min;
-//    	zl = p->z_max - p->z_min;
+	// set node fields: number of particle, exist_ms and xyz bounds
+	p->numpar = iend-ibeg+1;
+	p->exist_ms = 0;
+   	p->x_min = xyzmm[0];
+   	p->x_max = xyzmm[1];
+	p->y_min = xyzmm[2];
+   	p->y_max = xyzmm[3];
+   	p->z_min = xyzmm[4];
+   	p->z_max = xyzmm[5];
+	// compute aspect ratio
+   	xl = p->x_max - p->x_min;
+   	yl = p->y_max - p->y_min;
+   	zl = p->z_max - p->z_min;
 
-
-//     lmax = xl;
-//     if (lmax < yl) lmax = yl;
-//     if (lmax < zl) lmax = zl;
-
-//     t1 = lmax;
-//     t2 = xl;
-//     if (t2 > yl) t2 = yl;
-//     if (t2 > zl) t2 = zl;
-
-//     if (t2 != 0.0) {
-//         p->aspect = t1/t2;
-//     } else {
-//         p->aspect = 0.0;
-//     }
-
-// 	// midpoint coordinates , RADIUS and SQRADIUS
-// 	p->x_mid = (p->x_max + p->x_min) / 2.0;
-//    	p->y_mid = (p->y_max + p->y_min) / 2.0;
-//    	p->z_mid = (p->z_max + p->z_min) / 2.0;
-//    	t1 = p->x_max-p->x_mid;
-//    	t2 = p->y_max-p->y_mid;
-//    	t3 = p->z_max-p->z_mid;
-//    	p->radius = sqrt(t1*t1+t2*t2+t3*t3);
-// 	// set particle limits, tree level of node, and nullify children pointers
-//    	p->ibeg = ibeg;
-//    	p->iend = iend;
-//    	p->level = level;
-
-//    	if (s_max_level < level) {
-//    	   s_max_level = level;
-//    	}
-
-//    	p->num_children = 0;
-
-//    	make_vector(p->child, 8);
-//    	for(i=0; i<8; i++) {
-//    	    p->child[i] = (TreeNode*)calloc(1, sizeof(TreeNode));
-//    	}
-
-
-//    	if (p->numpar > s_max_per_leaf) {
-// 		// set IND array to 0 and then call PARTITION routine.  IND array holds indices
-// 		// of the eight new subregions. Also, setup XYZMMS array in case SHRINK=1
-//    		xyzmms[0][0] = p->x_min;
-//    		xyzmms[1][0] = p->x_max;
-//    		xyzmms[2][0] = p->y_min;
-//    		xyzmms[3][0] = p->y_max;
-//    		xyzmms[4][0] = p->z_min;
-//    		xyzmms[5][0] = p->z_max;
-
-//    		for (i = 0; i < 8; i++) {
-//             ind[i][0] = 0;
-//             ind[i][1] = 0;
-//         }
-
-//    		ind[0][0] = ibeg;
-//    		ind[0][1] = iend;
-//    		x_mid = P->x_mid;
-//    		y_mid = P->y_mid;
-//    		z_mid = P->z_mid;
-// 		partition_8(x,y,z,q,xyzmms,xl,yl,zl,lmax,&numposchild, x_mid,y_mid,z_mid,ind,numpars)	
-// 	}
-
-// 	// Shrink the box
-// 	// if (1==2){
-// 	// 	for (i=0; i<8; i++){
-// 	// 		if (ind[i][0]<ind[i][1]) {
-//     //             xyzmms[0][i] = minval(x[ind[i][0]:ind[i][1]])
-//     //             xyzmms[1][i] = maxval(x[ind[i][0]:ind[i][1]])
-//     //             xyzmms[2][i] = minval(y[ind[i][0]:ind[i][1]])
-//     //             xyzmms[3][i] = maxval(y[ind[i][0]:ind[i][1]])
-//     //             xyzmms[4][i] = minval(z[ind[i][0]:ind[i][1]])
-//     //             xyzmms[5][i] = maxval(z[ind[i][0]:ind[i][1]])
-// 	// 		}
-// 	// 	}
-// 	// }
-
-// 	// create children if indicated and store info in parent
-// 	loclev = level + 1;
-// 	for (i=0; i<numposchild; i++) {
-// 		if (ind[i][0] < ind[0][1]) {
-// 			p->num_children = p->num_children + 1;
-// 			for (j=0; i<6; j++){
-// 				lxyzmm[j] = xyzmms[j][i];
-// 			}
-// 			create_tree(P->child[p->num_children-1]->p_to_tnode,ind[i][0], ind[i][1], 
-// 				x, y, z, q, maxparnode, lxyzmm, loclev, numpars)
-// 		}
-// 	}
-
-
-// }
-
-/********************************************************/
-int s_CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6], int level)
-{
-/*CREATE_TREE recursively create the tree structure. Node P is
-  input, which contains particles indexed from IBEG to IEND. After
-  the node parameters are set subdivision occurs if IEND-IBEG+1 > s_max_per_leaf.
-  Real array XYZMM contains the min and max values of the coordinates
-  of the particle in P, thus defining the box. */
-
-  /* local variables */
-    double x_mid, y_mid, z_mid, xl, yl, zl, lmax, t1, t2, t3;
-    int ind[8][2];
-    double xyzmms[6][8];
-    int i, j, loclev, numposchild;
-    double lxyzmm[6];
-
-/* set node fields: number of particles, exist_ms and xyz bounds */
-    p->numpar = iend-ibeg+1;
-    p->exist_ms = 0;
-
-    p->x_min = xyzmm[0];
-    p->x_max = xyzmm[1];
-    p->y_min = xyzmm[2];
-    p->y_max = xyzmm[3];
-    p->z_min = xyzmm[4];
-    p->z_max = xyzmm[5];
-
-/* compute aspect ratio */
-    xl = p->x_max-p->x_min;
-    yl = p->y_max-p->y_min;
-    zl = p->z_max-p->z_min;
 
     lmax = xl;
     if (lmax < yl) lmax = yl;
@@ -720,223 +593,146 @@ int s_CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6], int level)
         p->aspect = 0.0;
     }
 
-/* midpoint coordinates, RADIUS and SQRADIUS */
-    p->x_mid = (p->x_max + p->x_min) / 2.0;
-    p->y_mid = (p->y_max + p->y_min) / 2.0;
-    p->z_mid = (p->z_max + p->z_min) / 2.0;
-    t1 = p->x_max - p->x_mid;
-    t2 = p->y_max - p->y_mid;
-    t3 = p->z_max - p->z_mid;
-    p->radius = sqrt(t1*t1 + t2*t2 + t3*t3);
+	// midpoint coordinates , RADIUS and SQRADIUS
+	p->x_mid = (p->x_max + p->x_min) / 2.0;
+   	p->y_mid = (p->y_max + p->y_min) / 2.0;
+   	p->z_mid = (p->z_max + p->z_min) / 2.0;
+   	t1 = p->x_max-p->x_mid;
+   	t2 = p->y_max-p->y_mid;
+   	t3 = p->z_max-p->z_mid;
+   	p->radius = sqrt(t1*t1+t2*t2+t3*t3);
+	// set particle limits, tree level of node, and nullify children pointers
+   	p->ibeg = ibeg;
+   	p->iend = iend;
+   	p->level = level;
 
-/* set particle limits, tree level of node, and nullify children pointers */
-    p->ibeg = ibeg;
-    p->iend = iend;
-    p->level = level;
+   	if (s_max_level < level) {
+   	   s_max_level = level;
+   	}
 
-    if (s_max_level < level) s_max_level = level;
+   	p->num_children = 0;
 
-    p->num_children = 0;
-
-    make_vector(p->child, 8);
-    for (i = 0; i < 8; i++) {
-        p->child[i] = (TreeNode*)calloc(1, sizeof(TreeNode));
-    }
+   	make_vector(p->child, 8);
+   	for(i=0; i<8; i++) {
+   	    p->child[i] = (TreeNode*)calloc(1, sizeof(TreeNode));
+   	}
 
 
-    if (p->numpar > s_max_per_leaf) {
-/* set IND array to 0 and then call PARTITION routine. IND array holds indices
- * of the eight new subregions. Also, setup XYZMMS array in case SHRINK=1 */
+   	if (p->numpar > maxparnode) {
+		// set IND array to 0 and then call PARTITION routine.  IND array holds indices
+		// of the eight new subregions. Also, setup XYZMMS array in case SHRINK=1
+   		xyzmms[0][0] = p->x_min;
+   		xyzmms[1][0] = p->x_max;
+   		xyzmms[2][0] = p->y_min;
+   		xyzmms[3][0] = p->y_max;
+   		xyzmms[4][0] = p->z_min;
+   		xyzmms[5][0] = p->z_max;
 
-        xyzmms[0][0] = p->x_min;
-        xyzmms[1][0] = p->x_max;
-        xyzmms[2][0] = p->y_min;
-        xyzmms[3][0] = p->y_max;
-        xyzmms[4][0] = p->z_min;
-        xyzmms[5][0] = p->z_max;
-
-        for (i = 0; i < 8; i++) {
+   		for (i = 0; i < 8; i++) {
             ind[i][0] = 0;
             ind[i][1] = 0;
         }
 
-        ind[0][0] = ibeg;
-        ind[0][1] = iend;
-        x_mid = p->x_mid;
-        y_mid = p->y_mid;
-        z_mid = p->z_mid;
+   		ind[0][0] = ibeg;
+   		ind[0][1] = iend;
+   		x_mid = P->x_mid;
+   		y_mid = P->y_mid;
+   		z_mid = P->z_mid;
+		PartitionEight(x,y,z,q,xyzmms,xl,yl,zl,lmax,&numposchild, x_mid,y_mid,z_mid,ind,numpars);
 
-        numposchild = s_PartitionEight(xyzmms, xl, yl, zl, lmax,
-                                       x_mid, y_mid, z_mid, ind);
+		for (i=0; i<8; i++){
+			if (ind[i][0]<ind[i][1]) {
+                xyzmms[0][i] = MinVal(x[0][ind[i][0]], ind[i][1]-ind[i][0]);
+                xyzmms[1][i] = MaxVal(x[0][ind[i][0]], ind[i][1]-ind[i][0]);
+                xyzmms[2][i] = MinVal(y[1][ind[i][0]], ind[i][1]-ind[i][0]);
+                xyzmms[3][i] = MaxVal(y[1][ind[i][0]], ind[i][1]-ind[i][0]);
+                xyzmms[4][i] = MinVal(z[2][ind[i][0]], ind[i][1]-ind[i][0]);
+                xyzmms[5][i] = MaxVal(z[2][ind[i][0]], ind[i][1]-ind[i][0]);
+			}
+		}
 
-/* Shrink the box */
-        for (i = 0; i < 8; i++) {
-            if (ind[i][0] < ind[i][1]) {
-                xyzmms[0][i] = MinVal(&tr_xyz2D[0][ind[i][0]], ind[i][1]-ind[i][0]);
-                xyzmms[1][i] = MaxVal(&tr_xyz2D[0][ind[i][0]], ind[i][1]-ind[i][0]);
-                xyzmms[2][i] = MinVal(&tr_xyz2D[1][ind[i][0]], ind[i][1]-ind[i][0]);
-                xyzmms[3][i] = MaxVal(&tr_xyz2D[1][ind[i][0]], ind[i][1]-ind[i][0]);
-                xyzmms[4][i] = MinVal(&tr_xyz2D[2][ind[i][0]], ind[i][1]-ind[i][0]);
-                xyzmms[5][i] = MaxVal(&tr_xyz2D[2][ind[i][0]], ind[i][1]-ind[i][0]);
-            }
+
+		// create children if indicated and store info in parent
+		loclev = level + 1;
+		for (i=0; i<numposchild; i++) {
+			if (ind[i][0] < ind[0][1]) {
+				p->num_children = p->num_children + 1;
+				for (j=0; i<6; j++){
+					lxyzmm[j] = xyzmms[j][i];
+				}
+				CreateTree(p->child[p->num_children-1]->p_to_tnode,ind[i][0], ind[i][1], 
+					x, y, z, q, maxparnode, lxyzmm, loclev, numpars);
+			}
+		}	
+	} else {
+		if (level < minlevel) {
+            minlevel = level;
         }
-/* create children if indicated and store info in parent */
-        loclev = level + 1;
-
-        for (i = 0; i < numposchild; i++) {
-            if (ind[i][0] <= ind[i][1]) {
-                p->num_children = p->num_children + 1;
-                for (j = 0; j < 6; j++) {
-                    lxyzmm[j] = xyzmms[j][i];
-                }
-                s_CreateTree(p->child[p->num_children-1],
-                             ind[i][0], ind[i][1], lxyzmm, loclev);
-            }
-        }
-    } else {
-        if (level < s_min_level) {
-            s_min_level = level;
-        }
-    }
-
-    return 0;
+	}
 }
+
+
 /**********************************************************/
-
-
-
-// int partition_8(double *x,double *y,double *z,double *q,double *xyzmms[8],
-// 	double xl,double yl,double zl,double lmax,int *numposchild,
-// 	double x_mid, double y_mid,double z_mid,int *ind[2],int numpars) {
-// 	/* PARTITION_8 determines the particle indices of the eight sub boxes 
-// 	containing the particles after the box defined by particles I_BEG
-// 	to I_END is divided by its midpoints in each coordinate direction. */
+int PartitionEight(double *x, double *y, double *z, double *q, double **xyzmms,
+	double xl, double yl, double zl, double lmax, int *numposchild,
+	double x_mid, double y_mid, double z_mid, int **ind, int numpars) {
+	/* PARTITION_8 determines the particle indices of the eight sub boxes 
+	containing the particles after the box defined by particles I_BEG
+	to I_END is divided by its midpoints in each coordinate direction. */
 	
-// 	int temp_ind, i;
-// 	double critlen;
+	int temp_ind, i;
+	double critlen;
 
-// 	numposchild = 1;
-// 	critlen = lmax/sqrt(2.0);
+	numposchild = 1;
+	critlen = lmax/sqrt(2.0);
 
-// 	if (xl >= critlen) {
-// 		temp_ind = partition(x,y,z,q,orderarr,ind[0][0],ind[0][1],x_mid);
-//         ind[1][0] = temp_ind+1;
-//         ind[1][1] = ind[0][1];
-//         ind[0][1] = temp_ind;
-//         for (i=0; i<6; i++) {
-//         	xyzmms[i][1]=xyzmms[i][0];
-//         }
-//         xyzmms[1][0]=x_mid;
-//         xyzmms[0][1]=x_mid;
-//         numposchild=2*numposchild;
-// 	}
-
-// 	if (yl >= critlen) {
-// 		for (i=0; i<numposchild; i++){
-
-// 			partition(x,y,z,q,orderarr,ind[i][0],ind[i][1],y_mid,&temp_ind,numpars);
-//         	ind[numposchild+i][0] = temp_ind+1;
-//         	ind[numposchild+i][1] = ind[i][1];
-//         	ind[i][1] = temp_ind;
-//         	for (j=0; j<6;j++){
-//         		xyzmms[j][numposchild+i] = xyzmms[j][i]
-//         	}
-//         	xyzmms[3][i] = y_mid;
-//         	xyzmms[2][numposchild+i] = y_mid;
-        	
-//         	numposchild = 2*numposchild;
-//         }
-// 	}
-
-// 	if (zl >= critlen) {
-// 		for (i=0; i<numposchild; i++){
-// 			partition(z,x,y,q,orderarr,ind[i][0],ind[i][1],z_mid,&temp_ind,numpars);
-//             ind[numposchild+i][0] = temp_ind+1;
-//             ind[numposchild+i][1] = ind[i][1];
-//             ind[i][1]=temp_ind;
-//             for (j=0; j<6;j++){
-//             	xyzmms[j][numposchild+i] = xyzmms[j][i];
-//             }
-//             xyzmms[5][i] = z_mid;
-//             xyzmms[4][numposchild+i] = z_mid;
-// 		}
-// 		numposchild = 2* numposchild;
-// 	}
-
-
-// }
-
-/********************************************************/
-static int s_PartitionEight(double xyzmms[6][8], double xl, double yl, 
-	double zl, double lmax, double x_mid, double y_mid, double z_mid, int ind[8][2]) {
-/* PARTITION_8 determines the particle indices of the eight sub boxes
- * containing the particles after the box defined by particles I_BEG
- * to I_END is divided by its midpoints in each coordinate direction.
- * The determination of the indices is accomplished by the subroutine
- * PARTITION. A box is divided in a coordinate direction as long as the
- * resulting aspect ratio is not too large. This avoids the creation of
- * "narrow" boxes in which Talyor expansions may become inefficient.
- * On exit the INTEGER array IND (dimension 8 x 2) contains
- * the indice limits of each new box (node) and NUMPOSCHILD the number
- * of possible children.  If IND(J,1) > IND(J,2) for a given J this indicates
- * that box J is empty.*/
-    int temp_ind, i, j;
-    double critlen;
-    int numposchild;
-
-    numposchild = 1;
-    critlen = lmax/sqrt(2.0);
-
-
-    if (xl >= critlen) {
-        temp_ind = Partition(tr_xyz2D[0],tr_xyz2D[1],tr_xyz2D[2], s_order_arr, ind[0][0], ind[0][1], x_mid);
+	if (xl >= critlen) {
+		Partition(x,y,z,q,orderarr,ind[0][0],ind[0][1],x_mid,&temp_ind,numpars);
         ind[1][0] = temp_ind+1;
         ind[1][1] = ind[0][1];
         ind[0][1] = temp_ind;
-        for (i = 0; i < 6; i++) {
-            xyzmms[i][1] = xyzmms[i][0];
+        for (i=0; i<6; i++) {
+        	xyzmms[i][1]=xyzmms[i][0];
         }
-        xyzmms[1][0] = x_mid;
-        xyzmms[0][1] = x_mid;
-        numposchild *= 2;
-    }
+        xyzmms[1][0]=x_mid;
+        xyzmms[0][1]=x_mid;
+        numposchild=2*numposchild;
+	}
 
-    if (yl >= critlen) {
-        for (i = 0; i < numposchild; i++) {
-            temp_ind = Partition(tr_xyz2D[1],tr_xyz2D[0],tr_xyz2D[2], s_order_arr, ind[i][0], ind[i][1], y_mid);
+	if (yl >= critlen) {
+		for (i=0; i<numposchild; i++){
+			Partition(y,x,z,q,orderarr,ind[i][0],ind[i][1],y_mid,&temp_ind,numpars);
+        	ind[numposchild+i][0] = temp_ind+1;
+        	ind[numposchild+i][1] = ind[i][1];
+        	ind[i][1] = temp_ind;
+        	for (j=0; j<6;j++){
+        		xyzmms[j][numposchild+i] = xyzmms[j][i];
+        	}
+        	xyzmms[3][i] = y_mid;
+        	xyzmms[2][numposchild+i] = y_mid;
+        }
+        numposchild = 2*numposchild;
+	}
+
+	if (zl >= critlen) {
+		for (i=0; i<numposchild; i++){
+			Partition(z,x,y,q,orderarr,ind[i][0],ind[i][1],z_mid,&temp_ind,numpars);
             ind[numposchild+i][0] = temp_ind+1;
             ind[numposchild+i][1] = ind[i][1];
-            ind[i][1] = temp_ind;
-            for (j = 0; j < 6; j++) {
-                xyzmms[j][numposchild+i] = xyzmms[j][i];
-            }
-            xyzmms[3][i] = y_mid;
-            xyzmms[2][numposchild+i] = y_mid;
-        }
-        numposchild *= 2;
-    }
-
-    if (zl >= critlen) {
-        for (i = 0; i < numposchild; i++) {
-            temp_ind = Partition(tr_xyz2D[2],tr_xyz2D[0],tr_xyz2D[1], s_order_arr, ind[i][0], ind[i][1], z_mid);
-            ind[numposchild+i][0] = temp_ind+1;
-            ind[numposchild+i][1] = ind[i][1];
-            ind[i][1] = temp_ind;
-            for (j = 0; j < 6; j++) {
-                xyzmms[j][numposchild+i] = xyzmms[j][i];
+            ind[i][1]=temp_ind;
+            for (j=0; j<6;j++){
+            	xyzmms[j][numposchild+i] = xyzmms[j][i];
             }
             xyzmms[5][i] = z_mid;
             xyzmms[4][numposchild+i] = z_mid;
-        }
-        numposchild *= 2;
-    }
-
-    return (numposchild);
+		}
+		numposchild = 2* numposchild;
+	}
 }
 
-
-int Partition(double *a, double *b, double *c, int *indarr,
-	int ibeg, int iend, double val) {
+/********************************************************/
+int Partition(double *a, double *b, double *c, double *q, int *indarr,
+	int ibeg, int iend, double val, int *midind, int numpars) {
 	/* PARTITION determines the index MIDIND, after partitioning
 	in place the arrays A,B,C and Q, such that
 	A(IBEG:MIDIND) <= VAL and  A(MIDIND+1:IEND) > VAL.
@@ -944,9 +740,8 @@ int Partition(double *a, double *b, double *c, int *indarr,
 	is returned as IBEG-1.*/
 
 	// local variables 
-	double ta, tb, tc;
+	double ta, tb, tc, tq;
 	int lower, upper, tind;
-	int midind;
 
 	if (ibeg < iend) {
 
@@ -954,6 +749,7 @@ int Partition(double *a, double *b, double *c, int *indarr,
 		ta = a[ibeg];
       	tb = b[ibeg];
       	tc = c[ibeg];
+      	tq = q[ibeg];
       	tind = indarr[ibeg];
       	a[ibeg] = val;
       	upper = ibeg;
@@ -967,7 +763,8 @@ int Partition(double *a, double *b, double *c, int *indarr,
         		a[upper] = a[lower];
             	b[upper] = b[lower];
             	c[upper] = c[lower];
-            indarr[upper] = indarr[lower];
+            	q[upper] = q[lower];
+            	indarr[upper] = indarr[lower];
         	}
         	while ((upper < lower) && (val >= a[upper])) {	
         		upper = upper + 1;
@@ -976,6 +773,7 @@ int Partition(double *a, double *b, double *c, int *indarr,
         		a[lower] = a[upper];
          		b[lower] = b[upper];
             	c[lower] = c[upper];
+            	q[lower] = q[upper];
             	indarr[lower] = indarr[upper];
         	}
     	}
@@ -988,6 +786,7 @@ int Partition(double *a, double *b, double *c, int *indarr,
       	a[upper] = ta;
       	b[upper] = tb;
       	c[upper] = tc;
+      	q[upper] = tq;
       	indarr[upper] = tind;
    	}
 
@@ -1002,5 +801,5 @@ int Partition(double *a, double *b, double *c, int *indarr,
    	else {
     	midind = ibeg -1;
    	}
-   	return (midind); 
+   	return 0; 
 }

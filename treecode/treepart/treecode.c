@@ -9,7 +9,6 @@
 
 
 #include "utilities.h"
-
 #include "global_params.h"
 #include "array.h"
 #include "tree_node_struct.h"
@@ -38,15 +37,11 @@ extern double eps;
 extern double bulk_strength;  	
 extern double kappa2;	
 extern double kappa;
-extern double **tr_xyz2D, **tr_q2D, **temp_normal, **temp_position, **matrixA;
+extern double **tr_xyz2D, **tr_q2D;//, **temp_normal, **temp_position, **matrixA;
 extern int maxparnode;
 extern int order;
+extern double theta;
 
-/* runtime treecode parameters */
-static int s_numpars;
-static int s_order;
-static int s_max_per_leaf;
-static double theta;
 
 /* variables for tracking tree information */
 static int s_min_level;
@@ -75,62 +70,59 @@ int TreecodeInitialization() {
 
     /* variables needed for reorder */
     double *temp_area, *temp_source;
-    // double **temp_normal;
-    // temp_normal=Make2DDoubleArray(3,nface,"temp_normal");
+    double **temp_normal;
 
     double xyz_limits[6];
     printf("\nInitializing treecode...\n");
 
     /* setting variables global to file */
-    s_numpars = nface;
-    s_order = order;
-    s_max_per_leaf = maxparnode;
-
+    // s_order = order;
     s_min_level = 50000;
     s_max_level = 0;
 
     level = 0;
 
     // make_matrix(temp_normal, 3, s_numpars);
-    temp_normal=Make2DDoubleArray(3,s_numpars,"temp_normal");
-    make_vector(temp_area, s_numpars);
-    make_vector(temp_source, 2 * s_numpars);
+    // make_vector(temp_area, nface);
+    // make_vector(temp_source, 2 * nface);
+    temp_normal = Make2DDoubleArray(3,nface,"temp_normal");
+    temp_area=(double *) calloc(nface, sizeof(double));
+    temp_source=(double *) calloc(2*nface, sizeof(double));
 
 
-	// double *xyzminmax;
-	// xyzminmax = (double*)calloc(6,sizeof(double));
-	// s_Setup(xyzminmax);
 	s_Setup(xyz_limits);
 	s_tree_root = (TreeNode*)calloc(1, sizeof(TreeNode));
 	
-	// s_CreateTree(s_tree_root, 0, s_numpars-1, xyzminmax, level);
-	s_CreateTree(s_tree_root, 0, s_numpars-1, xyz_limits, level);
+	// s_CreateTree(s_tree_root, 0, nface-1, xyzminmax, level);
+	s_CreateTree(s_tree_root, 0, nface-1, xyz_limits, level);
     printf("Created tree for %d particles with max %d per node.\n\n",
-           s_numpars, s_max_per_leaf);
+           nface, maxparnode);
 	
-    memcpy(temp_normal[0], tr_q2D[0], s_numpars*sizeof(double));
-    memcpy(temp_normal[1], tr_q2D[1], s_numpars*sizeof(double));
-    memcpy(temp_normal[2], tr_q2D[2], s_numpars*sizeof(double));
-    memcpy(temp_area, tr_area, s_numpars*sizeof(double));
-    memcpy(temp_source, bvct, 2*s_numpars*sizeof(double));
+    memcpy(temp_normal[0], tr_q2D[0], nface*sizeof(double));
+    memcpy(temp_normal[1], tr_q2D[1], nface*sizeof(double));
+    memcpy(temp_normal[2], tr_q2D[2], nface*sizeof(double));
+    memcpy(temp_area, tr_area, nface*sizeof(double));
+    memcpy(temp_source, bvct, 2*nface*sizeof(double));
 
-    for (i = 0; i < s_numpars; i++) {
+    for (i = 0; i < nface; i++) {
         tr_q2D[0][i]    	= temp_normal[0][s_order_arr[i]];
         tr_q2D[1][i]    	= temp_normal[1][s_order_arr[i]];
         tr_q2D[2][i]    	= temp_normal[2][s_order_arr[i]];
         tr_area[i]         	= temp_area[s_order_arr[i]];
         bvct[i]          	= temp_source[s_order_arr[i]];
-        bvct[i + s_numpars] = temp_source[s_order_arr[i] + s_numpars];
+        bvct[i + nface] = temp_source[s_order_arr[i] + nface];
     }
 
     // free_matrix(temp_normal);
+    // free_vector(temp_area);
+    // free_vector(temp_source);
 	for(i=0;i<3;i++) {
 		free(temp_normal[i]);
 	}	
 	free(temp_normal);
+	free(temp_area);
+	free(temp_source);
 
-    free_vector(temp_area);
-    free_vector(temp_source);
 
 	return 0;
 }
@@ -141,29 +133,32 @@ int TreecodeFinalization()
 
     int i;
     double *temp_area, *temp_source, *temp_xvct;
-    // double **temp_normal, **temp_position;
-    temp_normal=Make2DDoubleArray(3,s_numpars,"temp_normal");
-    temp_position=Make2DDoubleArray(3,s_numpars,"temp_position");
+    double **temp_normal, **temp_position;
 
 /***********reorder particles*************/
 
-    // make_matrix(temp_position, 3, s_numpars);
-    // make_matrix(temp_normal, 3, s_numpars);
-    make_vector(temp_area, s_numpars);
-    make_vector(temp_source, 2 * s_numpars);
-    make_vector(temp_xvct, 2 * s_numpars);
+    // make_matrix(temp_position, 3, nface);
+    // make_matrix(temp_normal, 3, nface);
+    // make_vector(temp_area, nface);
+    // make_vector(temp_source, 2 * nface);
+    // make_vector(temp_xvct, 2 * nface);
+    temp_position=Make2DDoubleArray(3,nface,"temp_position");
+    temp_normal=Make2DDoubleArray(3,nface,"temp_normal");
+    temp_area=(double *) calloc(nface, sizeof(double));
+    temp_source=(double *) calloc(2*nface, sizeof(double));
+    temp_xvct=(double *) calloc(2*nface, sizeof(double));
 
-    memcpy(temp_position[0], tr_xyz2D[0], s_numpars*sizeof(double));
-    memcpy(temp_position[1], tr_xyz2D[1], s_numpars*sizeof(double));
-    memcpy(temp_position[2], tr_xyz2D[2], s_numpars*sizeof(double));
-    memcpy(temp_normal[0], tr_q2D[0], s_numpars*sizeof(double));
-    memcpy(temp_normal[1], tr_q2D[1], s_numpars*sizeof(double));
-    memcpy(temp_normal[2], tr_q2D[2], s_numpars*sizeof(double));
-    memcpy(temp_area, tr_area, s_numpars*sizeof(double));
-    memcpy(temp_source, bvct, 2*s_numpars*sizeof(double));
-    memcpy(temp_xvct, xvct, 2*s_numpars*sizeof(double));
+    memcpy(temp_position[0], tr_xyz2D[0], nface*sizeof(double));
+    memcpy(temp_position[1], tr_xyz2D[1], nface*sizeof(double));
+    memcpy(temp_position[2], tr_xyz2D[2], nface*sizeof(double));
+    memcpy(temp_normal[0], tr_q2D[0], nface*sizeof(double));
+    memcpy(temp_normal[1], tr_q2D[1], nface*sizeof(double));
+    memcpy(temp_normal[2], tr_q2D[2], nface*sizeof(double));
+    memcpy(temp_area, tr_area, nface*sizeof(double));
+    memcpy(temp_source, bvct, 2*nface*sizeof(double));
+    memcpy(temp_xvct, xvct, 2*nface*sizeof(double));
 
-    for (i = 0; i < s_numpars; i++) {
+    for (i = 0; i < nface; i++) {
         tr_xyz2D[0][s_order_arr[i]]  = temp_position[0][i];
         tr_xyz2D[1][s_order_arr[i]]  = temp_position[1][i];
         tr_xyz2D[2][s_order_arr[i]]  = temp_position[2][i];
@@ -172,30 +167,33 @@ int TreecodeFinalization()
         tr_q2D[2][s_order_arr[i]]    = temp_normal[2][i];
         tr_area[s_order_arr[i]]      = temp_area[i];
         bvct[s_order_arr[i]] 		 = temp_source[i];
-        bvct[s_order_arr[i] + s_numpars] = temp_source[i + s_numpars];
+        bvct[s_order_arr[i] + nface] = temp_source[i + nface];
        	xvct[s_order_arr[i]]         = temp_xvct[i];
-        xvct[s_order_arr[i] + s_numpars] = temp_xvct[i + s_numpars];
+        xvct[s_order_arr[i] + nface] = temp_xvct[i + nface];
     }
 
     // free_matrix(temp_position);
     // free_matrix(temp_normal);
+    // free_vector(temp_area);
+    // free_vector(temp_source);
+    // free_vector(temp_xvct);
     for(i=0;i<3;i++) {
 		free(temp_position[i]);
-		free(temp_normal[i]);
 	}	
 	free(temp_position);
+    for(i=0;i<3;i++) {
+    	free(temp_normal[i]);
+    }
 	free(temp_normal);
 
-    free_vector(temp_area);
-    free_vector(temp_source);
-    free_vector(temp_xvct);
-
+    free(temp_area);
+    free(temp_source);
+    free(temp_xvct);
 
 /***********clean tree structure**********/
 
-    s_RemoveNode(s_tree_root);
+    RemoveNode(s_tree_root);
     free(s_tree_root);
-
 
     free_vector(s_order_arr);
 /*****************************************/
@@ -206,7 +204,7 @@ int TreecodeFinalization()
 }
 
 /********************************************************/
-static int s_RemoveNode(TreeNode *p)
+int RemoveNode(TreeNode *p)
 {
 /* REMOVE_NODE recursively removes each node from the
  * tree and deallocates its memory for MS array if it exits. */
@@ -214,7 +212,7 @@ static int s_RemoveNode(TreeNode *p)
 
     if (p->num_children > 0) {
         for (i = 0; i < 8; i++) {
-            s_RemoveNode(p->child[i]);
+            RemoveNode(p->child[i]);
             free(p->child[i]);
         }
         free(p->child);
@@ -326,7 +324,7 @@ int *psolve(double *z, double *r) {
 
   	int i, j, idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
   	int *ipiv, inc;
-  	// double **matrixA; 
+  	double **matrixA; 
   	double *rhs;
   	double L1, L2, L3, L4, area;
   	double tp[3], tq[3], sp[3], sq[3];
@@ -339,15 +337,16 @@ int *psolve(double *z, double *r) {
   	pre1 = 0.5*(1.0+eps);
   	pre2 = 0.5*(1.0+1.0/eps);
 
-  	// make_matrix(matrixA, 2*s_max_per_leaf, 2*s_max_per_leaf);
+  	// make_matrix(matrixA, 2*maxparnode, 2*maxparnode);
+  	// make_vector(ipiv, 2*maxparnode);
+  	// make_vector(rhs, 2*maxparnode);
+  	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
+	ipiv=(double *) calloc(2*maxparnode, sizeof(double));
+	rhs=(double *) calloc(2*maxparnode, sizeof(double));
+  	printf("maxparnode is %d\n", maxparnode);
 
-  	matrixA=Make2DDoubleArray(2*s_max_per_leaf, 2*s_max_per_leaf, "matrixA");
 
-  	printf("s_max_per_leaf is %d\n", s_max_per_leaf);
-  	make_vector(ipiv, 2*s_max_per_leaf);
-  	make_vector(rhs, 2*s_max_per_leaf);
-
-  	while ( idx < s_numpars ) {
+  	while ( idx < nface ) {
     	leaflength(s_tree_root, idx);
     	nrow  = Nrow;
     	nrow2 = nrow*2;
@@ -362,14 +361,6 @@ int *psolve(double *z, double *r) {
 			tq[1] = tr_q2D[1][i];
 			tq[2] = tr_q2D[2][i];
 
-	      	// tp[0] = tr_xyz[3*j]; 	
-	      	// tp[1] = tr_xyz[3*j+1]; 	
-	      	// tp[2] = tr_xyz[3*j+2]; 	
-      		// tq[0] = tr_q[3*j]; 		
-      		// tq[1] = tr_q[3*j+1]; 	
-      		// tq[2] = tr_q[3*j+2]; 	
-
-
       		for ( j = ibeg; j < i; j++ ) {
         		sp[0] = tr_xyz2D[0][j];
         		sp[1] = tr_xyz2D[1][j];
@@ -378,13 +369,6 @@ int *psolve(double *z, double *r) {
         		sq[1] = tr_q2D[1][j];
         		sq[2] = tr_q2D[2][j];    			
 				
-        		// sp[0] = tr_xyz[3*j]; //s_particle_position[0][j];
-        		// sp[1] = tr_xyz[3*j+1]; //s_particle_position[1][j];
-        		// sp[2] = tr_xyz[3*j+2]; //s_particle_position[2][j];
-        		// sq[0] = tr_q[3*j]; //s_particle_normal[0][j];
-        		// sq[1] = tr_q[3*j+1]; //s_particle_normal[1][j];
-        		// sq[2] = tr_q[3*j+2]; //s_particle_normal[2][j];
-
         		r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
         		sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
 
@@ -410,7 +394,7 @@ int *psolve(double *z, double *r) {
         		G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
         		G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
 		
-        		area = tr_area[j]; // s_particle_area[j];
+        		area = tr_area[j]; 
 		
         		L1 = G1 - eps*G2;
         		L2 = G0 - Gk;
@@ -433,13 +417,7 @@ int *psolve(double *z, double *r) {
         		sq[0] = tr_q2D[0][j];
         		sq[1] = tr_q2D[1][j];
         		sq[2] = tr_q2D[2][j];      			
-	        	// sp[0] = tr_xyz[3*j]; //s_particle_position[0][j];
-	        	// sp[1] = tr_xyz[3*j+1]; //s_particle_position[1][j];
-	        	// sp[2] = tr_xyz[3*j+2]; //s_particle_position[2][j];
-	        	// sq[0] = tr_q[3*j]; //s_particle_normal[0][j];
-	        	// sq[1] = tr_q[3*j+1]; //s_particle_normal[1][j];
-	        	// sq[2] = tr_q[3*j+2]; //s_particle_normal[2][j];
-	        	
+
 	        	r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
 				sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
 	        	rs = sqrt(sumrs);
@@ -479,7 +457,7 @@ int *psolve(double *z, double *r) {
 
     	for ( i = 0; i < nrow; i++) {
       		rhs[i] = r[i+ibeg];
-      		rhs[i+nrow] = r[i+ibeg+s_numpars];
+      		rhs[i+nrow] = r[i+ibeg+nface];
     	}
 
     	inc = lu_decomp( matrixA, nrow2, ipiv );
@@ -487,7 +465,7 @@ int *psolve(double *z, double *r) {
 
     	for ( i = 0; i < nrow; i++) {
       		z[i+ibeg] = rhs[i];
-      		z[i+ibeg+s_numpars] = rhs[i+nrow];
+      		z[i+ibeg+nface] = rhs[i+nrow];
     	}
 
     	//printf("%d %d %d %d\n", idx, ibeg, iend, nrow);
@@ -496,22 +474,22 @@ int *psolve(double *z, double *r) {
 
   	}
   	// free_matrix(matrixA);
+  	// free_vector(rhs);
+  	// free_vector(ipiv);
 
-    for(i=0;i<2*s_max_per_leaf;i++) {
+    for(i=0;i<2*maxparnode;i++) {
 		free(matrixA[i]);
 	}	
 	free(matrixA);
 
-  	free_vector(rhs);
-  	free_vector(ipiv);
+  	free(rhs);
+  	free(ipiv);
 
-  	// for ( i = 0; i < s_numpars; i++) {
+  	// for ( i = 0; i < nface; i++) {
   	//   z[i] = r[i]/pre1;
-  	//   z[i+s_numpars] = r[i+s_numpars]/pre2;
+  	//   z[i+nface] = r[i+nface]/pre2;
   	// }
-  	// finish_p = clock();
-  	// total_p = (double)(finish_p - start_p);
-  	// printf("psolve time is %f\n", total_p);
+
   	return 0;
 
 }
@@ -520,31 +498,25 @@ int *psolve(double *z, double *r) {
 
 /**********************************************************/
 // int s_Setup(double *xyzminmax) {
-int s_Setup(double xyz_limits[6]) {
+int Setup(double xyz_limits[6]) {
 /*	the smallest box containing the particles is determined. The particle
 	postions and charges are copied so that they can be restored upon exit.
 */
 
 	int i;
 	// find bounds of Cartesian box enclosing the particles 
-	xyz_limits[0] = MinVal(tr_xyz2D[0],s_numpars);
-	xyz_limits[1] = MaxVal(tr_xyz2D[0],s_numpars);
-	xyz_limits[2] = MinVal(tr_xyz2D[1],s_numpars);
-	xyz_limits[3] = MaxVal(tr_xyz2D[1],s_numpars);
-	xyz_limits[4] = MinVal(tr_xyz2D[2],s_numpars);
-	xyz_limits[5] = MaxVal(tr_xyz2D[2],s_numpars);
-	// xyzminmax[0] = MinVal(x,s_numpars);
-	// xyzminmax[1] = MaxVal(x,s_numpars);
-	// xyzminmax[2] = MinVal(y,s_numpars);
-	// xyzminmax[3] = MaxVal(y,s_numpars);
-	// xyzminmax[4] = MinVal(z,s_numpars);
-	// xyzminmax[5] = MaxVal(z,s_numpars);
+	xyz_limits[0] = MinVal(tr_xyz2D[0],nface);
+	xyz_limits[1] = MaxVal(tr_xyz2D[0],nface);
+	xyz_limits[2] = MinVal(tr_xyz2D[1],nface);
+	xyz_limits[3] = MaxVal(tr_xyz2D[1],nface);
+	xyz_limits[4] = MinVal(tr_xyz2D[2],nface);
+	xyz_limits[5] = MaxVal(tr_xyz2D[2],nface);
 
    // if ((orderarr=(int *) malloc(numpars*sizeof(int)))==NULL) {
 	// 	printf("Error allocating copy variables!");
 	// }
-   	make_vector(s_order_arr, s_numpars);
-	for (i=0; i<s_numpars; i++) {
+   	make_vector(s_order_arr, nface);
+	for (i=0; i<nface; i++) {
 		s_order_arr[i] = i;
 	}
 	return 0;
@@ -552,11 +524,11 @@ int s_Setup(double xyz_limits[6]) {
 
 
 /********************************************************/
-int s_CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6], int level)
+int CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6], int level)
 {
 /*CREATE_TREE recursively create the tree structure. Node P is
   input, which contains particles indexed from IBEG to IEND. After
-  the node parameters are set subdivision occurs if IEND-IBEG+1 > s_max_per_leaf.
+  the node parameters are set subdivision occurs if IEND-IBEG+1 > maxparnode.
   Real array XYZMM contains the min and max values of the coordinates
   of the particle in P, thus defining the box. */
 
@@ -622,7 +594,7 @@ int s_CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6], int level)
     }
 
 
-    if (p->numpar > s_max_per_leaf) {
+    if (p->numpar > maxparnode) {
 /* set IND array to 0 and then call PARTITION routine. IND array holds indices
  * of the eight new subregions. Also, setup XYZMMS array in case SHRINK=1 */
 
@@ -644,8 +616,8 @@ int s_CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6], int level)
         y_mid = p->y_mid;
         z_mid = p->z_mid;
 
-        numposchild = s_PartitionEight(xyzmms, xl, yl, zl, lmax,
-                                       x_mid, y_mid, z_mid, ind);
+        numposchild = PartitionEight(xyzmms, xl, yl, zl, lmax,
+        	x_mid, y_mid, z_mid, ind);
 
 /* Shrink the box */
         for (i = 0; i < 8; i++) {
@@ -667,8 +639,8 @@ int s_CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6], int level)
                 for (j = 0; j < 6; j++) {
                     lxyzmm[j] = xyzmms[j][i];
                 }
-                s_CreateTree(p->child[p->num_children-1],
-                             ind[i][0], ind[i][1], lxyzmm, loclev);
+                CreateTree(p->child[p->num_children-1],
+                	ind[i][0], ind[i][1], lxyzmm, loclev);
             }
         }
     } else {
@@ -682,7 +654,7 @@ int s_CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6], int level)
 
 
 /********************************************************/
-static int s_PartitionEight(double xyzmms[6][8], double xl, double yl, 
+int PartitionEight(double xyzmms[6][8], double xl, double yl, 
 	double zl, double lmax, double x_mid, double y_mid, double z_mid, int ind[8][2]) {
 /* PARTITION_8 determines the particle indices of the eight sub boxes
  * containing the particles after the box defined by particles I_BEG
@@ -776,16 +748,16 @@ int Partition(double *a, double *b, double *c, int *indarr,
 
       	while (upper != lower) {
       		while ((upper < lower) && (val < a[lower])) {
-        		lower = lower - 1;
+        		lower -= 1;
         	}
         	if (upper != lower) {
         		a[upper] = a[lower];
             	b[upper] = b[lower];
             	c[upper] = c[lower];
-            indarr[upper] = indarr[lower];
+            	indarr[upper] = indarr[lower];
         	}
         	while ((upper < lower) && (val >= a[upper])) {	
-        		upper = upper + 1;
+        		upper += 1;
         	}
         	if (upper != lower) {
         		a[lower] = a[upper];
@@ -804,17 +776,13 @@ int Partition(double *a, double *b, double *c, int *indarr,
       	b[upper] = tb;
       	c[upper] = tc;
       	indarr[upper] = tind;
-   	}
-
-   	else if (ibeg == iend) {
+   	} else if (ibeg == iend) {
     	if (a[ibeg] <= val) {
     		midind = ibeg;
-    	}
-    	else {
+    	} else {
     		midind = ibeg -1 ;
     	}
-    }
-   	else {
+    } else {
     	midind = ibeg -1;
    	}
    	return (midind); 

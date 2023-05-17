@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
    sprintf(fname,"%s",argv[1]);
    sprintf(density,"%s",argv[2]);
 	readin(fname, density);
-	comp_source_wrapper(); //wraps the solvation energy computation
+	// comp_source_wrapper(); //wraps the solvation energy computation
 
 	/* parameters for GMRES */
 	RESTRT=10;
@@ -69,6 +69,7 @@ int main(int argc, char *argv[]) {
 
 	extern int TreecodeInitialization();
 	TreecodeInitialization();
+	comp_source_wrapper(); //wraps the solvation energy computation
 
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 
@@ -122,9 +123,12 @@ int main(int argc, char *argv[]) {
 
 	for(i=0;i<3;i++) {
 		free(tr_xyz2D[i]);
-		free(tr_q2D[i]);
 	}	
 	free(tr_xyz2D);
+
+	for(i=0;i<3;i++) {
+		free(tr_q2D[i]);
+	}
 	free(tr_q2D);
 
    return 0;
