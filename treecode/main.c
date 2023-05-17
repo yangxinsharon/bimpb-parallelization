@@ -60,7 +60,8 @@ int main(int argc, char *argv[]) {
 	N=2*nface;
 	ldw=N;
 	ldh=RESTRT+1;
-	iter=100;
+	// iter=100;
+	iter=300;
 	resid=1e-4;
 	xvct=(double *) calloc(N, sizeof(double));
 

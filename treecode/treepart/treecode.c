@@ -651,7 +651,48 @@ int CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6], int level)
     return 0;
 }
 
+/********************************************************/
+// int RunTreecode(TreeNode *p, double *tpoten_old, double tempq[2][16],double peng[2])
+// {
+//   /* RunTreecode() is self recurrence function */
+//     double tx, ty, tz, dist, pengchild[2];
+//     int i;
 
+
+//   /* determine DISTSQ for MAC test */
+//     tx = p->x_mid - s_target_position[0];
+//     ty = p->y_mid - s_target_position[1];
+//     tz = p->z_mid - s_target_position[2];
+//     dist = sqrt(tx*tx + ty*ty + tz*tz);
+
+//   /* initialize potential energy */
+//     peng[0] = 0.0;
+//     peng[1] = 0.0;
+
+// /* If MAC is accepted and there is more than 1 particale in the */
+// /* box use the expansion for the approximation. */
+
+//     if (p->radius < dist*theta && p->numpar > 40) {
+//         s_ComputeTreePB(p, tempq, peng);
+//     } else {
+//         if (p->num_children == 0) {
+//             s_ComputeDirectPB(p->ibeg, p->iend, tpoten_old, peng);
+//         } else {
+//       /* If MAC fails check to see if there are children. If not, perform */
+//       /* direct calculation.  If there are children, call routine */
+//       /* recursively for each. */
+//             for (i = 0; i < p->num_children; i++) {
+//                 pengchild[0] = 0.0;
+//                 pengchild[1] = 0.0;
+//                 s_RunTreecode(p->child[i], tpoten_old, tempq, pengchild);
+//                 peng[0] += pengchild[0];
+//                 peng[1] += pengchild[1];
+//             }
+//         }
+//     }
+
+//     return 0;
+// }
 /********************************************************/
 int PartitionEight(double xyzmms[6][8], double xl, double yl, 
 	double zl, double lmax, double x_mid, double y_mid, double z_mid, int ind[8][2]) {
