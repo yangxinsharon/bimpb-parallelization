@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
 	ldw=N;
 	ldh=RESTRT+1;
 	// iter=100;
-	iter=1000;
+	iter=10000;
 	resid=1e-4;
 	xvct=(double *) calloc(N, sizeof(double));
 
