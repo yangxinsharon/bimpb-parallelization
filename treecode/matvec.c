@@ -129,8 +129,7 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
 			rs = sqrt(sumrs);
 			irs = 1.0/sqrt(sumrs);
 
-        	G0 = one_over_4pi;
-        	G0 = G0*irs;
+        	G0 = one_over_4pi*irs;
         	kappa_rs = kappa*rs;
         	exp_kappa_rs = exp(-kappa_rs);
         	Gk = exp_kappa_rs*G0;
@@ -174,8 +173,7 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
             cos_theta = tr_q[3*i]*r_s[0] + tr_q[3*i+1]*r_s[1] + tr_q[3*i+2]*r_s[2];
 			irs = 1.0/sqrt(sumrs) ;//rsqrt(sumrs);//returns reciprocal square root of scalars and vectors.
             cos_theta = cos_theta*irs;
-            G0 = one_over_4pi;//constant
-            G0 = G0*irs;
+            G0 = one_over_4pi*irs;//constant
             tp1 = G0*irs;
             G1 = cos_theta*tp1;
             bvct[i] = bvct[i]+atmchr[j]*G0;

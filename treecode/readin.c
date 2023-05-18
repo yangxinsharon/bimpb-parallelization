@@ -304,15 +304,17 @@ exit:	ichanged=nface-nfacenew;
 	tr_q=(double *) calloc(3*nface, sizeof(double));
 	tr_area=(double *) calloc(nface, sizeof(double));
 	bvct=(double *) calloc(2*nface, sizeof(double));
+	tr_xyz2D=Make2DDoubleArray(3,nface,"tr_xyz2D");
+    tr_q2D=Make2DDoubleArray(3,nface,"tr_q2D");
 
     for (i=0;i<nface;i++){
-        for (j=0;j<=2;j++){
+        for (j=0;j<3;j++){
             idx[j]=face[j][i];
         }
-        for (j=0;j<=2;j++){
+        for (j=0;j<3;j++){
             r0[j]=0;
             v0[j]=0;
-            for (k=0;k<=2;k++){
+            for (k=0;k<3;k++){
 				r0[j]=r0[j]+vert[j][idx[k]-1]/3.0;
                 v0[j]=v0[j]+snrm[j][idx[k]-1]/3.0;
 				r[j][k]=vert[j][idx[k]-1];
@@ -321,7 +323,7 @@ exit:	ichanged=nface-nfacenew;
 
 		}
 		v0_norm=sqrt(v0[0]*v0[0]+v0[1]*v0[1]+v0[2]*v0[2]);
-		for (k=0;k<=2;k++){
+		for (k=0;k<3;k++){
 			v0[k]=v0[k]/v0_norm;
 		}
 
@@ -331,9 +333,11 @@ exit:	ichanged=nface-nfacenew;
 			r0[k]=r0[k]/r0_norm*rds;
 		}*/
 
-        for (j=0;j<=2;j++){
+        for (j=0;j<3;j++){
             tr_xyz[3*i+j]=r0[j];
             tr_q[3*i+j]=v0[j];
+            tr_xyz2D[j][i] = r0[j];
+            tr_q2D[j][i] = v0[j];
         }
         tr_area[i]=triangle_area(r);
         sum=sum+tr_area[i];
@@ -341,12 +345,12 @@ exit:	ichanged=nface-nfacenew;
     printf("total area = %f\n",sum);
 
     // transform tr_xyz, tr_q 1D to 2D
-    tr_xyz2D=Make2DDoubleArray(3,nface,"tr_xyz2D");
-    tr_q2D=Make2DDoubleArray(3,nface,"tr_q2D");
-	for (j=0; j<nface; j++){
-		for (i=0; i<3; i++){
-			tr_xyz2D[i][j] = tr_xyz[3*j+i];
-			tr_q2D[i][j] = tr_q[3*j+i];
-		}
-	}
+    // tr_xyz2D=Make2DDoubleArray(3,nface,"tr_xyz2D");
+    // tr_q2D=Make2DDoubleArray(3,nface,"tr_q2D");
+	// for (j=0; j<nface; j++){
+	// 	for (i=0; i<3; i++){
+	// 		tr_xyz2D[i][j] = tr_xyz[3*j+i];
+	// 		tr_q2D[i][j] = tr_q[3*j+i];
+	// 	}
+	// }
 }

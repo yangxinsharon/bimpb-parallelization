@@ -6,41 +6,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include "gl_variables.h"
+#include "gl_constants.h"
 
 
 #include "utilities.h"
-#include "global_params.h"
 #include "array.h"
 #include "tree_node_struct.h"
-#include "particle_struct.h"
 
-
-extern int nface, nspt, natm, nchr;
-extern int **extr_v;						//[3][nspt]
-extern int **extr_f;						//[2][nface]
-extern int **face, **face_copy;				//[3][nface]
-extern double **vert, **snrm;				//[3][nspt];
-extern double *tr_xyz, *tr_q;				//[3][nface]
-extern double *tr_area, *bvct, *xvct;		//[nface];
-extern double **atmpos;						//[3][natm/nchr];
-extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr]; 
-extern double *work, *h;
-extern double *h_pot;
-
-extern double pi;
-extern double one_over_4pi;
-extern double bulk_coef;
-extern double units_coef;
-extern double epsw;
-extern double epsp;
-extern double eps;
-extern double bulk_strength;  	
-extern double kappa2;	
-extern double kappa;
-extern double **tr_xyz2D, **tr_q2D;//, **temp_normal, **temp_position, **matrixA;
-extern int maxparnode;
-extern int order;
-extern double theta;
 
 
 /* variables for tracking tree information */
@@ -693,6 +666,7 @@ int CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6], int level)
 
 //     return 0;
 // }
+
 /********************************************************/
 int PartitionEight(double xyzmms[6][8], double xl, double yl, 
 	double zl, double lmax, double x_mid, double y_mid, double z_mid, int ind[8][2]) {
