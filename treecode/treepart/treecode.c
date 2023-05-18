@@ -103,6 +103,7 @@ int TreecodeInitialization() {
 	
 	// s_CreateTree(s_tree_root, 0, nface-1, xyzminmax, level);
 	CreateTree(s_tree_root, 0, nface-1, xyz_limits, level);
+	printf ("Nleaf is %d\n",Nleaf);
     printf("Created tree for %d particles with max %d per node.\n\n",
            nface, maxparnode);
 	
@@ -674,7 +675,7 @@ int CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6], int level)
             s_min_level = level;
         }
     }
-    printf ("Nleaf is %d\n",Nleaf);
+    
     return 0;
 }
 
