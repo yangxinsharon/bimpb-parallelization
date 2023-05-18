@@ -370,6 +370,7 @@ int *psolve(double *z, double *r) {
 
   	while ( idx < nface ) {
     	leaflength(s_tree_root, idx);
+    	printf("idx is %d\n",idx);
     	nrow  = Nrow;
     	nrow2 = nrow*2;
     	ibeg  = idx;
