@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
 
 #include "utilities.h"
 #include "array.h"
@@ -43,6 +44,13 @@ extern double theta;
 static int s_min_level;
 static int s_max_level;
 
+/* global variables used when computing potential/force */
+static double s_target_position[3];
+static double s_target_normal[3];
+
+static double ***s_target_charge = NULL;
+static double ***s_source_charge = NULL;
+
 /* global variables for reordering arrays */
 static int *s_order_arr = NULL;
 /* root node of tree */
@@ -56,9 +64,14 @@ int CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6],int level);
 int PartitionEight(double xyzmms[6][8], double xl, double yl,
 	double zl, double lmax, double x_mid, double y_mid,
 	double z_mid, int ind[8][2]);
+int s_RunTreecode(TreeNode *p, double *tpoten_old,
+                  double tempq[2][16], double peng[2]);
+int s_ComputeTreePB(TreeNode *p, double tempq[2][16], double peng[2]);
+int s_ComputeDirectPB(int ibeg, int iend, double *tpoten_old,
+                             double peng[2]);
 int RemoveNode(TreeNode *p);
 
-
+/**********************************************************/
 int TreecodeInitialization() {
     
     int level, i, j, k, mm, nn, idx, ijk[3];
@@ -117,7 +130,9 @@ int TreecodeInitialization() {
 	free(temp_normal);
 	free(temp_area);
 	free(temp_source);
-
+	
+    make_3array(s_target_charge, s_numpars, 2, 16);
+    make_3array(s_source_charge, s_numpars, 2, 16);
 
 	return 0;
 }
