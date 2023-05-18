@@ -130,9 +130,9 @@ int TreecodeInitialization() {
 	free(temp_normal);
 	free(temp_area);
 	free(temp_source);
-	
-    make_3array(s_target_charge, s_numpars, 2, 16);
-    make_3array(s_source_charge, s_numpars, 2, 16);
+
+    make_3array(s_target_charge, nface, 2, 16);
+    make_3array(s_source_charge, nface, 2, 16);
 
 	return 0;
 }
