@@ -134,6 +134,15 @@ int TreecodeInitialization() {
     make_3array(s_target_charge, nface, 2, 16);
     make_3array(s_source_charge, nface, 2, 16);
 
+    // transform tr_xyz2D and tr_q2D to 1 dimension
+	for (j=0; j<nface; j++){
+		for (i=0; i<3; i++){
+			tr_xyz[3*j+i] = tr_xyz2D[i][j];
+			tr_q[3*j+i] = tr_q2D[i][j];
+		}
+	}
+
+
 	return 0;
 }
 
