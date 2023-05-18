@@ -131,8 +131,8 @@ int TreecodeInitialization() {
 	free(temp_area);
 	free(temp_source);
 
-    make_3array(s_target_charge, nface, 2, 16);
-    make_3array(s_source_charge, nface, 2, 16);
+    // make_3array(s_target_charge, nface, 2, 16);
+    // make_3array(s_source_charge, nface, 2, 16);
 
     // transform tr_xyz2D and tr_q2D to 1 dimension
 	for (j=0; j<nface; j++){
@@ -209,7 +209,10 @@ int TreecodeFinalization()
     free(temp_source);
     free(temp_xvct);
 
+
 /***********clean tree structure**********/
+    // free_3array(s_target_charge);
+    // free_3array(s_source_charge);
 
     RemoveNode(s_tree_root);
     free(s_tree_root);
