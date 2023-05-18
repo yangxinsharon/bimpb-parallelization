@@ -346,7 +346,7 @@ int *psolve(double *z, double *r) {
 
         		rs = sqrt(sumrs);
         		irs = 1.0/rs;
-        		G0 = ONE_OVER_4PI * irs;
+        		G0 = one_over_4pi * irs;
         		kappa_rs = kappa * rs; //
         		exp_kappa_rs = exp(-kappa_rs);
         		Gk = exp_kappa_rs * G0;
@@ -394,7 +394,7 @@ int *psolve(double *z, double *r) {
 				sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
 	        	rs = sqrt(sumrs);
 	        	irs = 1.0/rs;
-	        	G0 = ONE_OVER_4PI * irs;
+	        	G0 = one_over_4pi * irs;
 	        	kappa_rs = kappa * rs;
 	        	exp_kappa_rs = exp(-kappa_rs);
 	        	Gk = exp_kappa_rs * G0;
