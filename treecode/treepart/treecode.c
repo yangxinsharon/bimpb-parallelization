@@ -667,7 +667,8 @@ int CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6], int level)
                 	ind[i][0], ind[i][1], lxyzmm, loclev);
             }
         }
-    } else {
+    } 
+    else {
     	Nleaf += 1;
         if (level < s_min_level) {
             s_min_level = level;
