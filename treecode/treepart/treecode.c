@@ -6,15 +6,38 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-// #include "../gl_variables.h"
-// #include "../gl_constants.h"
-
 
 #include "utilities.h"
 #include "array.h"
 #include "tree_node_struct.h"
 
+extern int nface, nspt, natm, nchr;
+extern int **extr_v;						//[3][nspt]
+extern int **extr_f;						//[2][nface]
+extern int **face, **face_copy;				//[3][nface]
+extern double **vert, **snrm;				//[3][nspt];
+extern double *tr_xyz, *tr_q;				//[3][nface]
+extern double *tr_area, *bvct, *xvct;		//[nface];
+extern double **atmpos;						//[3][natm/nchr];
+extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr]; 
+extern double *work, *h;
 
+extern double **tr_xyz2D, **tr_q2D;
+
+extern double pi;
+extern double one_over_4pi;
+extern double bulk_coef;
+extern double units_coef;
+extern double epsw;
+extern double epsp;
+extern double eps;
+extern double bulk_strength;	//ion_strength in M
+extern double kappa2;	//kappa2=bulk_coef*bulk_strength/epsw;
+extern double kappa;
+
+extern int order;
+extern int maxparnode;
+extern double theta;
 
 /* variables for tracking tree information */
 static int s_min_level;
