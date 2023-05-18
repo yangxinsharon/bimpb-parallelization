@@ -673,7 +673,7 @@ int CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6], int level)
             s_min_level = level;
         }
     }
-
+    printf ("Nleaf is %d\n",Nleaf);
     return 0;
 }
 
