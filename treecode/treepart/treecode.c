@@ -370,11 +370,12 @@ int *psolve(double *z, double *r) {
 
   	while ( idx < nface ) {
     	leaflength(s_tree_root, idx);
-    	printf("idx is %d\n",idx);
+
     	nrow  = Nrow;
     	nrow2 = nrow*2;
     	ibeg  = idx;
     	iend  = idx + nrow - 1;
+    	printf("idx ibeg iend is %d, %d, %d\n",idx,ibeg,iend);
 
     	for ( i = ibeg; i <= iend; i++ ) {
     		tp[0] = tr_xyz2D[0][i];
