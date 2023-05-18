@@ -57,6 +57,7 @@ static int *s_order_arr = NULL;
 static TreeNode *s_tree_root = NULL;
 
 static int Nleaf = 0;
+static int Nleafc = 0;
 
 /* internal functions */
 int Setup(double xyz_limits[6]);
@@ -376,7 +377,9 @@ int *psolve(double *z, double *r) {
     	nrow2 = nrow*2;
     	ibeg  = idx;
     	iend  = idx + nrow - 1;
-    	printf("idx ibeg iend is %d, %d, %d\n",idx,ibeg,iend);
+    	Nleafc += 1;
+    	// printf("idx ibeg iend is %d, %d, %d\n",idx,ibeg,iend);
+
 
     	for ( i = ibeg; i <= iend; i++ ) {
     		tp[0] = tr_xyz2D[0][i];
@@ -498,6 +501,7 @@ int *psolve(double *z, double *r) {
     	idx += nrow;
 
   	}
+  	printf("Nleafc is %d\n",Nleafc);
   	// free_matrix(matrixA);
   	// free_vector(rhs);
   	// free_vector(ipiv);
