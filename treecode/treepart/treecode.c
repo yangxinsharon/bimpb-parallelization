@@ -56,7 +56,7 @@ static int *s_order_arr = NULL;
 /* root node of tree */
 static TreeNode *s_tree_root = NULL;
 
-
+static int Nleaf = 0;
 
 /* internal functions */
 int Setup(double xyz_limits[6]);
@@ -668,6 +668,7 @@ int CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6], int level)
             }
         }
     } else {
+    	Nleaf += 1;
         if (level < s_min_level) {
             s_min_level = level;
         }
