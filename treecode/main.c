@@ -44,6 +44,9 @@ int main(int argc, char *argv[]) {
 
    extern void timer_start(char *n); 
    extern void timer_end(void); 
+   extern int TreecodeInitialization();
+	extern int TreecodeFinalization();
+	
 	timer_start("TOTAL_TIME");
 	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
 
@@ -53,7 +56,7 @@ int main(int argc, char *argv[]) {
    sprintf(fname,"%s",argv[1]);
    sprintf(density,"%s",argv[2]);
 	readin(fname, density);
-	// comp_source_wrapper(); //wraps the solvation energy computation
+	comp_source_wrapper(); //wraps the solvation energy computation
 
 	/* parameters for GMRES */
 	RESTRT=10;
@@ -68,9 +71,9 @@ int main(int argc, char *argv[]) {
 	work=(double *) calloc (ldw*(RESTRT+4), sizeof(double));
 	h=(double *) calloc (ldh*(RESTRT+2), sizeof(double));
 
-	extern int TreecodeInitialization();
+
 	TreecodeInitialization();
-	comp_source_wrapper(); //wraps the solvation energy computation
+	// comp_source_wrapper(); //wraps the solvation energy computation
 
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 
@@ -79,7 +82,7 @@ int main(int argc, char *argv[]) {
 	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
 	timer_end();
 
-	extern int TreecodeFinalization();
+
 	TreecodeFinalization();
 
 	/* free memory */
