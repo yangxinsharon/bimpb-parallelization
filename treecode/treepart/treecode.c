@@ -317,7 +317,8 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
   	/* b will contain the solution */
   	double *xtemp;
 
-  	make_vector(xtemp, N);
+  	// make_vector(xtemp, N);
+  	xtemp=(double *) calloc(N, sizeof(double));
   	int i, k ;
   	for (i = 0; i < N; i++) {
    		xtemp[i] = rhs[ipiv[i]];
@@ -338,7 +339,8 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
   	for (i = 0; i < N; i++) {
     	rhs[i] = xtemp[i];
   	}
-  	free_vector(xtemp);
+  	// free_vector(xtemp);
+  	free(xtemp);
 }
 
 
