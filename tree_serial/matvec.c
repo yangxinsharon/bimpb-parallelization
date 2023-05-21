@@ -9,8 +9,6 @@
 #include "gl_variables.h"
 #include "gl_constants.h"
 
-// extern double **tr_xyz2D, **tr_q2D; 
-
 /* Prototypes */
 int *matvec(double *alpha, double *x, double *beta, double *y);
 void comp_soleng_wrapper(double soleng);
@@ -35,17 +33,11 @@ void matvecmul(const double *x, double *y, double *q, int nface,
     for (i=0; i<nface; i++) {
     	double tp[3] = {tr_xyz[3*i], tr_xyz[3*i+1], tr_xyz[3*i+2]};
 		double tq[3] = {tr_q[3*i], tr_q[3*i+1], tr_q[3*i+2]};
-		// double tp[3] = {tr_xyz2D[0][i], tr_xyz2D[1][i], tr_xyz2D[2][i]};
-		// double tq[3] = {tr_q2D[0][i], tr_q2D[1][i], tr_q2D[2][i]};
-
 		double peng[2] = {0.0, 0.0};
 		for (j=0; j<nface; j++) {
         	if (j != i) {
 				double sp[3] = {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
 				double sq[3] = {tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};
-				// double sp[3] = {tr_xyz2D[0][i], tr_xyz2D[1][i], tr_xyz2D[2][i]};
-				// double sq[3] = {tr_q2D[0][i], tr_q2D[1][i], tr_q2D[2][i]};
-
 				double r_s[3] = {sp[0]-tp[0], sp[1]-tp[1], sp[2]-tp[2]};
 				sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
 				rs = sqrt(sumrs);
@@ -128,9 +120,6 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
     	ptl[j] = 0.0;
 		double r[3] = {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
 		double v[3] = {tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};
-		// double r[3] = {tr_xyz2D[0][i], tr_xyz2D[1][i], tr_xyz2D[2][i]};
-		// double v[3] = {tr_q2D[0][i], tr_q2D[1][i], tr_q2D[2][i]};
-
     	for (i=0; i<nchr; i++) {
         	double s[3] = {chrpos[3*i], chrpos[3*i+1], chrpos[3*i+2]};
 			double r_s[3] = {r[0]-s[0], r[1]-s[1], r[2]-s[2]};
