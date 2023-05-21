@@ -680,7 +680,7 @@ int CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6], int level)
         }
     }
 
-    leaf_arr = Make2DIntArray(2,Nleaf,)
+    // leaf_arr = Make2DIntArray(2,Nleaf,)
     
     return 0;
 }
