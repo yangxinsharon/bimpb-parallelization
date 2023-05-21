@@ -9,7 +9,7 @@
 #include "gl_variables.h"
 #include "gl_constants.h"
 
-extern double **tr_xyz2D, **tr_q2D; 
+// extern double **tr_xyz2D, **tr_q2D; 
 
 /* Prototypes */
 int *matvec(double *alpha, double *x, double *beta, double *y);

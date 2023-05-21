@@ -9,7 +9,7 @@
 #include <string.h>
 
 #include "utilities.h"
-// #include "array.h"
+#include "array.h"
 #include "tree_node_struct.h"
 
 extern int nface, nspt, natm, nchr;
