@@ -9,7 +9,7 @@
 #include <string.h>
 
 #include "utilities.h"
-#include "array.h"
+// #include "array.h"
 #include "tree_node_struct.h"
 
 extern int nface, nspt, natm, nchr;
@@ -679,6 +679,8 @@ int CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6], int level)
             s_min_level = level;
         }
     }
+
+    leaf_arr = Make2DIntArray(2,Nleaf,)
     
     return 0;
 }
