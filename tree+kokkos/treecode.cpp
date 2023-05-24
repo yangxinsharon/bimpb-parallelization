@@ -3,10 +3,17 @@
    Tree structure preconditioner */
 
 /* Inclusions */
+/* c */
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
+
+/* c++ */
+#include <cstdlib>
+#include <cstdio>
+#include <cmath>
+#include <cstring>
 
 #include "utilities.h"
 #include "array.h"

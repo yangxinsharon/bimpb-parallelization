@@ -17,8 +17,12 @@
 * 06/23/2016  Leighton Wilson   Created                                   *
 *                                                                         *
 **************************************************************************/
-
+/* c */
 #include <stdio.h>
+
+/* c++ */
+#include <cstdio>
+
 #include "xmalloc.h"
 
 void *malloc_or_exit(size_t nbytes, const char *file, int line)
