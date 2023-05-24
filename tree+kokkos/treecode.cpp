@@ -50,17 +50,18 @@ extern int order;
 extern int maxparnode;
 extern double theta;
 
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+// extern make_vector(v,n);
+	
 extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]);
 
-// #ifdef __cplusplus
-// extern "C"
-// {
-// #endif
-// // extern make_vector(v,n);
-
-// #ifdef __cplusplus
-// }
-// #endif
+#ifdef __cplusplus
+}
+#endif
 
 
 /* variables for tracking tree information */
@@ -188,8 +189,7 @@ int TreecodeFinalization()
     // make_vector(temp_area, nface);
     // make_vector(temp_source, 2 * nface);
     // make_vector(temp_xvct, 2 * nface);
-	extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]);
-	
+
     temp_position=Make2DDoubleArray(3,nface,"temp_position");
     temp_normal=Make2DDoubleArray(3,nface,"temp_normal");
     temp_area=(double *) calloc(nface, sizeof(double));
