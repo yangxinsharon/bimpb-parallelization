@@ -72,7 +72,9 @@ int main(int argc, char *argv[]) {
 
    extern void timer_start(char *n); // yang
    extern void timer_end(void); // yang
-
+   extern int TreecodeInitialization();
+	extern int TreecodeFinalization();
+	
    Kokkos::initialize(argc, argv);
    {
 
@@ -127,7 +129,7 @@ int main(int argc, char *argv[]) {
 
 	TreecodeInitialization();
 	// Kokkos::fence();
-	
+
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 
 	Kokkos::fence();
