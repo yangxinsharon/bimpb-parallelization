@@ -20,6 +20,8 @@
 #include "tree_node_struct.h"
 #include "gl_functions.h"
 
+#include <Kokkos_Core.hpp>
+
 extern int nface, nspt, natm, nchr;
 extern int **extr_v;						//[3][nspt]
 extern int **extr_f;						//[2][nface]
