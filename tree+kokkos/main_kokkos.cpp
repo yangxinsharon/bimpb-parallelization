@@ -44,8 +44,8 @@ int gmres_(long int *n, double *b, double *x, long int *restrt, double *work, lo
 		double *h, long int *ldh, long int *iter, double *resid, 
 		int *matvec (double *alpha, double *x, double *beta, double *y), 
 		int *psolve (double *z, double *r), long int *info);
-int TreecodeInitialization();
-int TreecodeFinalization();
+// int TreecodeInitialization();
+// int TreecodeFinalization();
 
 #ifdef __cplusplus
 }
