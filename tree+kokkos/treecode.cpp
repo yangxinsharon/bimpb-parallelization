@@ -52,6 +52,17 @@ extern double theta;
 
 extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]);
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+extern make_vector(v,n);
+
+#ifdef __cplusplus
+}
+#endif
+
+
 /* variables for tracking tree information */
 static int s_min_level;
 static int s_max_level;
