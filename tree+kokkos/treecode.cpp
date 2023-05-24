@@ -71,6 +71,8 @@ static int Nleafc = 0;
 
 /* internal functions */
 int Setup(double xyz_limits[6]);
+int Partition(double *a, double *b, double *c, int *indarr,
+	int ibeg, int iend, double val);
 int CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6],int level);
 int PartitionEight(double xyzmms[6][8], double xl, double yl,
 	double zl, double lmax, double x_mid, double y_mid,
