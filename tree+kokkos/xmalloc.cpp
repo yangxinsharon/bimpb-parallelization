@@ -25,10 +25,10 @@
 
 #include "xmalloc.h"
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+// #ifdef __cplusplus
+// extern "C"
+// {
+// #endif
 
 void *malloc_or_exit(size_t nbytes, const char *file, int line)
 {
@@ -42,6 +42,6 @@ void *malloc_or_exit(size_t nbytes, const char *file, int line)
     }
 }
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif

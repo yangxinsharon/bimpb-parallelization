@@ -30,10 +30,10 @@
 #include <cmath>
 #include "utilities.h"
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+// #ifdef __cplusplus
+// extern "C"
+// {
+// #endif
 
 
 /**********************************************************/
@@ -94,6 +94,6 @@ double TriangleArea(double v[3][3])
     return area;
 }
 /**********************************************************/
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
