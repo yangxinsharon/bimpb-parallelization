@@ -48,6 +48,8 @@ extern int order;
 extern int maxparnode;
 extern double theta;
 
+extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]);
+
 /* variables for tracking tree information */
 static int s_min_level;
 static int s_max_level;
@@ -375,7 +377,7 @@ int *psolve(double *z, double *r) {
   	// make_vector(ipiv, 2*maxparnode);
   	// make_vector(rhs, 2*maxparnode);
   	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
-	ipiv=(double *) calloc(2*maxparnode, sizeof(double));
+	ipiv=(int *) calloc(2*maxparnode, sizeof(int));
 	rhs=(double *) calloc(2*maxparnode, sizeof(double));
   	printf("maxparnode is %d\n", maxparnode);
 
