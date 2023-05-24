@@ -82,7 +82,8 @@ int main(int argc, char *argv[]) {
    typedef Kokkos::LayoutRight  Layout;
    typedef Kokkos::RangePolicy<HostExecSpace>  host_range_policy;
   	typedef Kokkos::RangePolicy<DevExecSpace>   dev_range_policy;
-
+  	typedef Kokkos::View<double*, Layout, MemSpace>   ViewVectorType;
+  	typedef Kokkos::View<double**, Layout, MemSpace>  ViewMatrixType;
 
 	timer_start((char*) "TOTAL_TIME");
 	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
@@ -125,7 +126,8 @@ int main(int argc, char *argv[]) {
    // ViewMatrixType::HostMirror h_A = Kokkos::create_mirror_view( A );
 
 	TreecodeInitialization();
-
+	// Kokkos::fence();
+	
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 
 	Kokkos::fence();
