@@ -21,9 +21,14 @@
 #include <stdio.h>
 
 /* c++ */
-#include <cstdio>
+// #include <cstdio>
 
 #include "xmalloc.h"
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 void *malloc_or_exit(size_t nbytes, const char *file, int line)
 {
@@ -36,3 +41,7 @@ void *malloc_or_exit(size_t nbytes, const char *file, int line)
         return x;
     }
 }
+
+#ifdef __cplusplus
+}
+#endif

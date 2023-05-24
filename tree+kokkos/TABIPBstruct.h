@@ -28,6 +28,11 @@
 #ifndef H_TABIPB_STRUCT_H
 #define H_TABIPB_STRUCT_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 typedef struct sTABIPBparm {
 
    /* molecule ID */
@@ -98,4 +103,7 @@ typedef struct sTABIPBvars {
 
 int sphinx2tabipb(TABIPBparm *parm, TABIPBvars *vars);
 
+#ifdef __cplusplus
+}
+#endif
 #endif /* H_TABIPB_STRUCT_H */

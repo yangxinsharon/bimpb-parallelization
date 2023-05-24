@@ -23,7 +23,16 @@
 
 #include <stdlib.h>
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 void *malloc_or_exit(size_t nbytes, const char *file, int line);
 #define xmalloc(nbytes)  malloc_or_exit((nbytes), __FILE__, __LINE__)
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /*H_XMALLOC_H*/

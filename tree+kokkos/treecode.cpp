@@ -557,6 +557,8 @@ int Setup(double xyz_limits[6]) {
 	// 	printf("Error allocating copy variables!");
 	// }
    	make_vector(s_order_arr, nface);
+   	// s_order_arr=(int *) calloc(nface, sizeof(int));
+
 	for (i=0; i<nface; i++) {
 		s_order_arr[i] = i;
 	}

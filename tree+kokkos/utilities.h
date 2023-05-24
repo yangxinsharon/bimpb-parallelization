@@ -22,10 +22,20 @@
 #ifndef H_UTILITY_ROUTINES_H
 #define H_UTILITY_ROUTINES_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+	
 double MinVal(double *variables, int number);
 
 double MaxVal(double *variables, int number);
 
 double TriangleArea(double v[3][3]);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* H_UTILITY_ROUTINES_H */
