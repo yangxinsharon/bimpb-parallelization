@@ -646,8 +646,8 @@ int CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6], int level)
 
     p->num_children = 0;
 
-    make_vector(p->child, 8);
-    // p->child=(TreeNode *) calloc(8, sizeof(TreeNode));
+    // make_vector(p->child, 8);
+    p->child=(TreeNode *) calloc(8, sizeof(TreeNode));
     for (i = 0; i < 8; i++) {
         p->child[i] = (TreeNode*)calloc(1, sizeof(TreeNode));
     }
