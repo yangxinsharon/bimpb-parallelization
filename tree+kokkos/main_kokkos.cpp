@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
    extern void timer_end(void); // yang
    extern int TreecodeInitialization();
 	extern int TreecodeFinalization();
-	
+
    Kokkos::initialize(argc, argv);
    {
 
@@ -86,7 +86,10 @@ int main(int argc, char *argv[]) {
   	typedef Kokkos::RangePolicy<DevExecSpace>   dev_range_policy;
   	typedef Kokkos::View<double*, Layout, MemSpace>   ViewVectorType;
   	typedef Kokkos::View<double**, Layout, MemSpace>  ViewMatrixType;
-
+	
+	ViewMatrixType tr_xyz2D( "tr_xyz2D", 3, nface );
+	ViewMatrixType tr_q2D( "tr_q2D", 3, nface );
+	
 	timer_start((char*) "TOTAL_TIME");
 	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
 
