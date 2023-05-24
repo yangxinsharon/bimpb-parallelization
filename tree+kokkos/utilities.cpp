@@ -24,10 +24,10 @@
 **************************************************************************/
 
 /* c */
-#include <math.h>
+// #include <math.h>
 
 /* c++ */
-// #include <cmath>
+#include <cmath>
 #include "utilities.h"
 
 #ifdef __cplusplus

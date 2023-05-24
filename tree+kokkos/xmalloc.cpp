@@ -18,10 +18,10 @@
 *                                                                         *
 **************************************************************************/
 /* c */
-#include <stdio.h>
+// #include <stdio.h>
 
 /* c++ */
-// #include <cstdio>
+#include <cstdio>
 
 #include "xmalloc.h"
 

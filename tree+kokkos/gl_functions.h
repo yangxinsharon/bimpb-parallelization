@@ -1,11 +1,11 @@
 #ifndef GL_FUNCTION
 #define GL_FUNCTION
 
-#include <stdlib.h>
-#include <stdio.h>
+// #include <stdlib.h>
+// #include <stdio.h>
 
-// #include <cstdlib>
-// #include <cstdio> 
+#include <cstdlib>
+#include <cstdio> 
 
 #ifdef __cplusplus
 extern "C"

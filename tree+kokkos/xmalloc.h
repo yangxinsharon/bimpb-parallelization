@@ -21,7 +21,9 @@
 #ifndef H_XMALLOC_H
 #define H_XMALLOC_H
 
-#include <stdlib.h>
+// #include <stdlib.h>
+
+#include <cstdlib>
 
 #ifdef __cplusplus
 extern "C"
