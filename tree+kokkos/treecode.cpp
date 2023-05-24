@@ -571,8 +571,8 @@ int Setup(double xyz_limits[6]) {
    // if ((orderarr=(int *) malloc(numpars*sizeof(int)))==NULL) {
 	// 	printf("Error allocating copy variables!");
 	// }
-   	make_vector(s_order_arr, nface);
-   	// s_order_arr=(int *) calloc(nface, sizeof(int));
+   	// make_vector(s_order_arr, nface);
+   	s_order_arr=(int *) calloc(nface, sizeof(int));
 
 	for (i=0; i<nface; i++) {
 		s_order_arr[i] = i;
@@ -647,6 +647,7 @@ int CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6], int level)
     p->num_children = 0;
 
     make_vector(p->child, 8);
+    // p->child=(TreeNode *) calloc(8, sizeof(TreeNode));
     for (i = 0; i < 8; i++) {
         p->child[i] = (TreeNode*)calloc(1, sizeof(TreeNode));
     }
