@@ -11,6 +11,7 @@
 #include "utilities.h"
 #include "array.h"
 #include "tree_node_struct.h"
+#include "gl_functions.h"
 
 extern int nface, nspt, natm, nchr;
 extern int **extr_v;						//[3][nspt]
