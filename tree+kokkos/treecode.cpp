@@ -35,6 +35,14 @@ extern double *work, *h;
 
 extern double **tr_xyz2D, **tr_q2D;
 
+
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+// extern make_vector(v,n);
+
 extern double pi;
 extern double one_over_4pi;
 extern double bulk_coef;
@@ -50,13 +58,6 @@ extern int order;
 extern int maxparnode;
 extern double theta;
 
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-// extern make_vector(v,n);
-	
 extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]);
 
 #ifdef __cplusplus
