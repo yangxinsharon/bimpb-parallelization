@@ -40,6 +40,8 @@ extern int order;
 extern int maxparnode;
 extern double theta;
 
+extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[])
+
 /* variables for tracking tree information */
 static int s_min_level;
 static int s_max_level;
