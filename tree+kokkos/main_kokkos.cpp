@@ -86,8 +86,8 @@ int main(int argc, char *argv[]) {
    typedef Kokkos::LayoutRight  Layout;
    typedef Kokkos::RangePolicy<HostExecSpace>  host_range_policy;
   	typedef Kokkos::RangePolicy<DevExecSpace>   dev_range_policy;
-  	typedef Kokkos::View<double*, Layout, MemSpace>   ViewVectorType;
-  	typedef Kokkos::View<double**, Layout, MemSpace>  ViewMatrixType;
+  	// typedef Kokkos::View<double*, Layout, MemSpace>   ViewVectorType;
+  	// typedef Kokkos::View<double**, Layout, MemSpace>  ViewMatrixType;
 	
 	timer_start((char*) "TOTAL_TIME");
 	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
@@ -98,9 +98,11 @@ int main(int argc, char *argv[]) {
    sprintf(fname,"%s",argv[1]);
    sprintf(density,"%s",argv[2]);
 
-   ViewMatrixType tr_xyz2D( "tr_xyz2D", 3, nface );
-	ViewMatrixType tr_q2D( "tr_q2D", 3, nface );
-	
+   // ViewMatrixType tr_xyz2D( "tr_xyz2D", 3, nface );
+	// ViewMatrixType tr_q2D( "tr_q2D", 3, nface );
+	// ViewMatrixType::HostMirror h_y = Kokkos::create_mirror_view(tr_xyz2D);
+  	// ViewMatrixType::HostMirror h_x = Kokkos::create_mirror_view(tr_q2D);
+
 	readin(fname, density);
 	comp_source_wrapper(); //wraps the solvation energy computation
 	Kokkos::fence();
