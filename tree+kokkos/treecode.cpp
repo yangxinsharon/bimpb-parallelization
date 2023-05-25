@@ -34,7 +34,7 @@ extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr];
 extern double *work, *h;
 
 extern double **tr_xyz2D, **tr_q2D;
-
+extern int **leafarr;
 
 
 // #ifdef __cplusplus
@@ -296,7 +296,7 @@ void leaflength(TreeNode *p, int idx) {
 int idx = 0;
 int arridx = 0;
 int inleaf = ceil(nface / maxparnode);
-int **leafarr;
+// int **leafarr;
 leafarr=Make2DIntArray(3,inleaf,(char*) "leafarr");
 
 // while ( idx < nface ) {
