@@ -375,7 +375,7 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 /**********************************************************/
 int *psolve(double *z, double *r) {
 /* r as original while z as scaled */
-	int i, j, jj;
+	int i, j, jj, k;
   	int idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
   	int *ipiv, inc;
   	double **matrixA; 
@@ -412,7 +412,7 @@ int *psolve(double *z, double *r) {
 	    leafarr[0][arridx] = ibeg;
 	    leafarr[1][arridx] = nrow;
 	    leafarr[2][arridx] = iend;
-	    printf("ibeg iend nrow: %d, %d, %d\n", leafarr[0][arridx], leafarr[1][arridx], leafarr[2][arridx] );
+	    // printf("ibeg iend nrow: %d, %d, %d\n", leafarr[0][arridx], leafarr[1][arridx], leafarr[2][arridx] );
 		// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
 		arridx += 1;
 		Nleafc += 1;
@@ -432,10 +432,11 @@ int *psolve(double *z, double *r) {
     	// printf("idx ibeg iend is %d, %d, %d\n",idx,ibeg,iend);
 	
 
-	for (int k = 0; k < Nleafc; k++){
+	for (k = 0; k < Nleaf; k++){
 		ibeg = leafarr[0][k];
 		nrow = leafarr[1][k];
 		iend = leafarr[2][k];
+		printf("ibeg nrow iend is %d, %d, %d\n",ibeg,nrow,iend);
 
 	// Kokkos::parallel_for("psolve", Nleaf, KOKKOS_LAMBDA(int k) {
 		// double tp[3], tq[3], sp[3], sq[3];
