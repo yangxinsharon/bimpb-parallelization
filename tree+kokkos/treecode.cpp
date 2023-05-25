@@ -375,7 +375,7 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 /**********************************************************/
 int *psolve(double *z, double *r) {
 /* r as original while z as scaled */
-	int i, j;
+	int i, j, jj;
   	int idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
   	int *ipiv, inc;
   	double **matrixA; 
@@ -412,7 +412,7 @@ int *psolve(double *z, double *r) {
 	    leafarr[0][arridx] = ibeg;
 	    leafarr[1][arridx] = nrow;
 	    leafarr[2][arridx] = iend;
-	    // printf("ibeg iend nrow: %d, %d, %d\n", leafarr[0][arridx], leafarr[1][arridx], leafarr[2][arridx] );
+	    printf("ibeg iend nrow: %d, %d, %d\n", leafarr[0][arridx], leafarr[1][arridx], leafarr[2][arridx] );
 		// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
 		arridx += 1;
 		Nleafc += 1;
@@ -535,7 +535,7 @@ int *psolve(double *z, double *r) {
   			// double G10, G20, G1, G2, G3, G4;
   	  		// double L1, L2, L3, L4, area;
 
-      		for ( int jj = i+1; jj <= iend; jj++ ) {
+      		for ( jj = i+1; jj <= iend; jj++ ) {
         		sp[0] = tr_xyz2D[0][jj];
         		sp[1] = tr_xyz2D[1][jj];
         		sp[2] = tr_xyz2D[2][jj];
