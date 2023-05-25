@@ -453,6 +453,7 @@ int *psolve(double *z, double *r) {
   			double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
   			double G10, G20, G1, G2, G3, G4;
   	  		double L1, L2, L3, L4, area;
+  	  		// :tr_xyz[3*j+i] = tr_xyz2D[i][j];
     		// tp[0] = tr_xyz2D[0][i];
 			// tp[1] = tr_xyz2D[1][i];
 			// tp[2] = tr_xyz2D[2][i];
@@ -480,12 +481,12 @@ int *psolve(double *z, double *r) {
         		// sq[0] = tr_q2D[0][j];
         		// sq[1] = tr_q2D[1][j];
         		// sq[2] = tr_q2D[2][j];    			
-        		sp[0] = tr_xyz[3*i+0];
-        		sp[1] = tr_xyz[3*i+1];
-        		sp[2] = tr_xyz[3*i+2];
-        		sq[0] = tr_q[3*i+0];
-        		sq[1] = tr_q[3*i+1];
-        		sq[2] = tr_q[3*i+2];				
+        		sp[0] = tr_xyz[3*j+0];
+        		sp[1] = tr_xyz[3*j+1];
+        		sp[2] = tr_xyz[3*j+2];
+        		sq[0] = tr_q[3*j+0];
+        		sq[1] = tr_q[3*j+1];
+        		sq[2] = tr_q[3*j+2];				
         		r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
         		sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
 
@@ -528,12 +529,19 @@ int *psolve(double *z, double *r) {
       		matrixA[i+nrow-ibeg][i+nrow-ibeg] = pre2;
 
       		for ( int jj = i+1; jj <= iend; jj++ ) {
-        		sp[0] = tr_xyz2D[0][jj];
-        		sp[1] = tr_xyz2D[1][jj];
-        		sp[2] = tr_xyz2D[2][jj];
-        		sq[0] = tr_q2D[0][jj];
-        		sq[1] = tr_q2D[1][jj];
-        		sq[2] = tr_q2D[2][jj];      			
+        		// sp[0] = tr_xyz2D[0][jj];
+        		// sp[1] = tr_xyz2D[1][jj];
+        		// sp[2] = tr_xyz2D[2][jj];
+        		// sq[0] = tr_q2D[0][jj];
+        		// sq[1] = tr_q2D[1][jj];
+        		// sq[2] = tr_q2D[2][jj]; 
+        		sp[0] =tr_xyz[3*jj+0];
+        		sp[1] =tr_xyz[3*jj+1];
+        		sp[2] =tr_xyz[3*jj+2];
+        		sq[0] =tr_q[3*jj+0];
+        		sq[1] =tr_q[3*jj+1];
+        		sq[2] =tr_q[3*jj+2];
+
 
 	        	r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
 				sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
