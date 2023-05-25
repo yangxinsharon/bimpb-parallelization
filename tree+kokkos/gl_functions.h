@@ -61,6 +61,3 @@ float** Make2DFloatArray(int arraySizeX, int arraySizeY, char info[]) {
 } 
 
 #endif
-
-
-#endif
