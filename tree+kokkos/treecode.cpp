@@ -402,10 +402,10 @@ int *psolve(double *z, double *r) {
 //
 
 	int arridx = 0, inleaf = 0;
-	inleaf = ceil(nface/maxparnode);
-	printf("inleaf is %d",inleaf);
+	// inleaf = ceil(nface/maxparnode);
+	// printf("inleaf is %d",inleaf);
 	int **leafarr;
-	leafarr=Make2DIntArray(3,inleaf,"leafarr");
+	leafarr=Make2DIntArray(3,Nleaf,"leafarr");
 	while ( idx < nface ) {
 	    leaflength(s_tree_root, idx);
 
@@ -419,7 +419,8 @@ int *psolve(double *z, double *r) {
 	    arridx += 1;
 	    Nleafc += 1;
 	    idx += nrow;
-	    printf("ibeg iend nrow: %d, %d, %d\n",leafarr[0][arridx], leafarr[1][arridx],leafarr[2][arridx] );
+	    // printf("ibeg iend nrow: %d, %d, %d\n",leafarr[0][arridx], leafarr[1][arridx],leafarr[2][arridx] );
+		printf("idx ibeg iend is %d, %d, %d\n",idx,ibeg,iend);
 	}
 
 	system("pause");
