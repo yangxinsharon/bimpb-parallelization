@@ -404,7 +404,7 @@ int *psolve(double *z, double *r) {
 	int arridx = 0, inleaf = 0;
 	// inleaf = ceil(nface/maxparnode);
 	// printf("inleaf is %d",inleaf);
-	int leafarr[3][Nleaf];
+	static int leafarr[3][Nleaf];
 
 	while ( idx < nface ) {
 	    leaflength(s_tree_root, idx);
