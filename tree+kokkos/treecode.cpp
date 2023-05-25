@@ -424,7 +424,7 @@ int *psolve(double *z, double *r) {
 	    leafarr[2][arridx] = nrow;
 	    // printf("nrow is: %d\n",leafarr[2][arridx]);
 	    // printf("arridx is: %d\n",arridx);
-	    printf("ibeg iend nrow: %d, %d, %d\n", &leafarr[0][arridx], &leafarr[1][arridx], &leafarr[2][arridx] );
+	    printf("ibeg iend nrow: %d, %d, %d\n", leafarr[0][arridx], leafarr[1][arridx], leafarr[2][arridx] );
 		// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
 		arridx += 1;
 		Nleafc += 1;
