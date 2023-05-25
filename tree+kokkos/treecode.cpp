@@ -445,7 +445,7 @@ int *psolve(double *z, double *r) {
   		// double G10, G20, G1, G2, G3, G4;
   	  	// double L1, L2, L3, L4, area;
   	  		
-    	for ( int i = ibeg; i <= iend; i++ ) {
+    	for ( i = ibeg; i <= iend; i++ ) {
   	  	// Kokkos::parallel_for("2ndpsolve", nrow, KOKKOS_LAMBDA(int i) {
     		// double tp[3], tq[3], sp[3], sq[3];
 			// double r_s[3], rs, irs, sumrs;
@@ -454,38 +454,39 @@ int *psolve(double *z, double *r) {
   			// double G10, G20, G1, G2, G3, G4;
   	  		// double L1, L2, L3, L4, area;
   	  		// :tr_xyz[3*j+i] = tr_xyz2D[i][j];
-    		// tp[0] = tr_xyz2D[0][i];
-			// tp[1] = tr_xyz2D[1][i];
-			// tp[2] = tr_xyz2D[2][i];
-			// tq[0] = tr_q2D[0][i];
-			// tq[1] = tr_q2D[1][i];
-			// tq[2] = tr_q2D[2][i];
+    		tp[0] = tr_xyz2D[0][i];
+			tp[1] = tr_xyz2D[1][i];
+			tp[2] = tr_xyz2D[2][i];
+			tq[0] = tr_q2D[0][i];
+			tq[1] = tr_q2D[1][i];
+			tq[2] = tr_q2D[2][i];
     		// tp[0] = tr_xyz2D(0,i);
 			// tp[1] = tr_xyz2D(1,i);
 			// tp[2] = tr_xyz2D(2,i);
 			// tq[0] = tr_q2D(0,i);
 			// tq[1] = tr_q2D(1,i);
 			// tq[2] = tr_q2D(2,i);
-    		tp[0] = tr_xyz[3*i+0];
-			tp[1] = tr_xyz[3*i+1];
-			tp[2] = tr_xyz[3*i+2];
-			tq[0] = tr_q[3*i+0];
-			tq[1] = tr_q[3*i+1];
-			tq[2] = tr_q[3*i+2];
+    		// tp[0] = tr_xyz[3*i+0];
+			// tp[1] = tr_xyz[3*i+1];
+			// tp[2] = tr_xyz[3*i+2];
+			// tq[0] = tr_q[3*i+0];
+			// tq[1] = tr_q[3*i+1];
+			// tq[2] = tr_q[3*i+2];
 
       		for ( j = ibeg; j < i; j++ ) {
-        		// sp[0] = tr_xyz2D[0][j];
-        		// sp[1] = tr_xyz2D[1][j];
-        		// sp[2] = tr_xyz2D[2][j];
-        		// sq[0] = tr_q2D[0][j];
-        		// sq[1] = tr_q2D[1][j];
-        		// sq[2] = tr_q2D[2][j];    			
-        		sp[0] = tr_xyz[3*j+0];
-        		sp[1] = tr_xyz[3*j+1];
-        		sp[2] = tr_xyz[3*j+2];
-        		sq[0] = tr_q[3*j+0];
-        		sq[1] = tr_q[3*j+1];
-        		sq[2] = tr_q[3*j+2];				
+        		sp[0] = tr_xyz2D[0][j];
+        		sp[1] = tr_xyz2D[1][j];
+        		sp[2] = tr_xyz2D[2][j];
+        		sq[0] = tr_q2D[0][j];
+        		sq[1] = tr_q2D[1][j];
+        		sq[2] = tr_q2D[2][j];    			
+        		// sp[0] = tr_xyz[3*j+0];
+        		// sp[1] = tr_xyz[3*j+1];
+        		// sp[2] = tr_xyz[3*j+2];
+        		// sq[0] = tr_q[3*j+0];
+        		// sq[1] = tr_q[3*j+1];
+        		// sq[2] = tr_q[3*j+2];	
+
         		r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
         		sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
 
@@ -535,18 +536,18 @@ int *psolve(double *z, double *r) {
   	  		// double L1, L2, L3, L4, area;
 
       		for ( int jj = i+1; jj <= iend; jj++ ) {
-        		// sp[0] = tr_xyz2D[0][jj];
-        		// sp[1] = tr_xyz2D[1][jj];
-        		// sp[2] = tr_xyz2D[2][jj];
-        		// sq[0] = tr_q2D[0][jj];
-        		// sq[1] = tr_q2D[1][jj];
-        		// sq[2] = tr_q2D[2][jj]; 
-        		sp[0] =tr_xyz[3*jj+0];
-        		sp[1] =tr_xyz[3*jj+1];
-        		sp[2] =tr_xyz[3*jj+2];
-        		sq[0] =tr_q[3*jj+0];
-        		sq[1] =tr_q[3*jj+1];
-        		sq[2] =tr_q[3*jj+2];
+        		sp[0] = tr_xyz2D[0][jj];
+        		sp[1] = tr_xyz2D[1][jj];
+        		sp[2] = tr_xyz2D[2][jj];
+        		sq[0] = tr_q2D[0][jj];
+        		sq[1] = tr_q2D[1][jj];
+        		sq[2] = tr_q2D[2][jj]; 
+        		// sp[0] =tr_xyz[3*jj+0];
+        		// sp[1] =tr_xyz[3*jj+1];
+        		// sp[2] =tr_xyz[3*jj+2];
+        		// sq[0] =tr_q[3*jj+0];
+        		// sq[1] =tr_q[3*jj+1];
+        		// sq[2] =tr_q[3*jj+2];
 
 
 	        	r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
