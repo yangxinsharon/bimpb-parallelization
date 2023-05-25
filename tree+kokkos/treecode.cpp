@@ -59,7 +59,7 @@ extern double **tr_xyz2D, **tr_q2D;
 // extern double theta;
 
 extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]);
-
+extern int** Make2DIntArray(int arraySizeX, int arraySizeY,char info[])
 // #ifdef __cplusplus
 // }
 // #endif
@@ -297,7 +297,7 @@ int idx = 0;
 int arridx = 0;
 int inleaf = ceil(nface / maxparnode);
 int **leafarr;
-leafarr=Make2DDoubleArray(3,inleaf,(char*) "leafarr");
+leafarr=Make2DIntArray(3,inleaf,(char*) "leafarr");
 
 // while ( idx < nface ) {
 //     leaflength(s_tree_root, idx);
