@@ -314,8 +314,8 @@ exit:	ichanged=nface-nfacenew;
 	// tr_q=(double *) calloc(3*nface, sizeof(double));
 	// tr_area=(double *) calloc(nface, sizeof(double));
 	// bvct=(double *) calloc(2*nface, sizeof(double));
-	// tr_xyz2D=Make2DDoubleArray(3,nface,"tr_xyz2D");
-    // tr_q2D=Make2DDoubleArray(3,nface,"tr_q2D");
+	tr_xyz2D=Make2DDoubleArray(3,nface,"tr_xyz2D");
+    tr_q2D=Make2DDoubleArray(3,nface,"tr_q2D");
 
 	tr_xyz=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)));
 	tr_q=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)));
@@ -323,14 +323,10 @@ exit:	ichanged=nface-nfacenew;
 	bvct=(double *) (Kokkos::kokkos_malloc(2*nface * sizeof(double)));
 
 	// tr_xyz2D=(double **) (Kokkos::kokkos_malloc(3 * sizeof(double*)));
-    // *(tr_xyz2D) = (double *) (Kokkos::kokkos_malloc(nface * sizeof(double)));
+    // tr_xyz2D = (double *) (Kokkos::kokkos_malloc(nface * sizeof(double)));
 	// tr_q2D=(double **) (Kokkos::kokkos_malloc(3 * sizeof(double*)));
-    // *(tr_q2D) = (double *) (Kokkos::kokkos_malloc(nface * sizeof(double)));
+    // tr_q2D = (double *) (Kokkos::kokkos_malloc(nface * sizeof(double)));
 	
-	// ViewMatrixType tr_xyz2D( "tr_xyz2D", 3, nface );
-	// ViewMatrixType tr_q2D( "tr_q2D", 3, nface );
-	// View < double *[nface]> tr_xyz2D ("tr_xyz2D", 3);
-	// View < double *[nface]> tr_q2D ("tr_q2D", 3);
 
     for (i=0;i<nface;i++){
         for (j=0;j<=2;j++){
