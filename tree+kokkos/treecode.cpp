@@ -19,6 +19,7 @@
 #include "array.h"
 #include "tree_node_struct.h"
 // #include "gl_functions.h"
+#include "gl_constants.h"
 
 #include <Kokkos_Core.hpp>
 
@@ -43,22 +44,22 @@ extern double **tr_xyz2D, **tr_q2D;
 // #endif
 // extern make_vector(v,n);
 
-extern double pi;
-extern double one_over_4pi;
-extern double bulk_coef;
-extern double units_coef;
-extern double epsw;
-extern double epsp;
-extern double eps;
-extern double bulk_strength;	//ion_strength in M
-extern double kappa2;	//kappa2=bulk_coef*bulk_strength/epsw;
-extern double kappa;
+// extern double pi;
+// extern double one_over_4pi;
+// extern double bulk_coef;
+// extern double units_coef;
+// extern double epsw;
+// extern double epsp;
+// extern double eps;
+// extern double bulk_strength;	//ion_strength in M
+// extern double kappa2;	//kappa2=bulk_coef*bulk_strength/epsw;
+// extern double kappa;
 
-extern int order;
-extern int maxparnode;
-extern double theta;
+// extern int order;
+// extern int maxparnode;
+// extern double theta;
 
-extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]);
+// extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]);
 
 // #ifdef __cplusplus
 // }
