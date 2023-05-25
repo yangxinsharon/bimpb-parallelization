@@ -59,7 +59,7 @@ extern double **tr_xyz2D, **tr_q2D;
 // extern int maxparnode;
 // extern double theta;
 
-// extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]);
+extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]);
 
 // #ifdef __cplusplus
 // }
