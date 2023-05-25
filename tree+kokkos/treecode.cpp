@@ -175,27 +175,27 @@ int TreecodeInitialization() {
 
 //
 
-	int arridx = 0;
-	int inleaf,nrow,nrow2,ibeg,iend;
-	inleaf = ceil(nface/maxparnode);
-	printf("inleaf is %d",inleaf);
-	int **leafarr;
-	leafarr=Make2DIntArray(3,inleaf,"leafarr");
-	while ( idx < nface ) {
-	    leaflength(s_tree_root, idx);
+	// int arridx = 0;
+	// int inleaf,nrow,nrow2,ibeg,iend;
+	// inleaf = ceil(nface/maxparnode);
+	// printf("inleaf is %d",inleaf);
+	// int **leafarr;
+	// leafarr=Make2DIntArray(3,inleaf,"leafarr");
+	// while ( idx < nface ) {
+	//     leaflength(s_tree_root, idx);
 
-	    nrow  = Nrow;
-	    nrow2 = nrow*2;
-	    ibeg  = idx;
-	    iend  = idx + nrow - 1;
-	    leafarr[0][arridx] = ibeg;
-	    leafarr[1][arridx] = iend;
-	    leafarr[2][arridx] = nrow;
-	    arridx += 1;
-	    Nleafc += 1;
-	    idx += nrow;
-	    printf("ibeg iend nrow: %d, %d, %d\n",leafarr[0][arridx], leafarr[1][arridx],leafarr[2][arridx] );
-	}
+	//     nrow  = Nrow;
+	//     nrow2 = nrow*2;
+	//     ibeg  = idx;
+	//     iend  = idx + nrow - 1;
+	//     leafarr[0][arridx] = ibeg;
+	//     leafarr[1][arridx] = iend;
+	//     leafarr[2][arridx] = nrow;
+	//     arridx += 1;
+	//     Nleafc += 1;
+	//     idx += nrow;
+	//     printf("ibeg iend nrow: %d, %d, %d\n",leafarr[0][arridx], leafarr[1][arridx],leafarr[2][arridx] );
+	// }
 
 
 	return 0;
@@ -457,7 +457,7 @@ int *psolve(double *z, double *r) {
     	ibeg  = idx;
     	iend  = idx + nrow - 1;
     	Nleafc += 1;
-    	// printf("idx ibeg iend is %d, %d, %d\n",idx,ibeg,iend);
+    	printf("idx ibeg iend is %d, %d, %d\n",idx,ibeg,iend);
 
 
     	for ( i = ibeg; i <= iend; i++ ) {
