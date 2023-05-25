@@ -29,8 +29,8 @@ extern double **atmpos;							// [3][natm/nchr]
 extern double *atmrad, *atmchr, *chrpos;	// [natm/nchr]
 extern double *work, *h;
 extern double *h_pot;
-// extern const double eps;
-const double eps = 80.0;
+extern const double eps;
+// const double eps = 80.0;
 
 extern double **tr_xyz2D, **tr_q2D;
 
@@ -89,9 +89,6 @@ int main(int argc, char *argv[]) {
   	typedef Kokkos::View<double*, Layout, MemSpace>   ViewVectorType;
   	typedef Kokkos::View<double**, Layout, MemSpace>  ViewMatrixType;
 	
-	ViewMatrixType tr_xyz2D( "tr_xyz2D", 3, nface );
-	ViewMatrixType tr_q2D( "tr_q2D", 3, nface );
-	
 	timer_start((char*) "TOTAL_TIME");
 	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
 
@@ -100,6 +97,10 @@ int main(int argc, char *argv[]) {
    // sprintf(density, "1");
    sprintf(fname,"%s",argv[1]);
    sprintf(density,"%s",argv[2]);
+
+   ViewMatrixType tr_xyz2D( "tr_xyz2D", 3, nface );
+	ViewMatrixType tr_q2D( "tr_q2D", 3, nface );
+	
 	readin(fname, density);
 	comp_source_wrapper(); //wraps the solvation energy computation
 	Kokkos::fence();

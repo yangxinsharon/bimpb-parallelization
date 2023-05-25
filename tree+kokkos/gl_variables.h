@@ -54,7 +54,4 @@ double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
 
 /*treecode pointers*/
 double **tr_xyz2D, **tr_q2D;
-
-
-
 #endif

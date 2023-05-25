@@ -18,7 +18,6 @@
 #include "utilities.h"
 #include "array.h"
 #include "tree_node_struct.h"
-// #include "gl_functions.h"
 #include "gl_constants.h"
 
 #include <Kokkos_Core.hpp>

@@ -1,6 +1,5 @@
 #ifndef GL_CONSTANTS
 #define GL_CONSTANTS
-
 const double pi=3.14159265358979324;
 const double one_over_4pi=0.079577471545948;
 const double bulk_coef=8.430325455;
@@ -15,7 +14,4 @@ const double kappa=0.1257253365;
 const int order=3;
 const int maxparnode=100;
 const double theta=0.8;
-
-
-
 #endif

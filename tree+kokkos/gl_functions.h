@@ -7,7 +7,6 @@
 #include <cstdlib>
 #include <cstdio> 
 
-
 /*dynamic allocation of 2d double variables*/
 double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]) {  
 	int i;
@@ -61,6 +60,7 @@ float** Make2DFloatArray(int arraySizeX, int arraySizeY, char info[]) {
 	return theArray;  
 } 
 
+#endif
 
 
 #endif

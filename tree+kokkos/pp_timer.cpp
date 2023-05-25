@@ -42,5 +42,3 @@ void timer_end(void) {
         printf("%s %ld.%06ld\n ",name,pp_tvDiff.tv_sec, pp_tvDiff.tv_usec);
 
 }
-
-
