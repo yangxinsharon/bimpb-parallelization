@@ -23,10 +23,10 @@
 #define H_ARRAY_H
 #include "xmalloc.h"
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+// #ifdef __cplusplus
+// extern "C"
+// {
+// #endif
 
 #define make_vector(v,n) ((v) = xmalloc((n) * sizeof *(v)))
 
@@ -115,8 +115,8 @@ extern "C"
     print_vector(fmt, (a)[print_matrix_loop_counter], (n));    \
 } while (0)
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 
 #endif /*H_ARRAY_H*/
