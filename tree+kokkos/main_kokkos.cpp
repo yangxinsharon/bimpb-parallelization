@@ -29,7 +29,8 @@ extern double **atmpos;							// [3][natm/nchr]
 extern double *atmrad, *atmchr, *chrpos;	// [natm/nchr]
 extern double *work, *h;
 extern double *h_pot;
-extern const double eps;
+// extern const double eps;
+const double eps = 80.0;
 
 extern double **tr_xyz2D, **tr_q2D;
 
