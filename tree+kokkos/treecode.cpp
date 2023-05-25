@@ -296,7 +296,7 @@ void leaflength(TreeNode *p, int idx) {
 int idx = 0;
 int arridx = 0;
 int inleaf = ceil(nface / maxparnode);
-double **leafarr;
+int **leafarr;
 leafarr=Make2DDoubleArray(3,inleaf,(char*) "leafarr");
 
 while ( idx < nface ) {
