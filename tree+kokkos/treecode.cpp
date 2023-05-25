@@ -194,7 +194,7 @@ int TreecodeInitialization() {
 	    arridx += 1;
 	    Nleafc += 1;
 	    idx += nrow;
-	    printf("ibeg iend nrow: %d, %d, %d",leafarr[0][arridx], leafarr[1][arridx],leafarr[2][arridx] );
+	    printf("ibeg iend nrow: %d, %d, %d\n",leafarr[0][arridx], leafarr[1][arridx],leafarr[2][arridx] );
 	}
 
 
