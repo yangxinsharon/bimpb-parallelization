@@ -299,20 +299,20 @@ int inleaf = ceil(nface / maxparnode);
 int **leafarr;
 leafarr=Make2DDoubleArray(3,inleaf,(char*) "leafarr");
 
-while ( idx < nface ) {
-    leaflength(s_tree_root, idx);
+// while ( idx < nface ) {
+//     leaflength(s_tree_root, idx);
 
-    nrow  = Nrow;
-    nrow2 = nrow*2;
-    ibeg  = idx;
-    iend  = idx + nrow - 1;
-    leafarr[0][arridx] = ibeg;
-    leafarr[1][arridx] = iend;
-    leafarr[2][arridx] = nrow;
-    arridx += 1;
-    Nleafc += 1;
-    printf("ibeg iend nrow: %d, %d, %d",leafarr[0][arridx], leafarr[1][arridx],leafarr[2][arridx] );
-}
+//     nrow  = Nrow;
+//     nrow2 = nrow*2;
+//     ibeg  = idx;
+//     iend  = idx + nrow - 1;
+//     leafarr[0][arridx] = ibeg;
+//     leafarr[1][arridx] = iend;
+//     leafarr[2][arridx] = nrow;
+//     arridx += 1;
+//     Nleafc += 1;
+//     printf("ibeg iend nrow: %d, %d, %d",leafarr[0][arridx], leafarr[1][arridx],leafarr[2][arridx] );
+// }
 
 /**********************************************************/
 /* lapack provide lu decomposition, however, something    */
