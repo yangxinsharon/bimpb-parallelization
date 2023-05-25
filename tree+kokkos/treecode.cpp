@@ -171,14 +171,14 @@ int TreecodeInitialization() {
 		}
 	}
 
-	// int idx = 0;
+
+//
 	int arridx = 0;
-	int inleaf;
+	int inleaf,nrow,nrow2,ibeg,iend;
 	inleaf = ceil(nface/maxparnode);
 	printf("inleaf is %d",inleaf);
 	int **leafarr;
 	leafarr=Make2DIntArray(3,inleaf,"leafarr");
-	  	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
 	while ( idx < nface ) {
 	    leaflength(s_tree_root, idx);
 
