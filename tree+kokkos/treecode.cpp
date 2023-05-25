@@ -517,13 +517,13 @@ int *psolve(double *z, double *r) {
       		matrixA[i-ibeg][i-ibeg] = pre1;
       		matrixA[i+nrow-ibeg][i+nrow-ibeg] = pre2;
 
-      		for ( j = i+1; j <= iend; j++ ) {
-        		sp[0] = tr_xyz2D[0][j];
-        		sp[1] = tr_xyz2D[1][j];
-        		sp[2] = tr_xyz2D[2][j];
-        		sq[0] = tr_q2D[0][j];
-        		sq[1] = tr_q2D[1][j];
-        		sq[2] = tr_q2D[2][j];      			
+      		for ( int jj = i+1; jj <= iend; jj++ ) {
+        		sp[0] = tr_xyz2D[0][jj];
+        		sp[1] = tr_xyz2D[1][jj];
+        		sp[2] = tr_xyz2D[2][jj];
+        		sq[0] = tr_q2D[0][jj];
+        		sq[1] = tr_q2D[1][jj];
+        		sq[2] = tr_q2D[2][jj];      			
 
 	        	r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
 				sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
@@ -548,17 +548,17 @@ int *psolve(double *z, double *r) {
 	        	dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
 	        	G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
 	        	G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
-	        	area = tr_area[j];
+	        	area = tr_area[jj];
 		
 	        	L1 = G1 - eps*G2;
 	        	L2 = G0 - Gk;
 	        	L3 = G4 - G3;
 	        	L4 = G10 - G20/eps;
 		
-	        	matrixA[i-ibeg][j-ibeg] = -L1*area;
-	        	matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
-	        	matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
-	        	matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
+	        	matrixA[i-ibeg][jj-ibeg] = -L1*area;
+	        	matrixA[i-ibeg][jj+nrow-ibeg] = -L2*area;
+	        	matrixA[i+nrow-ibeg][jj-ibeg] = -L3*area;
+	        	matrixA[i+nrow-ibeg][jj+nrow-ibeg] = -L4*area;
       		}
     	// }
 	    });
