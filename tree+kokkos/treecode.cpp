@@ -37,10 +37,10 @@ extern double **tr_xyz2D, **tr_q2D;
 
 
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+// #ifdef __cplusplus
+// extern "C"
+// {
+// #endif
 // extern make_vector(v,n);
 
 extern double pi;
@@ -60,9 +60,9 @@ extern double theta;
 
 extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]);
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 
 
 /* variables for tracking tree information */
