@@ -426,7 +426,7 @@ int *psolve(double *z, double *r) {
 		// printf("idx ibeg iend nrow is %d, %d, %d, %d\n",idx,ibeg,iend,nrow);
 		idx += nrow;
 	}
-	free_matrix(leafarr);
+
 	system("pause");
   	while ( idx < nface ) {
     	leaflength(s_tree_root, idx);
