@@ -380,12 +380,12 @@ int *psolve(double *z, double *r) {
   	int *ipiv, inc;
   	double **matrixA; 
   	double *rhs;
-  	double L1, L2, L3, L4, area;
+  	// double L1, L2, L3, L4, area;
   	// double tp[3], tq[3], sp[3], sq[3];
   	// double r_s[3], rs, irs, sumrs;
-  	double G0, kappa_rs, exp_kappa_rs, Gk;
-  	double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
-  	double G10, G20, G1, G2, G3, G4;
+  	// double G0, kappa_rs, exp_kappa_rs, Gk;
+  	// double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
+  	// double G10, G20, G1, G2, G3, G4;
   	double pre1, pre2;
 	
   	pre1 = 0.5*(1.0+eps);
@@ -439,55 +439,63 @@ int *psolve(double *z, double *r) {
     	// printf("idx ibeg iend is %d, %d, %d\n",idx,ibeg,iend);
 
 	Kokkos::parallel_for("psolve", Nleaf, KOKKOS_LAMBDA(int k) {
+		double tp[3], tq[3], sp[3], sq[3];
+		double r_s[3], rs, irs, sumrs;
+		double G0, kappa_rs, exp_kappa_rs, Gk;
+  		double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
+  		double G10, G20, G1, G2, G3, G4;
+  	  	double L1, L2, L3, L4, area;
+  	  		
 		ibeg = leafarr[0][k];
+		printf("ibeg is %d\n",ibeg);
 		iend = leafarr[2][k];
     	for ( int i = ibeg; i <= iend; i++ ) {
-    		double tp[0] = tr_xyz2D[0][i];
-			double tp[1] = tr_xyz2D[1][i];
-			double tp[2] = tr_xyz2D[2][i];
-			double tq[0] = tr_q2D[0][i];
-			double tq[1] = tr_q2D[1][i];
-			double tq[2] = tr_q2D[2][i];
+    		tp[0] = tr_xyz2D[0][i];
+			tp[1] = tr_xyz2D[1][i];
+			tp[2] = tr_xyz2D[2][i];
+			tq[0] = tr_q2D[0][i];
+			tq[1] = tr_q2D[1][i];
+			tq[2] = tr_q2D[2][i];
 
       		for ( int j = ibeg; j < i; j++ ) {
-        		double sp[0] = tr_xyz2D[0][j];
-        		double sp[1] = tr_xyz2D[1][j];
-        		double sp[2] = tr_xyz2D[2][j];
-        		double sq[0] = tr_q2D[0][j];
-        		double sq[1] = tr_q2D[1][j];
-        		double sq[2] = tr_q2D[2][j];    			
+        		sp[0] = tr_xyz2D[0][j];
+        		sp[1] = tr_xyz2D[1][j];
+        		sp[2] = tr_xyz2D[2][j];
+        		sq[0] = tr_q2D[0][j];
+        		sq[1] = tr_q2D[1][j];
+        		sq[2] = tr_q2D[2][j];    			
 				
-        		double r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
-        		double sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
+        		r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
+        		sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
 
-        		double rs = sqrt(sumrs);
-        		double irs = 1.0/rs;
-        		double G0 = one_over_4pi * irs;
-        		double kappa_rs = kappa * rs; //
-        		double exp_kappa_rs = exp(-kappa_rs);
-        		double Gk = exp_kappa_rs * G0;
+        		rs = sqrt(sumrs);
+        		irs = 1.0/rs;
+        		G0 = one_over_4pi * irs;
+        		kappa_rs = kappa * rs; //
+        		exp_kappa_rs = exp(-kappa_rs);
+        		Gk = exp_kappa_rs * G0;
 		
-        		double cos_theta  = (sq[0]*r_s[0] + sq[1]*r_s[1] + sq[2]*r_s[2]) * irs;
-        		double cos_theta0 = (tq[0]*r_s[0] + tq[1]*r_s[1] + tq[2]*r_s[2]) * irs;
-        		double tp1 = G0* irs;
-        		double tp2 = (1.0 + kappa_rs) * exp_kappa_rs;
+        		cos_theta  = (sq[0]*r_s[0] + sq[1]*r_s[1] + sq[2]*r_s[2]) * irs;
+        		cos_theta0 = (tq[0]*r_s[0] + tq[1]*r_s[1] + tq[2]*r_s[2]) * irs;
+        		tp1 = G0* irs;
+        		tp2 = (1.0 + kappa_rs) * exp_kappa_rs;
 		
-        		double G10 = cos_theta0 * tp1;
-        		double G20 = tp2 * G10;
+        		G10 = cos_theta0 * tp1;
+        		G20 = tp2 * G10;
 		
-        		double G1 = cos_theta * tp1;
-        		double G2 = tp2 * G1;
+        		G1 = cos_theta * tp1;
+        		G2 = tp2 * G1;
 		
-        		double dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
-        		double G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
-        		double G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
+        		dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
+        		G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
+        		G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
 		
-        		double area = tr_area[j]; 
+        		area = tr_area[j]; 
 		
-        		double L1 = G1 - eps*G2;
-        		double L2 = G0 - Gk;
-        		double L3 = G4 - G3;
-        		double L4 = G10 - G20/eps;
+        		L1 = G1 - eps*G2;
+        		L2 = G0 - Gk;
+        		L3 = G4 - G3;
+        		L4 = G10 - G20/eps;
 
         		matrixA[i-ibeg][j-ibeg] = -L1*area;
         		matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
@@ -544,8 +552,8 @@ int *psolve(double *z, double *r) {
     	}
 
     	for ( i = 0; i < nrow; i++) {
-      		double rhs[i] = r[i+ibeg];
-      		double rhs[i+nrow] = r[i+ibeg+nface];
+      		rhs[i] = r[i+ibeg];
+      		rhs[i+nrow] = r[i+ibeg+nface];
     	}
 
     	inc = lu_decomp( matrixA, nrow2, ipiv );
