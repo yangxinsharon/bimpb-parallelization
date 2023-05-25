@@ -404,9 +404,9 @@ int *psolve(double *z, double *r) {
 	int arridx = 0, inleaf = 0;
 	// inleaf = ceil(nface/maxparnode);
 	// printf("inleaf is %d",inleaf);
-	int **leafarr;
+	int leafarr[3][Nleaf];
+
 	// leafarr=Make2DIntArray(3,Nleaf,"leafarr");
-	make_matrix(leafarr,3,Nleaf);
 
 
 	while ( idx < nface ) {
