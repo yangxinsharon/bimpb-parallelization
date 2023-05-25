@@ -291,7 +291,28 @@ void leaflength(TreeNode *p, int idx) {
   	}
 
 }
+/********************************************************/
+// saving leaf ibeg and iend ! yang
+int idx = 0;
+int arridx = 0;
+int inleaf = ceil(nface / maxparnode);
+double **leafarr;
+leafarr=Make2DDoubleArray(3,inleaf,(char*) "leafarr");
 
+while ( idx < nface ) {
+    leaflength(s_tree_root, idx);
+
+    nrow  = Nrow;
+    nrow2 = nrow*2;
+    ibeg  = idx;
+    iend  = idx + nrow - 1;
+    leafarr[0][arridx] = ibeg;
+    leafarr[1][arridx] = iend;
+    leafarr[2][arridx] = nrow;
+    arridx += 1;
+    Nleafc += 1;
+    printf("ibeg iend nrow: %d, %d, %d",leafarr[0][arridx], leafarr[1][arridx],leafarr[2][arridx] );
+}
 
 /**********************************************************/
 /* lapack provide lu decomposition, however, something    */
