@@ -358,8 +358,10 @@ exit:	ichanged=nface-nfacenew;
         for (j=0;j<=2;j++){
             tr_xyz[3*i+j]=r0[j];
             tr_q[3*i+j]=v0[j];
-            tr_xyz2D[j][i] = r0[j];
-            tr_q2D[j][i] = v0[j];
+            // tr_xyz2D[j][i] = r0[j];
+            // tr_q2D[j][i] = v0[j];
+            tr_xyz2D(j,i) = r0[j];
+            tr_q2D(j,i) = v0[j];            
         }
         tr_area[i]=triangle_area(r);
         sum=sum+tr_area[i];
