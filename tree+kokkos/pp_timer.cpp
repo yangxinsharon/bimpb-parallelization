@@ -16,11 +16,6 @@
 #include <cstdio>
 #include <cmath>
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
 int my_timeval_subtract(struct timeval *result, struct timeval *t2, struct timeval *t1) {
     long int diff = (t2->tv_usec + 1000000 * t2->tv_sec) - (t1->tv_usec + 1000000 * t1->tv_sec);
     result->tv_sec = diff / 1000000;
@@ -47,9 +42,5 @@ void timer_end(void) {
         printf("%s %ld.%06ld\n ",name,pp_tvDiff.tv_sec, pp_tvDiff.tv_usec);
 
 }
-
-#ifdef __cplusplus
-}
-#endif
 
 

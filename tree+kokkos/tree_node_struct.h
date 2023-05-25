@@ -21,11 +21,6 @@
 #ifndef H_TREE_NODE_STRUCT_H
 #define H_TREE_NODE_STRUCT_H
 
-// #ifdef __cplusplus
-// extern "C"
-// {
-// #endif
-
 typedef struct sTreeNode {
 
     int node_idx;
@@ -40,10 +35,6 @@ typedef struct sTreeNode {
 
 } TreeNode;
 
-
-// #ifdef __cplusplus
-// }
-// #endif
 
 #endif /* H_TREE_NODE_STRUCT */
 

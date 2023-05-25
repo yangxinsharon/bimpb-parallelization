@@ -133,7 +133,7 @@ int main(int argc, char *argv[]) {
    // ViewMatrixType::HostMirror h_A = Kokkos::create_mirror_view( A );
 
 	TreecodeInitialization();
-	// Kokkos::fence();
+	Kokkos::fence();
 
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 

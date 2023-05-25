@@ -7,10 +7,6 @@
 #include <cstdlib>
 #include <cstdio> 
 
-// #ifdef __cplusplus
-// extern "C"
-// {
-// #endif
 
 /*dynamic allocation of 2d double variables*/
 double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]) {  
@@ -65,9 +61,6 @@ float** Make2DFloatArray(int arraySizeX, int arraySizeY, char info[]) {
 	return theArray;  
 } 
 
-// #ifdef __cplusplus
-// }
-// #endif
 
 
 #endif

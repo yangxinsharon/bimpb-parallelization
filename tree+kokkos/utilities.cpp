@@ -30,11 +30,6 @@
 #include <cmath>
 #include "utilities.h"
 
-// #ifdef __cplusplus
-// extern "C"
-// {
-// #endif
-
 
 /**********************************************************/
 double MinVal(double *variables, int number) 
@@ -94,6 +89,3 @@ double TriangleArea(double v[3][3])
     return area;
 }
 /**********************************************************/
-// #ifdef __cplusplus
-// }
-// #endif
