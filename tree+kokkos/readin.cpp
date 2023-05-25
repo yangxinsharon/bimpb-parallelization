@@ -314,15 +314,15 @@ exit:	ichanged=nface-nfacenew;
 	// tr_q=(double *) calloc(3*nface, sizeof(double));
 	// tr_area=(double *) calloc(nface, sizeof(double));
 	// bvct=(double *) calloc(2*nface, sizeof(double));
-	// tr_xyz2D=Make2DDoubleArray(3,nface,"tr_xyz2D");
-    // tr_q2D=Make2DDoubleArray(3,nface,"tr_q2D");
+	tr_xyz2D=Make2DDoubleArray(3,nface,"tr_xyz2D");
+    tr_q2D=Make2DDoubleArray(3,nface,"tr_q2D");
 
 	tr_xyz=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)));
 	tr_q=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)));
 	tr_area=(double *) (Kokkos::kokkos_malloc(nface * sizeof(double)));
 	bvct=(double *) (Kokkos::kokkos_malloc(2*nface * sizeof(double)));
-	Kokkos::View<double**,Kokkos::CudaUVMSpace> tr_xyz2D ("tr_xyz2D", 3,nface);
-	Kokkos::View<double**,Kokkos::CudaUVMSpace> tr_q2D ("tr_q2D", 3,nface);
+	// Kokkos::View<double**,Kokkos::CudaUVMSpace> tr_xyz2D ("tr_xyz2D", 3,nface);
+	// Kokkos::View<double**,Kokkos::CudaUVMSpace> tr_q2D ("tr_q2D", 3,nface);
 	// tr_xyz2D=(double **) (Kokkos::kokkos_malloc(3 * sizeof(double*)));
     // tr_xyz2D = (double *) (Kokkos::kokkos_malloc(nface * sizeof(double)));
 	// tr_q2D=(double **) (Kokkos::kokkos_malloc(3 * sizeof(double*)));
@@ -358,10 +358,10 @@ exit:	ichanged=nface-nfacenew;
         for (j=0;j<=2;j++){
             tr_xyz[3*i+j]=r0[j];
             tr_q[3*i+j]=v0[j];
-            // tr_xyz2D[j][i] = r0[j];
-            // tr_q2D[j][i] = v0[j];
-            tr_xyz2D(j,i) = r0[j];
-            tr_q2D(j,i) = v0[j];            
+            tr_xyz2D[j][i] = r0[j];
+            tr_q2D[j][i] = v0[j];
+            // tr_xyz2D(j,i) = r0[j];
+            // tr_q2D(j,i) = v0[j];            
         }
         tr_area[i]=triangle_area(r);
         sum=sum+tr_area[i];
