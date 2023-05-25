@@ -172,31 +172,6 @@ int TreecodeInitialization() {
 		}
 	}
 
-
-//
-	int idx = 0, ibeg = 0, iend = 0, arridx = 0;
-	int inleaf = 0,nrow = 0,nrow2 = 0;
-	inleaf = ceil(nface/maxparnode);
-	printf("inleaf is %d",inleaf);
-	int **leafarr;
-	leafarr=Make2DIntArray(3,inleaf,"leafarr");
-	while ( idx < nface ) {
-	    leaflength(s_tree_root, idx);
-
-	    nrow  = Nrow;
-	    nrow2 = nrow*2;
-	    ibeg  = idx;
-	    iend  = idx + nrow - 1;
-	    leafarr[0][arridx] = ibeg;
-	    leafarr[1][arridx] = iend;
-	    leafarr[2][arridx] = nrow;
-	    arridx += 1;
-	    Nleafc += 1;
-	    idx += nrow;
-	    printf("ibeg iend nrow: %d, %d, %d\n",leafarr[0][arridx], leafarr[1][arridx],leafarr[2][arridx] );
-	}
-
-
 	return 0;
 }
 
@@ -316,30 +291,7 @@ void leaflength(TreeNode *p, int idx) {
   	}
 
 }
-/********************************************************/
-// saving leaf ibeg and iend ! yang
-// int idx = 0;
-// int arridx = 0;
-// int inleaf;
-// inleaf = ceil(nface/maxparnode);
-// printf("inleaf is %d",inleaf);
-// int **leafarr;
-// leafarr=Make2DIntArray(3,inleaf,"leafarr");
-  	// matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
-// while ( idx < nface ) {
-//     leaflength(s_tree_root, idx);
 
-//     nrow  = Nrow;
-//     nrow2 = nrow*2;
-//     ibeg  = idx;
-//     iend  = idx + nrow - 1;
-//     leafarr[0][arridx] = ibeg;
-//     leafarr[1][arridx] = iend;
-//     leafarr[2][arridx] = nrow;
-//     arridx += 1;
-//     Nleafc += 1;
-//     printf("ibeg iend nrow: %d, %d, %d",leafarr[0][arridx], leafarr[1][arridx],leafarr[2][arridx] );
-// }
 
 /**********************************************************/
 /* lapack provide lu decomposition, however, something    */
@@ -447,7 +399,30 @@ int *psolve(double *z, double *r) {
 	rhs=(double *) calloc(2*maxparnode, sizeof(double));
   	printf("maxparnode is %d\n", maxparnode);
 
+//
 
+	int arridx = 0, inleaf = 0;
+	inleaf = ceil(nface/maxparnode);
+	printf("inleaf is %d",inleaf);
+	int **leafarr;
+	leafarr=Make2DIntArray(3,inleaf,"leafarr");
+	while ( idx < nface ) {
+	    leaflength(s_tree_root, idx);
+
+	    nrow  = Nrow;
+	    nrow2 = nrow*2;
+	    ibeg  = idx;
+	    iend  = idx + nrow - 1;
+	    leafarr[0][arridx] = ibeg;
+	    leafarr[1][arridx] = iend;
+	    leafarr[2][arridx] = nrow;
+	    arridx += 1;
+	    Nleafc += 1;
+	    idx += nrow;
+	    printf("ibeg iend nrow: %d, %d, %d\n",leafarr[0][arridx], leafarr[1][arridx],leafarr[2][arridx] );
+	}
+
+	system("pause");
   	while ( idx < nface ) {
     	leaflength(s_tree_root, idx);
 
