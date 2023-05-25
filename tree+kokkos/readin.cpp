@@ -322,10 +322,10 @@ exit:	ichanged=nface-nfacenew;
 	tr_area=(double *) (Kokkos::kokkos_malloc(nface * sizeof(double)));
 	bvct=(double *) (Kokkos::kokkos_malloc(2*nface * sizeof(double)));
 
-	tr_xyz2D=(double **) (Kokkos::kokkos_malloc(3 * sizeof(double*)));
-    *(tr_xyz2D) = (double *) (Kokkos::kokkos_malloc(nface * sizeof(double)));
-	tr_q2D=(double **) (Kokkos::kokkos_malloc(3 * sizeof(double*)));
-    *(tr_q2D) = (double *) (Kokkos::kokkos_malloc(nface * sizeof(double)));
+	// tr_xyz2D=(double **) (Kokkos::kokkos_malloc(3 * sizeof(double*)));
+    // *(tr_xyz2D) = (double *) (Kokkos::kokkos_malloc(nface * sizeof(double)));
+	// tr_q2D=(double **) (Kokkos::kokkos_malloc(3 * sizeof(double*)));
+    // *(tr_q2D) = (double *) (Kokkos::kokkos_malloc(nface * sizeof(double)));
 	
 	// ViewMatrixType tr_xyz2D( "tr_xyz2D", 3, nface );
 	// ViewMatrixType tr_q2D( "tr_q2D", 3, nface );
