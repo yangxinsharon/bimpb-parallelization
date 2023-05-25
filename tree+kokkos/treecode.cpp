@@ -83,7 +83,7 @@ static TreeNode *s_tree_root = NULL;
 
 static int Nleaf = 0;
 static int Nleafc = 0;
-
+static int Nrow;
 /* internal functions */
 int Setup(double xyz_limits[6]);
 void leaflength(TreeNode *p, int idx);
@@ -174,7 +174,7 @@ int TreecodeInitialization() {
 
 
 //
-	int Nrow;
+
 	int arridx = 0;
 	int inleaf,nrow,nrow2,ibeg,iend;
 	inleaf = ceil(nface/maxparnode);
