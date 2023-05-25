@@ -417,13 +417,13 @@ int *psolve(double *z, double *r) {
 	    ibeg  = idx;
 	    iend  = idx + nrow - 1;
 	    leafarr[0][arridx] = ibeg;
-	    // printf("arridx is: %d",arridx);
+	    printf("leafarr[0][arridx] is: %d",leafarr[0][arridx]);
 	    	    
 	    leafarr[1][arridx] = iend;
 	    leafarr[2][arridx] = nrow;
 	    arridx += 1;
 	    Nleafc += 1;
-	    printf("arridx is: %d",arridx);
+	    // printf("arridx is: %d",arridx);
 	    // printf("idx ibeg iend nrow: %d, %d, %d, %d\n",idx, leafarr[0][arridx], leafarr[1][arridx],leafarr[2][arridx] );
 		// printf("idx ibeg iend nrow is %d, %d, %d, %d\n",idx,ibeg,iend,nrow);
 		idx += nrow;
