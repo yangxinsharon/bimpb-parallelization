@@ -404,7 +404,7 @@ int *psolve(double *z, double *r) {
 	int arridx = 0, inleaf = 0;
 	// inleaf = ceil(nface/maxparnode);
 	// printf("inleaf is %d",inleaf);
-	static int leafarr[3][Nleaf];
+	int leafarr[3][Nleaf];
 
 	while ( idx < nface ) {
 	    leaflength(s_tree_root, idx);
@@ -460,7 +460,7 @@ int *psolve(double *z, double *r) {
   			double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
   			double G10, G20, G1, G2, G3, G4;
   	  		double L1, L2, L3, L4, area;
-  	  		iend = leafarr[2][k];
+  	  		int iend2 = leafarr[2][k];
     		tp[0] = tr_xyz2D[0][i];
 			tp[1] = tr_xyz2D[1][i];
 			tp[2] = tr_xyz2D[2][i];
