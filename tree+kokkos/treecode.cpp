@@ -86,6 +86,7 @@ static int Nleafc = 0;
 
 /* internal functions */
 int Setup(double xyz_limits[6]);
+void leaflength(TreeNode *p, int idx);
 int Partition(double *a, double *b, double *c, int *indarr,
 	int ibeg, int iend, double val);
 int CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6],int level);
