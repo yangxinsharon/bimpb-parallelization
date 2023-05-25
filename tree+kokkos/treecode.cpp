@@ -448,6 +448,7 @@ int *psolve(double *z, double *r) {
   	  		
 		ibeg = leafarr[0][k];
 		printf("ibeg is %d\n",ibeg);
+		nrow = leafarr[1][k];
 		iend = leafarr[2][k];
     	for ( int i = ibeg; i <= iend; i++ ) {
     		tp[0] = tr_xyz2D[0][i];
@@ -570,7 +571,7 @@ int *psolve(double *z, double *r) {
 
   	// }
     });
-    Kokkos::fence();
+
   	printf("Nleafc is %d\n",Nleafc);
   	// free_matrix(matrixA);
   	// free_vector(rhs);
@@ -588,7 +589,8 @@ int *psolve(double *z, double *r) {
   	//   z[i] = r[i]/pre1;
   	//   z[i+nface] = r[i+nface]/pre2;
   	// }
-
+    Kokkos::fence();
+    
   	return 0;
 
 }
