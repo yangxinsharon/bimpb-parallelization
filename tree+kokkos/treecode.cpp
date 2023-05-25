@@ -473,8 +473,7 @@ int *psolve(double *z, double *r) {
 			tq[1] = tr_q[3*i+1];
 			tq[2] = tr_q[3*i+2];
 
-			tr_xyz[3*i+j]
-      		for ( int j = ibeg; j < i; j++ ) {
+      		for ( j = ibeg; j < i; j++ ) {
         		// sp[0] = tr_xyz2D[0][j];
         		// sp[1] = tr_xyz2D[1][j];
         		// sp[2] = tr_xyz2D[2][j];
@@ -534,7 +533,7 @@ int *psolve(double *z, double *r) {
   			// double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
   			// double G10, G20, G1, G2, G3, G4;
   	  		// double L1, L2, L3, L4, area;
-  	  		
+
       		for ( int jj = i+1; jj <= iend; jj++ ) {
         		// sp[0] = tr_xyz2D[0][jj];
         		// sp[1] = tr_xyz2D[1][jj];
