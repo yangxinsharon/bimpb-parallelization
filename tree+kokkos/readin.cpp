@@ -323,7 +323,8 @@ exit:	ichanged=nface-nfacenew;
 	bvct=(double *) (Kokkos::kokkos_malloc(2*nface * sizeof(double)));
 	// ViewMatrixType tr_xyz2D( "tr_xyz2D", 3, nface );
 	// ViewMatrixType tr_q2D( "tr_q2D", 3, nface );
-
+	View < double *[nface]> tr_xyz2D ("tr_xyz2D", 3);
+	View < double *[nface]> tr_q2D ("tr_q2D", 3);
 
     for (i=0;i<nface;i++){
         for (j=0;j<=2;j++){
@@ -354,8 +355,8 @@ exit:	ichanged=nface-nfacenew;
         for (j=0;j<=2;j++){
             tr_xyz[3*i+j]=r0[j];
             tr_q[3*i+j]=v0[j];
-            // tr_xyz2D[j][i] = r0[j];
-            // tr_q2D[j][i] = v0[j];
+            tr_xyz2D[j][i] = r0[j];
+            tr_q2D[j][i] = v0[j];
         }
         tr_area[i]=triangle_area(r);
         sum=sum+tr_area[i];
