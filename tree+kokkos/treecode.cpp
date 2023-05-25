@@ -295,7 +295,8 @@ void leaflength(TreeNode *p, int idx) {
 // saving leaf ibeg and iend ! yang
 int idx = 0;
 int arridx = 0;
-int inleaf = ceil(nface / maxparnode);
+int inleaf;
+inleaf = ceil(nface/maxparnode);
 printf("inleaf is %d",inleaf);
 // int **leafarr;
 // leafarr=Make2DIntArray(3,inleaf,"leafarr");
