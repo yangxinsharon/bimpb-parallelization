@@ -174,6 +174,7 @@ int TreecodeInitialization() {
 
 
 //
+	int Nrow;
 	int arridx = 0;
 	int inleaf,nrow,nrow2,ibeg,iend;
 	inleaf = ceil(nface/maxparnode);
@@ -301,7 +302,7 @@ int RemoveNode(TreeNode *p)
 
 /********************************************************/
 /* preconditioning calculation */
-int Nrow;
+// int Nrow;
 void leaflength(TreeNode *p, int idx) {
 	/* find the leaf length */
 	int i;
