@@ -423,6 +423,7 @@ int *psolve(double *z, double *r) {
 		arridx += 1;
 		Nleafc += 1;
 		idx += nrow;
+		Nleafc += 1;
 	}
 
 	// system("pause");
@@ -437,20 +438,28 @@ int *psolve(double *z, double *r) {
     // 	iend  = idx + nrow - 1;
     // 	Nleafc += 1;
     	// printf("idx ibeg iend is %d, %d, %d\n",idx,ibeg,iend);
-
-	Kokkos::parallel_for("psolve", Nleaf, KOKKOS_LAMBDA(int k) {
-		double tp[3], tq[3], sp[3], sq[3];
-		double r_s[3], rs, irs, sumrs;
-		double G0, kappa_rs, exp_kappa_rs, Gk;
-  		double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
-  		double G10, G20, G1, G2, G3, G4;
-  	  	double L1, L2, L3, L4, area;
-  	  		
+	for (int k = 0, k<Nleafc, k++){
 		ibeg = leafarr[0][k];
 		printf("ibeg is %d\n",ibeg);
 		nrow = leafarr[1][k];
 		iend = leafarr[2][k];
-    	for ( int i = ibeg; i <= iend; i++ ) {
+
+	// Kokkos::parallel_for("psolve", Nleaf, KOKKOS_LAMBDA(int k) {
+		// double tp[3], tq[3], sp[3], sq[3];
+		// double r_s[3], rs, irs, sumrs;
+		// double G0, kappa_rs, exp_kappa_rs, Gk;
+  		// double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
+  		// double G10, G20, G1, G2, G3, G4;
+  	  	// double L1, L2, L3, L4, area;
+  	  		
+    	// for ( int i = ibeg; i <= iend; i++ ) {
+  	  	Kokkos::parallel_for("2ndpsolve", nrow, KOKKOS_LAMBDA(int i) {
+    		double tp[3], tq[3], sp[3], sq[3];
+			double r_s[3], rs, irs, sumrs;
+			double G0, kappa_rs, exp_kappa_rs, Gk;
+  			double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
+  			double G10, G20, G1, G2, G3, G4;
+  	  		double L1, L2, L3, L4, area;
     		tp[0] = tr_xyz2D[0][i];
 			tp[1] = tr_xyz2D[1][i];
 			tp[2] = tr_xyz2D[2][i];
@@ -550,8 +559,10 @@ int *psolve(double *z, double *r) {
 	        	matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
 	        	matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
       		}
-    	}
+    	// }
+	    });
 
+  	  	Kokkos::fence();
     	for ( i = 0; i < nrow; i++) {
       		rhs[i] = r[i+ibeg];
       		rhs[i+nrow] = r[i+ibeg+nface];
@@ -570,7 +581,8 @@ int *psolve(double *z, double *r) {
     	// idx += nrow;
 
   	// }
-    });
+    // });
+	}
 
   	printf("Nleafc is %d\n",Nleafc);
   	// free_matrix(matrixA);
@@ -589,8 +601,8 @@ int *psolve(double *z, double *r) {
   	//   z[i] = r[i]/pre1;
   	//   z[i+nface] = r[i+nface]/pre2;
   	// }
-    Kokkos::fence();
-    
+    // Kokkos::fence();
+
   	return 0;
 
 }
