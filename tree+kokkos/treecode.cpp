@@ -296,8 +296,9 @@ void leaflength(TreeNode *p, int idx) {
 int idx = 0;
 int arridx = 0;
 int inleaf = ceil(nface / maxparnode);
+printf("inleaf is %d",inleaf);
 // int **leafarr;
-leafarr=Make2DIntArray(3,inleaf,"leafarr");
+// leafarr=Make2DIntArray(3,inleaf,"leafarr");
   	// matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
 // while ( idx < nface ) {
 //     leaflength(s_tree_root, idx);
