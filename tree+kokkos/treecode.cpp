@@ -536,13 +536,13 @@ int *psolve(double *z, double *r) {
   			// double G10, G20, G1, G2, G3, G4;
   	  		// double L1, L2, L3, L4, area;
 
-      		for ( jj = i+1; jj <= iend; jj++ ) {
-        		sp[0] = tr_xyz2D[0][jj];
-        		sp[1] = tr_xyz2D[1][jj];
-        		sp[2] = tr_xyz2D[2][jj];
-        		sq[0] = tr_q2D[0][jj];
-        		sq[1] = tr_q2D[1][jj];
-        		sq[2] = tr_q2D[2][jj]; 
+      		for ( j = i+1; j <= iend; jj++ ) {
+        		sp[0] = tr_xyz2D[0][j];
+        		sp[1] = tr_xyz2D[1][j];
+        		sp[2] = tr_xyz2D[2][j];
+        		sq[0] = tr_q2D[0][j];
+        		sq[1] = tr_q2D[1][j];
+        		sq[2] = tr_q2D[2][j]; 
         		// sp[0] =tr_xyz[3*jj+0];
         		// sp[1] =tr_xyz[3*jj+1];
         		// sp[2] =tr_xyz[3*jj+2];
@@ -581,10 +581,10 @@ int *psolve(double *z, double *r) {
 	        	L3 = G4 - G3;
 	        	L4 = G10 - G20/eps;
 		
-	        	matrixA[i-ibeg][jj-ibeg] = -L1*area;
-	        	matrixA[i-ibeg][jj+nrow-ibeg] = -L2*area;
-	        	matrixA[i+nrow-ibeg][jj-ibeg] = -L3*area;
-	        	matrixA[i+nrow-ibeg][jj+nrow-ibeg] = -L4*area;
+	        	matrixA[i-ibeg][j-ibeg] = -L1*area;
+	        	matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
+	        	matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
+	        	matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
       		}
     	}
 	    // });
