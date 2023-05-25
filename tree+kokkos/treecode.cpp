@@ -102,7 +102,7 @@ int RemoveNode(TreeNode *p);
 /**********************************************************/
 int TreecodeInitialization() {
     
-    int level, i, j, k, mm, nn, idx, ijk[3];
+    int level, i, j, k, mm, nn, idx =0, ijk[3];
 
     /* variables needed for reorder */
     double *temp_area, *temp_source;
@@ -169,6 +169,30 @@ int TreecodeInitialization() {
 			tr_xyz[3*j+i] = tr_xyz2D[i][j];
 			tr_q[3*j+i] = tr_q2D[i][j];
 		}
+	}
+
+	// int idx = 0;
+	int arridx = 0;
+	int inleaf;
+	inleaf = ceil(nface/maxparnode);
+	printf("inleaf is %d",inleaf);
+	int **leafarr;
+	leafarr=Make2DIntArray(3,inleaf,"leafarr");
+	  	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
+	while ( idx < nface ) {
+	    leaflength(s_tree_root, idx);
+
+	    nrow  = Nrow;
+	    nrow2 = nrow*2;
+	    ibeg  = idx;
+	    iend  = idx + nrow - 1;
+	    leafarr[0][arridx] = ibeg;
+	    leafarr[1][arridx] = iend;
+	    leafarr[2][arridx] = nrow;
+	    arridx += 1;
+	    Nleafc += 1;
+	    idx += nrow;
+	    printf("ibeg iend nrow: %d, %d, %d",leafarr[0][arridx], leafarr[1][arridx],leafarr[2][arridx] );
 	}
 
 
@@ -293,11 +317,11 @@ void leaflength(TreeNode *p, int idx) {
 }
 /********************************************************/
 // saving leaf ibeg and iend ! yang
-int idx = 0;
-int arridx = 0;
-int inleaf;
-inleaf = ceil(nface/maxparnode);
-printf("inleaf is %d",inleaf);
+// int idx = 0;
+// int arridx = 0;
+// int inleaf;
+// inleaf = ceil(nface/maxparnode);
+// printf("inleaf is %d",inleaf);
 // int **leafarr;
 // leafarr=Make2DIntArray(3,inleaf,"leafarr");
   	// matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
