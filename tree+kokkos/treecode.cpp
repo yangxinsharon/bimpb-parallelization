@@ -442,7 +442,7 @@ int *psolve(double *z, double *r) {
 		ibeg = leafarr[0][k];
 		printf("ibeg is %d\n",ibeg);
 		nrow = leafarr[1][k];
-		// iend = leafarr[2][k];
+		iend = leafarr[2][k];
 
 	// Kokkos::parallel_for("psolve", Nleaf, KOKKOS_LAMBDA(int k) {
 		// double tp[3], tq[3], sp[3], sq[3];
@@ -460,7 +460,6 @@ int *psolve(double *z, double *r) {
   			double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
   			double G10, G20, G1, G2, G3, G4;
   	  		double L1, L2, L3, L4, area;
-  	  		int iend2 = leafarr[2][k];
     		tp[0] = tr_xyz2D[0][i];
 			tp[1] = tr_xyz2D[1][i];
 			tp[2] = tr_xyz2D[2][i];
