@@ -399,13 +399,10 @@ int *psolve(double *z, double *r) {
 	rhs=(double *) calloc(2*maxparnode, sizeof(double));
   	printf("maxparnode is %d\n", maxparnode);
 
-//
 
-	int arridx = 0, inleaf = 0;
-	// inleaf = ceil(nface/maxparnode);
-	// printf("inleaf is %d",inleaf);
+//////////////////////////////////////////////
+	int arridx = 0;
 	int leafarr[3][Nleaf];
-
 	while ( idx < nface ) {
 	    leaflength(s_tree_root, idx);
 	    nrow  = Nrow;
@@ -413,21 +410,16 @@ int *psolve(double *z, double *r) {
 	    ibeg  = idx;
 	    iend  = idx + nrow - 1;
 	    leafarr[0][arridx] = ibeg;
-	    // printf("ibeg is: %d\n",leafarr[0][arridx]);
 	    leafarr[1][arridx] = nrow;
-	    // printf("iend is: %d\n",leafarr[1][arridx]);
 	    leafarr[2][arridx] = iend;
-	    // printf("nrow is: %d\n",leafarr[2][arridx]);
 	    // printf("ibeg iend nrow: %d, %d, %d\n", leafarr[0][arridx], leafarr[1][arridx], leafarr[2][arridx] );
 		// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
 		arridx += 1;
 		Nleafc += 1;
 		idx += nrow;
-		Nleafc += 1;
 	}
 
 	// system("pause");
-
 
   	// while ( idx < nface ) {
     // 	leaflength(s_tree_root, idx);
@@ -438,9 +430,10 @@ int *psolve(double *z, double *r) {
     // 	iend  = idx + nrow - 1;
     // 	Nleafc += 1;
     	// printf("idx ibeg iend is %d, %d, %d\n",idx,ibeg,iend);
-	for (int k = 0; k<Nleafc; k++){
+	
+
+	for (int k = 0; k < Nleafc; k++){
 		ibeg = leafarr[0][k];
-		printf("ibeg is %d\n",ibeg);
 		nrow = leafarr[1][k];
 		iend = leafarr[2][k];
 
@@ -466,20 +459,33 @@ int *psolve(double *z, double *r) {
 			// tq[0] = tr_q2D[0][i];
 			// tq[1] = tr_q2D[1][i];
 			// tq[2] = tr_q2D[2][i];
-    		tp[0] = tr_xyz2D(0,i);
-			tp[1] = tr_xyz2D(1,i);
-			tp[2] = tr_xyz2D(2,i);
-			tq[0] = tr_q2D(0,i);
-			tq[1] = tr_q2D(1,i);
-			tq[2] = tr_q2D(2,i);
+    		// tp[0] = tr_xyz2D(0,i);
+			// tp[1] = tr_xyz2D(1,i);
+			// tp[2] = tr_xyz2D(2,i);
+			// tq[0] = tr_q2D(0,i);
+			// tq[1] = tr_q2D(1,i);
+			// tq[2] = tr_q2D(2,i);
+    		tp[0] = tr_xyz[3*i+0];
+			tp[1] = tr_xyz[3*i+1];
+			tp[2] = tr_xyz[3*i+2];
+			tq[0] = tr_q[3*i+0];
+			tq[1] = tr_q[3*i+1];
+			tq[2] = tr_q[3*i+2];
+
+			tr_xyz[3*i+j]
       		for ( int j = ibeg; j < i; j++ ) {
-        		sp[0] = tr_xyz2D[0][j];
-        		sp[1] = tr_xyz2D[1][j];
-        		sp[2] = tr_xyz2D[2][j];
-        		sq[0] = tr_q2D[0][j];
-        		sq[1] = tr_q2D[1][j];
-        		sq[2] = tr_q2D[2][j];    			
-				
+        		// sp[0] = tr_xyz2D[0][j];
+        		// sp[1] = tr_xyz2D[1][j];
+        		// sp[2] = tr_xyz2D[2][j];
+        		// sq[0] = tr_q2D[0][j];
+        		// sq[1] = tr_q2D[1][j];
+        		// sq[2] = tr_q2D[2][j];    			
+        		sp[0] = tr_xyz[3*i+0];
+        		sp[1] = tr_xyz[3*i+1];
+        		sp[2] = tr_xyz[3*i+2];
+        		sq[0] = tr_q[3*i+0];
+        		sq[1] = tr_q[3*i+1];
+        		sq[2] = tr_q[3*i+2];				
         		r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
         		sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
 
