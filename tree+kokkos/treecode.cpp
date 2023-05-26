@@ -394,9 +394,15 @@ int *psolve(double *z, double *r) {
   	// make_matrix(matrixA, 2*maxparnode, 2*maxparnode);
   	// make_vector(ipiv, 2*maxparnode);
   	// make_vector(rhs, 2*maxparnode);
-  	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
-	ipiv=(int *) calloc(2*maxparnode, sizeof(int));
-	rhs=(double *) calloc(2*maxparnode, sizeof(double));
+  	// matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
+	// ipiv=(int *) calloc(2*maxparnode, sizeof(int));
+	// rhs=(double *) calloc(2*maxparnode, sizeof(double));
+
+
+
+	Kokkos::View<int**, Kokkos::CudaUVMSpace> matrixA("matrixA", 2*maxparnode, 2*maxparnode);
+	ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
+	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
   	printf("maxparnode is %d\n", maxparnode);
 
 
@@ -428,19 +434,22 @@ int *psolve(double *z, double *r) {
   	// while ( idx < nface ) {	
 	Kokkos::parallel_for("psolve", Nleaf, KOKKOS_LAMBDA(int k) {
 	// for (k = 0; k < Nleaf; k++){
-		ibeg = leafarr(0,k);
-		nrow = leafarr(1,k);
-		iend = leafarr(2,k);
-		nrow2 = nrow*2;
+		// ibeg = leafarr[0][k];
+		// nrow = leafarr[1][k];
+		// iend = leafarr[2][k];
+		int ibeg = leafarr(0,k);
+		int nrow = leafarr(1,k);
+		int iend = leafarr(2,k);
+		int nrow2 = nrow*2;
 		// printf("ibeg nrow iend is %d, %d, %d\n",ibeg,nrow,iend);
 
-	// Kokkos::parallel_for("psolve", Nleaf, KOKKOS_LAMBDA(int k) {
-		// double tp[3], tq[3], sp[3], sq[3];
-		// double r_s[3], rs, irs, sumrs;
-		// double G0, kappa_rs, exp_kappa_rs, Gk;
-  		// double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
-  		// double G10, G20, G1, G2, G3, G4;
-  	  	// double L1, L2, L3, L4, area;
+
+		double tp[3], tq[3], sp[3], sq[3];
+		double r_s[3], rs, irs, sumrs;
+		double G0, kappa_rs, exp_kappa_rs, Gk;
+  		double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
+  		double G10, G20, G1, G2, G3, G4;
+  	  	double L1, L2, L3, L4, area;
   	  		
     	for ( i = ibeg; i <= iend; i++ ) {
   	  	// Kokkos::parallel_for("2ndpsolve", nrow, KOKKOS_LAMBDA(int i) {
@@ -613,13 +622,15 @@ int *psolve(double *z, double *r) {
   	// free_vector(rhs);
   	// free_vector(ipiv);
 
-    for(i=0;i<2*maxparnode;i++) {
-		free(matrixA[i]);
-	}	
-	free(matrixA);
+    // for(i=0;i<2*maxparnode;i++) {
+	// 	free(matrixA[i]);
+	// }	
+	// free(matrixA);
 
-  	free(rhs);
-  	free(ipiv);
+  	// free(rhs);
+  	// free(ipiv);
+  	Kokkos::kokkos_free(rhs);
+	Kokkos::kokkos_free(ipiv);
 
   	// for ( i = 0; i < nface; i++) {
   	//   z[i] = r[i]/pre1;
