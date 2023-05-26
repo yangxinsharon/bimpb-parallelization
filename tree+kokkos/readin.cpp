@@ -19,7 +19,7 @@ extern double **atmpos;						//[3][natm/nchr];
 extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr]; 
 extern double *work, *h;
 extern double *h_pot;
-
+extern double *dev_tr_xyz, *dev_tr_q, *dev_tr_area, *dev_bvct;
 extern double **tr_xyz2D, **tr_q2D;
 
 /* function computing the area of a triangle given vertices coodinates */
@@ -317,15 +317,15 @@ exit:	ichanged=nface-nfacenew;
 	tr_xyz2D=Make2DDoubleArray(3,nface,"tr_xyz2D");
     tr_q2D=Make2DDoubleArray(3,nface,"tr_q2D");
 
-	// tr_xyz=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)),Kokkos::CudaUVMSpace);
-	// tr_q=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)),Kokkos::CudaUVMSpace);
-	// tr_area=(double *) (Kokkos::kokkos_malloc(nface * sizeof(double)),Kokkos::CudaUVMSpace);
-	// bvct=(double *) (Kokkos::kokkos_malloc(2*nface * sizeof(double)),Kokkos::CudaUVMSpace);
+	tr_xyz=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)),Kokkos::CudaUVMSpace);
+	tr_q=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)),Kokkos::CudaUVMSpace);
+	tr_area=(double *) (Kokkos::kokkos_malloc(nface * sizeof(double)),Kokkos::CudaUVMSpace);
+	bvct=(double *) (Kokkos::kokkos_malloc(2*nface * sizeof(double)),Kokkos::CudaUVMSpace);
   	
-	Kokkos::View<double*,Kokkos::CudaUVMSpace> tr_xyz ("tr_xyz", 3*nface);
-	Kokkos::View<double*,Kokkos::CudaUVMSpace> tr_q ("tr_q", 3*nface);
-	Kokkos::View<double*,Kokkos::CudaUVMSpace> tr_area ("tr_area", nface);
-	Kokkos::View<double*,Kokkos::CudaUVMSpace> bvct ("bvct", 2*nface);
+	Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_xyz ("dev_tr_xyz", 3*nface);
+	Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_q ("dev_tr_q", 3*nface);
+	Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_area ("dev_tr_area", nface);
+	Kokkos::View<double*,Kokkos::CudaSpace> dev_bvct ("dev_bvct", 2*nface);
 
   	// ViewVectorType::HostMirror h_y = Kokkos::create_mirror_view( tr_xyz );
   	// ViewVectorType::HostMirror h_x = Kokkos::create_mirror_view( tr_q);
@@ -363,20 +363,35 @@ exit:	ichanged=nface-nfacenew;
 		}*/
 
         for (j=0;j<=2;j++){
-            // tr_xyz[3*i+j]=r0[j];
-            // tr_q[3*i+j]=v0[j];
-            // tr_xyz2D[j][i] = r0[j];
-            // tr_q2D[j][i] = v0[j];
-
-            tr_xyz(3*i+j)=r0[j];
-            tr_q(3*i+j)=v0[j];
+            tr_xyz[3*i+j]=r0[j];
+            tr_q[3*i+j]=v0[j];
             tr_xyz2D[j][i] = r0[j];
-            tr_q2D[j][i] = v0[j]; 
+            tr_q2D[j][i] = v0[j];
+
+            // tr_xyz(3*i+j)=r0[j];
+            // tr_q(3*i+j)=v0[j];
+            // tr_xyz2D[j][i] = r0[j];
+            // tr_q2D[j][i] = v0[j]; 
             // tr_xyz2D(j,i) = r0[j];
             // tr_q2D(j,i) = v0[j];            
         }
         tr_area[i]=triangle_area(r);
         sum=sum+tr_area[i];
+
+		// for kokkos host and device:
+        for (j=0;j<3*nface;j++){
+        	dev_tr_xyz(j)=tr_xyz[j];
+			dev_tr_q(j)=tr_q[j];
+        }
+
+        for (j=0;j<nface;j++){
+			dev_tr_area(j)=tr_area[j];
+        }
+
+        for (j=0;j<2*nface;j++){
+			dev_bvct(j)=bvct[j];
+        }
+
 	}
     printf("total area = %f\n",sum);
 }

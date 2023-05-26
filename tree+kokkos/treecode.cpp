@@ -16,7 +16,7 @@
 #include <cstring>
 
 #include "utilities.h"
-#include "array.h"
+// #include "array.h"
 #include "tree_node_struct.h"
 #include "gl_constants.h"
 
@@ -73,9 +73,6 @@ static int s_max_level;
 static double s_target_position[3];
 static double s_target_normal[3];
 
-static double ***s_target_charge = NULL;
-static double ***s_source_charge = NULL;
-
 /* global variables for reordering arrays */
 static int *s_order_arr = NULL;
 /* root node of tree */
@@ -119,9 +116,6 @@ int TreecodeInitialization() {
 
     level = 0;
 
-    // make_matrix(temp_normal, 3, s_numpars);
-    // make_vector(temp_area, nface);
-    // make_vector(temp_source, 2 * nface);
     temp_normal = Make2DDoubleArray(3,nface,"temp_normal");
     temp_area=(double *) calloc(nface, sizeof(double));
     temp_source=(double *) calloc(2*nface, sizeof(double));
@@ -151,18 +145,12 @@ int TreecodeInitialization() {
         bvct[i + nface] = temp_source[s_order_arr[i] + nface];
     }
 
-    // free_matrix(temp_normal);
-    // free_vector(temp_area);
-    // free_vector(temp_source);
 	for(i=0;i<3;i++) {
 		free(temp_normal[i]);
 	}	
 	free(temp_normal);
 	free(temp_area);
 	free(temp_source);
-
-    // make_3array(s_target_charge, nface, 2, 16);
-    // make_3array(s_source_charge, nface, 2, 16);
 
     // transform tr_xyz2D and tr_q2D to 1 dimension
 	for (j=0; j<nface; j++){
@@ -400,16 +388,16 @@ int *psolve(double *z, double *r) {
 
 
 
-	Kokkos::View<double**, Kokkos::CudaUVMSpace> matrixA("matrixA", 2*maxparnode, 2*maxparnode);
+	Kokkos::View<double**, Kokkos::CudaSpace> matrixA("matrixA", 2*maxparnode, 2*maxparnode);
 	ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
 	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
-  	printf("maxparnode is %d\n", maxparnode);
+  	// printf("maxparnode is %d\n", maxparnode);
 
 
 //////////////////////////////////////////////
 	int arridx = 0;
 	// int leafarr[3][Nleaf];
-	Kokkos::View<int**, Kokkos::CudaUVMSpace> leafarr("leafarr", 3, Nleaf);
+	Kokkos::View<int**, Kokkos::CudaSpace> leafarr("leafarr", 3, Nleaf);
 	while ( idx < nface ) {
 	    leaflength(s_tree_root, idx);
 	    nrow  = Nrow;

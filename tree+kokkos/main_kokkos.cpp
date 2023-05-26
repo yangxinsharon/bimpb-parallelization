@@ -3,10 +3,6 @@
    Project bim-pb with Weihua Geng, Jiahui Chen */
 
 /* Inclusions */
-/* c */
-// #include <stdlib.h>
-// #include <stdio.h>
-// #include <math.h>
 #include "pp_timer.h"
 
 /* c++ */
@@ -15,7 +11,6 @@
 #include <cmath>
 
 /* kokkos */
-// #include <sys/time.h>
 #include <Kokkos_Core.hpp>
 
 extern int nface, nspt, natm, nchr;			// number of faces, points, atoms, and charges
@@ -29,24 +24,18 @@ extern double **atmpos;							// [3][natm/nchr]
 extern double *atmrad, *atmchr, *chrpos;	// [natm/nchr]
 extern double *work, *h;
 extern double *h_pot;
+extern double *dev_tr_xyz, *dev_tr_q, *dev_tr_area, *dev_bvct;
 extern const double eps;
-// const double eps = 80.0;
-
 extern double **tr_xyz2D, **tr_q2D;
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-// int *matvec ();
-// int *psolve ();
-// double eps;
 int gmres_(long int *n, double *b, double *x, long int *restrt, double *work, long int *ldw, 
 		double *h, long int *ldh, long int *iter, double *resid, 
 		int *matvec (double *alpha, double *x, double *beta, double *y), 
 		int *psolve (double *z, double *r), long int *info);
-// int TreecodeInitialization();
-// int TreecodeFinalization();
 
 #ifdef __cplusplus
 }
@@ -68,9 +57,6 @@ int main(int argc, char *argv[]) {
 	extern void comp_soleng_wrapper(double soleng);	// yang
 	extern int *matvec(double *alpha, double *x, double *beta, double *y); // yang
 	extern int *psolve(double *z, double *r); // yang
-	// extern int *matvec(),*psolve();
-	// extern int gmres_(long int *n, double *b, double *x, long int *restrt, double *work, long int *ldw, 
-	// 	double *h, long int *ldh, long int *iter, double *resid, int *matvec (), int *psolve (), long int *info);
 
    extern void timer_start(char *n); // yang
    extern void timer_end(void); // yang
@@ -86,8 +72,8 @@ int main(int argc, char *argv[]) {
    typedef Kokkos::LayoutRight  Layout;
    typedef Kokkos::RangePolicy<HostExecSpace>  host_range_policy;
   	typedef Kokkos::RangePolicy<DevExecSpace>   dev_range_policy;
-  	// typedef Kokkos::View<double*, Layout, MemSpace>   ViewVectorType;
-  	// typedef Kokkos::View<double**, Layout, MemSpace>  ViewMatrixType;
+  	typedef Kokkos::View<double*, Layout, MemSpace>   ViewVectorType;
+  	typedef Kokkos::View<double**, Layout, MemSpace>  ViewMatrixType;
   	// typedef Kokkos::View<double*,  Kokkos::CudaUVMSpace>  ViewVectorType;
   	// typedef Kokkos::View<double**, Kokkos::CudaUVMSpace>  ViewMatrixType;
 
@@ -99,11 +85,6 @@ int main(int argc, char *argv[]) {
    // sprintf(density, "1");
    sprintf(fname,"%s",argv[1]);
    sprintf(density,"%s",argv[2]);
-
-   // ViewMatrixType tr_xyz2D( "tr_xyz2D", 3, nface );
-	// ViewMatrixType tr_q2D( "tr_q2D", 3, nface );
-	// ViewMatrixType::HostMirror h_y = Kokkos::create_mirror_view(tr_xyz2D);
-  	// ViewMatrixType::HostMirror h_x = Kokkos::create_mirror_view(tr_q2D);
 
 	readin(fname, density);
 	comp_source_wrapper(); //wraps the solvation energy computation
@@ -117,11 +98,10 @@ int main(int argc, char *argv[]) {
 	iter=100;
 	resid=1e-4;
 
-
-
-	// xvct=(double *) calloc(N, sizeof(double));
-	// work=(double *) calloc (ldw*(RESTRT+4), sizeof(double));
-	// h=(double *) calloc (ldh*(RESTRT+2), sizeof(double));
+   // ViewVectorType dev_tr_xyz( "dev_tr_xyz", 3*nface );
+	// ViewVectorType dev_tr_q( "dev_tr_q", 3*nface );
+	// ViewVectorType::HostMirror tr_xyz = Kokkos::create_mirror_view(dev_tr_xyz);
+  	// ViewVectorType::HostMirror tr_q = Kokkos::create_mirror_view(dev_tr_q);
 
 	xvct=(double *) (Kokkos::kokkos_malloc(N * sizeof(double)));
 	work=(double *) (Kokkos::kokkos_malloc(ldw*(RESTRT+4) * sizeof(double)));
@@ -171,15 +151,6 @@ int main(int argc, char *argv[]) {
 		free(atmpos[i]);
 	}
 	free(atmpos);
-
-	// free(tr_xyz);
-	// free(tr_q);
-
-	// free(tr_area);
-	// free(bvct);
-	// free(xvct);
-	// free(atmchr);
-	// free(chrpos);
 
 	Kokkos::kokkos_free(tr_xyz);
 	Kokkos::kokkos_free(tr_q);
