@@ -378,7 +378,7 @@ int *psolve(double *z, double *r) {
 	int i, j, jj, k = 0;
   	int idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
   	int *ipiv, inc;
-  	double **matrixA; 
+  	// double **matrixA; 
   	double *rhs;
   	double L1, L2, L3, L4, area;
   	double tp[3], tq[3], sp[3], sq[3];
@@ -442,7 +442,7 @@ int *psolve(double *z, double *r) {
 		int iend = leafarr(2,k);
 		int nrow2 = nrow*2;
 		// printf("ibeg nrow iend is %d, %d, %d\n",ibeg,nrow,iend);
-
+		int i, j, jj, k = 0;
 
 		double tp[3], tq[3], sp[3], sq[3];
 		double r_s[3], rs, irs, sumrs;
@@ -525,14 +525,20 @@ int *psolve(double *z, double *r) {
         		L3 = G4 - G3;
         		L4 = G10 - G20/eps;
 
-        		matrixA[i-ibeg][j-ibeg] = -L1*area;
-        		matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
-        		matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
-        		matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
+        		// matrixA[i-ibeg][j-ibeg] = -L1*area;
+        		// matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
+        		// matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
+        		// matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
+        		matrixA(i-ibeg,j-ibeg) = -L1*area;
+        		matrixA(i-ibeg,j+nrow-ibeg) = -L2*area;
+        		matrixA(i+nrow-ibeg,j-ibeg) = -L3*area;
+        		matrixA(i+nrow-ibeg,j+nrow-ibeg) = -L4*area;
       		}
 
-      		matrixA[i-ibeg][i-ibeg] = pre1;
-      		matrixA[i+nrow-ibeg][i+nrow-ibeg] = pre2;
+      		// matrixA[i-ibeg][i-ibeg] = pre1;
+      		// matrixA[i+nrow-ibeg][i+nrow-ibeg] = pre2;
+      		matrixA(i-ibeg,i-ibeg)= pre1;
+      		matrixA(i+nrow-ibeg,i+nrow-ibeg)= pre2;
 
     		// double tp[3], tq[3], sp[3], sq[3];
 			// double r_s[3], rs, irs, sumrs;
@@ -586,10 +592,14 @@ int *psolve(double *z, double *r) {
 	        	L3 = G4 - G3;
 	        	L4 = G10 - G20/eps;
 		
-	        	matrixA[i-ibeg][j-ibeg] = -L1*area;
-	        	matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
-	        	matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
-	        	matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
+	        	// matrixA[i-ibeg][j-ibeg] = -L1*area;
+	        	// matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
+	        	// matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
+	        	// matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
+	        	matrixA(i-ibeg,j-ibeg) = -L1*area;
+	        	matrixA(i-ibeg,j+nrow-ibeg) = -L2*area;
+	        	matrixA(i+nrow-ibeg,j-ibeg) = -L3*area;
+	        	matrixA(i+nrow-ibeg,j+nrow-ibeg) = -L4*area;
       		}
     	}
 	    // });
