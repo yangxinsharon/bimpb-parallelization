@@ -117,12 +117,7 @@ int main(int argc, char *argv[]) {
 	iter=100;
 	resid=1e-4;
 
-	// Allocate y, x vectors and Matrix A on device.
-   // typedef Kokkos::View<double*, Layout, MemSpace>   ViewVectorType;
-   // typedef Kokkos::View<double**, Layout, MemSpace>  ViewMatrixType;
-   // ViewVectorType y( "y", N );
-   // ViewVectorType x( "x", M );
-   // ViewMatrixType A( "A", N, M );
+
 
 	// xvct=(double *) calloc(N, sizeof(double));
 	// work=(double *) calloc (ldw*(RESTRT+4), sizeof(double));
@@ -132,13 +127,8 @@ int main(int argc, char *argv[]) {
 	work=(double *) (Kokkos::kokkos_malloc(ldw*(RESTRT+4) * sizeof(double)));
 	h=(double *) (Kokkos::kokkos_malloc(ldh*(RESTRT+2) * sizeof(double)));
 
-   // Create host mirrors of device views.
-   // ViewVectorType::HostMirror h_y = Kokkos::create_mirror_view( y );
-   // ViewVectorType::HostMirror h_x = Kokkos::create_mirror_view( x );
-   // ViewMatrixType::HostMirror h_A = Kokkos::create_mirror_view( A );
-
 	TreecodeInitialization();
-	// Kokkos::fence();
+	Kokkos::fence();
 
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 

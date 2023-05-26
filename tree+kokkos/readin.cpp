@@ -323,11 +323,7 @@ exit:	ichanged=nface-nfacenew;
 	bvct=(double *) (Kokkos::kokkos_malloc(2*nface * sizeof(double)));
 	// Kokkos::View<double**,Kokkos::CudaUVMSpace> tr_xyz2D ("tr_xyz2D", 3,nface);
 	// Kokkos::View<double**,Kokkos::CudaUVMSpace> tr_q2D ("tr_q2D", 3,nface);
-	// tr_xyz2D=(double **) (Kokkos::kokkos_malloc(3 * sizeof(double*)));
-    // tr_xyz2D = (double *) (Kokkos::kokkos_malloc(nface * sizeof(double)));
-	// tr_q2D=(double **) (Kokkos::kokkos_malloc(3 * sizeof(double*)));
-    // tr_q2D = (double *) (Kokkos::kokkos_malloc(nface * sizeof(double)));
-	
+
 
     for (i=0;i<nface;i++){
         for (j=0;j<=2;j++){
