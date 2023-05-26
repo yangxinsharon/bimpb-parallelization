@@ -442,7 +442,7 @@ int *psolve(double *z, double *r) {
 		int iend = leafarr(2,k);
 		int nrow2 = nrow*2;
 		// printf("ibeg nrow iend is %d, %d, %d\n",ibeg,nrow,iend);
-		int i, j, jj = 0;
+		int i, j, jj,idx = 0;
 
 		double tp[3], tq[3], sp[3], sq[3];
 		double r_s[3], rs, irs, sumrs;
@@ -612,14 +612,14 @@ int *psolve(double *z, double *r) {
     	}
     	// inc = lu_decomp( matrixA, nrow2, ipiv );
     	// lu_solve( matrixA, nrow2, ipiv, rhs );
-
+    	double **matrixAloc;
 		matrixAloc=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixAloc");
 		for (i=0;i<2*maxparnode;i++){
 			for (j=0;j<2*maxparnode;j++){
 				matrixAloc[i][j]=matrixA(i,j);
 			}
 		}
-    	inc = lu_decomp( matrixAloc, nrow2, ipiv );
+    	int inc = lu_decomp( matrixAloc, nrow2, ipiv );
     	lu_solve( matrixAloc, nrow2, ipiv, rhs );
     	
 
