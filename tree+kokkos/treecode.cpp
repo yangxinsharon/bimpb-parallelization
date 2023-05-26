@@ -449,7 +449,7 @@ int *psolve(double *z, double *r) {
 		int nrow = leafarr(1,k);
 		int iend = leafarr(2,k);
 		int nrow2 = nrow*2;
-		int nface = 6030;
+		// int nface = 6030;
 		// printf("ibeg nrow iend is %d, %d, %d\n",ibeg,nrow,iend);
 		int i, j, jj,idx = 0;
 
