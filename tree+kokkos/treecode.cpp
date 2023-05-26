@@ -610,9 +610,18 @@ int *psolve(double *z, double *r) {
       		rhs[i] = r[i+ibeg];
       		rhs[i+nrow] = r[i+ibeg+nface];
     	}
+    	// inc = lu_decomp( matrixA, nrow2, ipiv );
+    	// lu_solve( matrixA, nrow2, ipiv, rhs );
 
-    	inc = lu_decomp( matrixA, nrow2, ipiv );
-    	lu_solve( matrixA, nrow2, ipiv, rhs );
+		matrixAloc=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixAloc");
+		for (i=0;i<2*maxparnode;i++){
+			for (j=0;j<2*maxparnode;j++){
+				matrixAloc[i][j]=matrixA(i,j);
+			}
+		}
+    	inc = lu_decomp( matrixAloc, nrow2, ipiv );
+    	lu_solve( matrixAloc, nrow2, ipiv, rhs );
+    	
 
     	for ( i = 0; i < nrow; i++) {
       		z[i+ibeg] = rhs[i];
