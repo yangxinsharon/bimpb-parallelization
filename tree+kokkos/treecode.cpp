@@ -361,7 +361,7 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 int *psolve(double *z, double *r) {
 /* r as original while z as scaled */
 
-  	int i, j, idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
+  	int i, j, idx = 0, nrow, nrow2, ibeg = 0, iend = 0, k=0;
   	int *ipiv, inc;
   	double **matrixA; 
   	double *rhs;
@@ -402,17 +402,22 @@ int *psolve(double *z, double *r) {
 		// Nleafc += 1;
 		idx += nrow;
 	}
-	idx = 0;
-  	while ( idx < nface ) {
-    	leaflength(s_tree_root, idx);
 
-    	nrow  = Nrow;
-    	nrow2 = nrow*2;
-    	ibeg  = idx;
-    	iend  = idx + nrow - 1;
-    	Nleafc += 1;
+	// idx = 0;
+  	// while ( idx < nface ) {
+    // 	leaflength(s_tree_root, idx);
+
+    // 	nrow  = Nrow;
+    // 	nrow2 = nrow*2;
+    // 	ibeg  = idx;
+    // 	iend  = idx + nrow - 1;
+    // 	Nleafc += 1;
     	// printf("idx ibeg iend is %d, %d, %d\n",idx,ibeg,iend);
-
+	
+	for (k = 0; k < Nleaf; k++){
+		ibeg = leafarr[0][k];
+		nrow = leafarr[1][k];
+		iend = leafarr[2][k];
 
     	for ( i = ibeg; i <= iend; i++ ) {
     		tp[0] = tr_xyz2D[0][i];
@@ -531,7 +536,7 @@ int *psolve(double *z, double *r) {
 
     	//printf("%d %d %d %d\n", idx, ibeg, iend, nrow);
 
-    	idx += nrow;
+    	// idx += nrow;
 
   	}
   	printf("Nleafc is %d\n",Nleafc);
