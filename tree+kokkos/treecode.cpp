@@ -421,18 +421,9 @@ int *psolve(double *z, double *r) {
 
 	// system("pause");
 	idx = 0;
-  	// while ( idx < nface ) {
-    // 	leaflength(s_tree_root, idx);
-
-    // 	nrow  = Nrow;
-    // 	nrow2 = nrow*2;
-    // 	ibeg  = idx;
-    // 	iend  = idx + nrow - 1;
-    // 	Nleafc += 1;
-    	// printf("idx ibeg iend is %d, %d, %d\n",idx,ibeg,iend);
-	
-
-	for (k = 0; k < Nleaf; k++){
+  	// while ( idx < nface ) {	
+	Kokkos::parallel_for("psolve", Nleaf, KOKKOS_LAMBDA(int k) {
+	// for (k = 0; k < Nleaf; k++){
 		ibeg = leafarr[0][k];
 		nrow = leafarr[1][k];
 		iend = leafarr[2][k];
@@ -610,8 +601,8 @@ int *psolve(double *z, double *r) {
     	idx += nrow;
     	// k += 1;
   	// }
-    // });
-	}
+    });
+	// }
 
   	printf("Nleafc is %d\n",Nleafc);
   	// free_matrix(matrixA);
@@ -630,7 +621,7 @@ int *psolve(double *z, double *r) {
   	//   z[i] = r[i]/pre1;
   	//   z[i+nface] = r[i+nface]/pre2;
   	// }
-    // Kokkos::fence();
+    Kokkos::fence();
 
   	return 0;
 
