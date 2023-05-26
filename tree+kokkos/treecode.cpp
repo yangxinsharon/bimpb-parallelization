@@ -31,6 +31,7 @@ extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr];
 extern double *work, *h;
 
 extern double **tr_xyz2D, **tr_q2D;
+extern int **leafarr;
 
 // extern double pi;
 // extern double one_over_4pi;

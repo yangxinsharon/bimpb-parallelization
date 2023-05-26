@@ -34,7 +34,7 @@ extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr];
 extern double *work, *h;
 
 extern double **tr_xyz2D, **tr_q2D;
-extern int **leafarr;
+
 
 
 // #ifdef __cplusplus
@@ -83,7 +83,7 @@ static TreeNode *s_tree_root = NULL;
 
 static int Nleaf = 0;
 static int Nleafc = 0;
-static int Nrow;
+
 /* internal functions */
 int Setup(double xyz_limits[6]);
 void leaflength(TreeNode *p, int idx);
@@ -276,7 +276,7 @@ int RemoveNode(TreeNode *p)
 
 /********************************************************/
 /* preconditioning calculation */
-// int Nrow;
+int Nrow;
 void leaflength(TreeNode *p, int idx) {
 	/* find the leaf length */
 	int i;
@@ -375,7 +375,7 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 /**********************************************************/
 int *psolve(double *z, double *r) {
 /* r as original while z as scaled */
-	int i, j, jj, k=0;
+	int i, j, jj, k = 0;
   	int idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
   	int *ipiv, inc;
   	double **matrixA; 
@@ -420,22 +420,23 @@ int *psolve(double *z, double *r) {
 	}
 
 	// system("pause");
+	idx = 0;
+  	// while ( idx < nface ) {
+    // 	leaflength(s_tree_root, idx);
 
-  	while ( idx < nface ) {
-    	leaflength(s_tree_root, idx);
-
-    	nrow  = Nrow;
-    	nrow2 = nrow*2;
-    	ibeg  = idx;
-    	iend  = idx + nrow - 1;
-    	Nleafc += 1;
+    // 	nrow  = Nrow;
+    // 	nrow2 = nrow*2;
+    // 	ibeg  = idx;
+    // 	iend  = idx + nrow - 1;
+    // 	Nleafc += 1;
     	// printf("idx ibeg iend is %d, %d, %d\n",idx,ibeg,iend);
 	
 
-	// for (k = 0; k < Nleaf; k++){
-		// ibeg = leafarr[0][k];
-		// nrow = leafarr[1][k];
-		// iend = leafarr[2][k];
+	for (k = 0; k < Nleaf; k++){
+		ibeg = leafarr[0][k];
+		nrow = leafarr[1][k];
+		iend = leafarr[2][k];
+		nrow2 = nrow*2;
 		// printf("ibeg nrow iend is %d, %d, %d\n",ibeg,nrow,iend);
 
 	// Kokkos::parallel_for("psolve", Nleaf, KOKKOS_LAMBDA(int k) {
@@ -607,7 +608,7 @@ int *psolve(double *z, double *r) {
     	//printf("%d %d %d %d\n", idx, ibeg, iend, nrow);
 
     	idx += nrow;
-    	k += 1;
+    	// k += 1;
   	// }
     // });
 	}
