@@ -317,10 +317,16 @@ exit:	ichanged=nface-nfacenew;
 	tr_xyz2D=Make2DDoubleArray(3,nface,"tr_xyz2D");
     tr_q2D=Make2DDoubleArray(3,nface,"tr_q2D");
 
-	tr_xyz=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)));
-	tr_q=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)));
-	tr_area=(double *) (Kokkos::kokkos_malloc(nface * sizeof(double)));
-	bvct=(double *) (Kokkos::kokkos_malloc(2*nface * sizeof(double)));
+	tr_xyz=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)),Kokkos::CudaUVMSpace);
+	tr_q=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)),Kokkos::CudaUVMSpace);
+	tr_area=(double *) (Kokkos::kokkos_malloc(nface * sizeof(double)),Kokkos::CudaUVMSpace);
+	bvct=(double *) (Kokkos::kokkos_malloc(2*nface * sizeof(double)),Kokkos::CudaUVMSpace);
+  	
+  	// ViewVectorType::HostMirror h_y = Kokkos::create_mirror_view( tr_xyz );
+  	// ViewVectorType::HostMirror h_x = Kokkos::create_mirror_view( tr_q);
+  	// ViewMatrixType::HostMirror h_A = Kokkos::create_mirror_view( tr_area);
+	// ViewMatrixType::HostMirror h_A = Kokkos::create_mirror_view( bvct);
+
 	// Kokkos::View<double**,Kokkos::CudaUVMSpace> tr_xyz2D ("tr_xyz2D", 3,nface);
 	// Kokkos::View<double**,Kokkos::CudaUVMSpace> tr_q2D ("tr_q2D", 3,nface);
 
