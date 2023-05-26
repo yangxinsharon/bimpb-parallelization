@@ -21,8 +21,8 @@
 #include "gl_constants.h"
 
 #include <Kokkos_Core.hpp>
-
-extern int nface, nspt, natm, nchr;
+static extern int nface;
+extern int nspt, natm, nchr;
 extern int **extr_v;						//[3][nspt]
 extern int **extr_f;						//[2][nface]
 extern int **face, **face_copy;				//[3][nface]
