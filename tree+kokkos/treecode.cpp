@@ -400,7 +400,7 @@ int *psolve(double *z, double *r) {
 
 
 
-	Kokkos::View<int**, Kokkos::CudaUVMSpace> matrixA("matrixA", 2*maxparnode, 2*maxparnode);
+	Kokkos::View<double**, Kokkos::CudaUVMSpace> matrixA("matrixA", 2*maxparnode, 2*maxparnode);
 	ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
 	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
   	printf("maxparnode is %d\n", maxparnode);
@@ -442,7 +442,7 @@ int *psolve(double *z, double *r) {
 		int iend = leafarr(2,k);
 		int nrow2 = nrow*2;
 		// printf("ibeg nrow iend is %d, %d, %d\n",ibeg,nrow,iend);
-		int i, j, jj, k = 0;
+		int i, j, jj = 0;
 
 		double tp[3], tq[3], sp[3], sq[3];
 		double r_s[3], rs, irs, sumrs;
