@@ -402,16 +402,20 @@ int *psolve(double *z, double *r) {
 
 //////////////////////////////////////////////
 	int arridx = 0;
-	int leafarr[3][Nleaf];
+	// int leafarr[3][Nleaf];
+	Kokkos::View<int**, Kokkos::CudaUVMSpace> leafarr("leafarr", 3, Nleaf);
 	while ( idx < nface ) {
 	    leaflength(s_tree_root, idx);
 	    nrow  = Nrow;
 	    nrow2 = nrow*2;
 	    ibeg  = idx;
 	    iend  = idx + nrow - 1;
-	    leafarr[0][arridx] = ibeg;
-	    leafarr[1][arridx] = nrow;
-	    leafarr[2][arridx] = iend;
+	    // leafarr[0][arridx] = ibeg;
+	    // leafarr[1][arridx] = nrow;
+	    // leafarr[2][arridx] = iend;
+	    leafarr(0,arridx) = ibeg;
+	    leafarr(1,arridx) = nrow;
+	    leafarr(2,arridx) = iend;	    
 	    // printf("ibeg iend nrow: %d, %d, %d\n", leafarr[0][arridx], leafarr[1][arridx], leafarr[2][arridx] );
 		// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
 		arridx += 1;
@@ -424,9 +428,9 @@ int *psolve(double *z, double *r) {
   	// while ( idx < nface ) {	
 	Kokkos::parallel_for("psolve", Nleaf, KOKKOS_LAMBDA(int k) {
 	// for (k = 0; k < Nleaf; k++){
-		ibeg = leafarr[0][k];
-		nrow = leafarr[1][k];
-		iend = leafarr[2][k];
+		ibeg = leafarr(0,k);
+		nrow = leafarr(1,k);
+		iend = leafarr(2,k);
 		nrow2 = nrow*2;
 		// printf("ibeg nrow iend is %d, %d, %d\n",ibeg,nrow,iend);
 
