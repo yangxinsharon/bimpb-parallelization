@@ -468,12 +468,12 @@ int *psolve(double *z, double *r) {
 			// tq[1] = tr_q[3*i+1];
 			// tq[2] = tr_q[3*i+2];
 
-    		tp[0] = tr_xyz(3*i+0);
-			tp[1] = tr_xyz(3*i+1);
-			tp[2] = tr_xyz(3*i+2);
-			tq[0] = tr_q(3*i+0);
-			tq[1] = tr_q(3*i+1);
-			tq[2] = tr_q(3*i+2);
+    		tp[0] = dev_tr_xyz(3*i+0);
+			tp[1] = dev_tr_xyz(3*i+1);
+			tp[2] = dev_tr_xyz(3*i+2);
+			tq[0] = dev_tr_q(3*i+0);
+			tq[1] = dev_tr_q(3*i+1);
+			tq[2] = dev_tr_q(3*i+2);
       		for ( j = ibeg; j < i; j++ ) {
         		// sp[0] = tr_xyz2D[0][j];
         		// sp[1] = tr_xyz2D[1][j];
@@ -488,12 +488,12 @@ int *psolve(double *z, double *r) {
         		// sq[1] = tr_q[3*j+1];
         		// sq[2] = tr_q[3*j+2];	
 
-        		sp[0] = tr_xyz(3*j+0);
-        		sp[1] = tr_xyz(3*j+1);
-        		sp[2] = tr_xyz(3*j+2);
-        		sq[0] = tr_q(3*j+0);
-        		sq[1] = tr_q(3*j+1);
-        		sq[2] = tr_q(3*j+2);
+        		sp[0] = dev_tr_xyz(3*j+0);
+        		sp[1] = dev_tr_xyz(3*j+1);
+        		sp[2] = dev_tr_xyz(3*j+2);
+        		sq[0] = dev_tr_q(3*j+0);
+        		sq[1] = dev_tr_q(3*j+1);
+        		sq[2] = dev_tr_q(3*j+2);
 
 
         		r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
@@ -564,12 +564,12 @@ int *psolve(double *z, double *r) {
         		// sq[1] =tr_q[3*j+1];
         		// sq[2] =tr_q[3*j+2];
 
-        		sp[0] =tr_xyz(3*j+0);
-        		sp[1] =tr_xyz(3*j+1);
-        		sp[2] =tr_xyz(3*j+2);
-        		sq[0] =tr_q(3*j+0);
-        		sq[1] =tr_q(3*j+1);
-        		sq[2] =tr_q(3*j+2);
+        		sp[0] = dev_tr_xyz(3*j+0);
+        		sp[1] = dev_tr_xyz(3*j+1);
+        		sp[2] = dev_tr_xyz(3*j+2);
+        		sq[0] = dev_tr_q(3*j+0);
+        		sq[1] = dev_tr_q(3*j+1);
+        		sq[2] = dev_tr_q(3*j+2);
 
 	        	r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
 				sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
@@ -621,15 +621,15 @@ int *psolve(double *z, double *r) {
     	}
     	// inc = lu_decomp( matrixA, nrow2, ipiv );
     	// lu_solve( matrixA, nrow2, ipiv, rhs );
-    	double **matrixAloc;
-		matrixAloc=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixAloc");
+    	double **h_matrixA;
+		h_matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "h_matrixA");
 		for (i=0;i<2*maxparnode;i++){
 			for (j=0;j<2*maxparnode;j++){
-				matrixAloc[i][j]=matrixA(i,j);
+				h_matrixA[i][j] = matrixA(i,j);
 			}
 		}
-    	int inc = lu_decomp( matrixAloc, nrow2, ipiv );
-    	lu_solve( matrixAloc, nrow2, ipiv, rhs );
+    	int inc = lu_decomp( h_matrixA, nrow2, ipiv );
+    	lu_solve( h_matrixA, nrow2, ipiv, rhs );
     	
 
     	for ( i = 0; i < nrow; i++) {
@@ -646,9 +646,6 @@ int *psolve(double *z, double *r) {
 	// }
 
   	printf("Nleafc is %d\n",Nleafc);
-  	// free_matrix(matrixA);
-  	// free_vector(rhs);
-  	// free_vector(ipiv);
 
     // for(i=0;i<2*maxparnode;i++) {
 	// 	free(matrixA[i]);

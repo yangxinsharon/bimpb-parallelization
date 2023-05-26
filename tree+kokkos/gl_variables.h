@@ -51,7 +51,7 @@ double *work, *h;
 /*device pointers*/
 double *h_pot;
 double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
-double *dev_tr_xyz, *dev_tr_q, *dev_tr_area, *dev_bvct;
+// double *dev_tr_xyz, *dev_tr_q, *dev_tr_area, *dev_bvct;
 
 /*treecode pointers*/
 double **tr_xyz2D, **tr_q2D;
