@@ -449,6 +449,7 @@ int *psolve(double *z, double *r) {
 		int nrow = leafarr(1,k);
 		int iend = leafarr(2,k);
 		int nrow2 = nrow*2;
+		int nface = nrow*Nleaf;
 		// printf("ibeg nrow iend is %d, %d, %d\n",ibeg,nrow,iend);
 		int i, j, jj,idx = 0;
 
@@ -541,7 +542,8 @@ int *psolve(double *z, double *r) {
         		G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
         		G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
 		
-        		area = tr_area[j]; 
+        		// area = tr_area[j];
+        		area = dev_tr_area(j); 
 		
         		L1 = G1 - eps*G2;
         		L2 = G0 - Gk;
@@ -614,7 +616,8 @@ int *psolve(double *z, double *r) {
 	        	dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
 	        	G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
 	        	G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
-	        	area = tr_area[jj];
+	        	// area = tr_area[j];
+	        	area = dev_tr_area(j);
 		
 	        	L1 = G1 - eps*G2;
 	        	L2 = G0 - Gk;
