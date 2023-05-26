@@ -403,7 +403,7 @@ int *psolve(double *z, double *r) {
 		idx += nrow;
 	}
 
-	// idx = 0;
+	idx = 0;
   	// while ( idx < nface ) {
     // 	leaflength(s_tree_root, idx);
 
@@ -417,6 +417,7 @@ int *psolve(double *z, double *r) {
 	for (k = 0; k < Nleaf; k++){
 		ibeg = leafarr[0][k];
 		nrow = leafarr[1][k];
+		nrow2 = nrow*2;
 		iend = leafarr[2][k];
 
     	for ( i = ibeg; i <= iend; i++ ) {
@@ -536,7 +537,7 @@ int *psolve(double *z, double *r) {
 
     	//printf("%d %d %d %d\n", idx, ibeg, iend, nrow);
 
-    	// idx += nrow;
+    	idx += nrow;
 
   	}
   	printf("Nleafc is %d\n",Nleafc);
