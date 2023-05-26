@@ -473,13 +473,19 @@ int *psolve(double *z, double *r) {
 			// tq[1] = tr_q2D(1,i);
 			// tq[2] = tr_q2D(2,i);
 
-    		tp[0] = tr_xyz[3*i+0];
-			tp[1] = tr_xyz[3*i+1];
-			tp[2] = tr_xyz[3*i+2];
-			tq[0] = tr_q[3*i+0];
-			tq[1] = tr_q[3*i+1];
-			tq[2] = tr_q[3*i+2];
+    		// tp[0] = tr_xyz[3*i+0];
+			// tp[1] = tr_xyz[3*i+1];
+			// tp[2] = tr_xyz[3*i+2];
+			// tq[0] = tr_q[3*i+0];
+			// tq[1] = tr_q[3*i+1];
+			// tq[2] = tr_q[3*i+2];
 
+    		tp[0] = tr_xyz(3*i+0);
+			tp[1] = tr_xyz(3*i+1);
+			tp[2] = tr_xyz(3*i+2);
+			tq[0] = tr_q(3*i+0);
+			tq[1] = tr_q(3*i+1);
+			tq[2] = tr_q(3*i+2);
       		for ( j = ibeg; j < i; j++ ) {
         		// sp[0] = tr_xyz2D[0][j];
         		// sp[1] = tr_xyz2D[1][j];
@@ -487,12 +493,20 @@ int *psolve(double *z, double *r) {
         		// sq[0] = tr_q2D[0][j];
         		// sq[1] = tr_q2D[1][j];
         		// sq[2] = tr_q2D[2][j];    			
-        		sp[0] = tr_xyz[3*j+0];
-        		sp[1] = tr_xyz[3*j+1];
-        		sp[2] = tr_xyz[3*j+2];
-        		sq[0] = tr_q[3*j+0];
-        		sq[1] = tr_q[3*j+1];
-        		sq[2] = tr_q[3*j+2];	
+        		// sp[0] = tr_xyz[3*j+0];
+        		// sp[1] = tr_xyz[3*j+1];
+        		// sp[2] = tr_xyz[3*j+2];
+        		// sq[0] = tr_q[3*j+0];
+        		// sq[1] = tr_q[3*j+1];
+        		// sq[2] = tr_q[3*j+2];	
+
+        		sp[0] = tr_xyz(3*j+0);
+        		sp[1] = tr_xyz(3*j+1);
+        		sp[2] = tr_xyz(3*j+2);
+        		sq[0] = tr_q(3*j+0);
+        		sq[1] = tr_q(3*j+1);
+        		sq[2] = tr_q(3*j+2);
+
 
         		r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
         		sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
@@ -555,13 +569,19 @@ int *psolve(double *z, double *r) {
         		// sq[0] = tr_q2D[0][j];
         		// sq[1] = tr_q2D[1][j];
         		// sq[2] = tr_q2D[2][j]; 
-        		sp[0] =tr_xyz[3*j+0];
-        		sp[1] =tr_xyz[3*j+1];
-        		sp[2] =tr_xyz[3*j+2];
-        		sq[0] =tr_q[3*j+0];
-        		sq[1] =tr_q[3*j+1];
-        		sq[2] =tr_q[3*j+2];
+        		// sp[0] =tr_xyz[3*j+0];
+        		// sp[1] =tr_xyz[3*j+1];
+        		// sp[2] =tr_xyz[3*j+2];
+        		// sq[0] =tr_q[3*j+0];
+        		// sq[1] =tr_q[3*j+1];
+        		// sq[2] =tr_q[3*j+2];
 
+        		sp[0] =tr_xyz(3*j+0);
+        		sp[1] =tr_xyz(3*j+1);
+        		sp[2] =tr_xyz(3*j+2);
+        		sq[0] =tr_q(3*j+0);
+        		sq[1] =tr_q(3*j+1);
+        		sq[2] =tr_q(3*j+2);
 
 	        	r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
 				sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
