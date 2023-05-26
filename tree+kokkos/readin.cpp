@@ -317,10 +317,10 @@ exit:	ichanged=nface-nfacenew;
 	tr_xyz2D=Make2DDoubleArray(3,nface,"tr_xyz2D");
     tr_q2D=Make2DDoubleArray(3,nface,"tr_q2D");
 
-	tr_xyz=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)),Kokkos::CudaUVMSpace);
-	tr_q=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)),Kokkos::CudaUVMSpace);
-	tr_area=(double *) (Kokkos::kokkos_malloc(nface * sizeof(double)),Kokkos::CudaUVMSpace);
-	bvct=(double *) (Kokkos::kokkos_malloc(2*nface * sizeof(double)),Kokkos::CudaUVMSpace);
+	tr_xyz=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)));
+	tr_q=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)));
+	tr_area=(double *) (Kokkos::kokkos_malloc(nface * sizeof(double)));
+	bvct=(double *) (Kokkos::kokkos_malloc(2*nface * sizeof(double)));
   	
 	Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_xyz ("dev_tr_xyz", 3*nface);
 	Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_q ("dev_tr_q", 3*nface);
