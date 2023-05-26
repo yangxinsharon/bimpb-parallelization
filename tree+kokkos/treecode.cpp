@@ -235,7 +235,8 @@ int TreecodeFinalization()
     RemoveNode(s_tree_root);
     free(s_tree_root);
 
-    free_vector(s_order_arr);
+    // free_vector(s_order_arr);
+    free(s_order_arr);
 /*****************************************/
 
     printf("\nTABIPB tree structure has been deallocated.\n\n");
@@ -419,7 +420,26 @@ int *psolve(double *z, double *r) {
 
 	// system("pause");
 	idx = 0;
-  	// while ( idx < nface ) {	
+  	// while ( idx < nface ) {
+	Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_xyz ("dev_tr_xyz", 3*nface);
+	Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_q ("dev_tr_q", 3*nface);
+	Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_area ("dev_tr_area", nface);
+	Kokkos::View<double*,Kokkos::CudaSpace> dev_bvct ("dev_bvct", 2*nface);
+
+	// for kokkos host and device:
+    for (j=0;j<3*nface;j++){
+    	dev_tr_xyz(j)=tr_xyz[j];
+		dev_tr_q(j)=tr_q[j];
+    }
+
+    for (j=0;j<nface;j++){
+		dev_tr_area(j)=tr_area[j];
+    }
+
+    for (j=0;j<2*nface;j++){
+		dev_bvct(j)=bvct[j];
+    }
+
 	Kokkos::parallel_for("psolve", Nleaf, KOKKOS_LAMBDA(int k) {
 	// for (k = 0; k < Nleaf; k++){
 		// ibeg = leafarr[0][k];
