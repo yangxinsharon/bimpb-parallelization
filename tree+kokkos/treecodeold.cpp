@@ -3,13 +3,10 @@
    Tree structure preconditioner */
 
 /* Inclusions */
-/* c */
 // #include <stdlib.h>
 // #include <stdio.h>
 // #include <math.h>
 // #include <string.h>
-
-/* c++ */
 #include <cstdlib>
 #include <cstdio>
 #include <cmath>
@@ -34,14 +31,7 @@ extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr];
 extern double *work, *h;
 
 extern double **tr_xyz2D, **tr_q2D;
-
-
-
-// #ifdef __cplusplus
-// extern "C"
-// {
-// #endif
-// extern make_vector(v,n);
+extern int **leafarr;
 
 // extern double pi;
 // extern double one_over_4pi;
@@ -60,10 +50,6 @@ extern double **tr_xyz2D, **tr_q2D;
 
 extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]);
 extern int** Make2DIntArray(int arraySizeX, int arraySizeY,char info[]);
-// #ifdef __cplusplus
-// }
-// #endif
-
 
 /* variables for tracking tree information */
 static int s_min_level;
@@ -103,7 +89,7 @@ int RemoveNode(TreeNode *p);
 /**********************************************************/
 int TreecodeInitialization() {
     
-    int level, i, j, k, mm, nn;
+    int level, i, j, k, mm, nn, idx, ijk[3];
 
     /* variables needed for reorder */
     double *temp_area, *temp_source;
@@ -172,6 +158,7 @@ int TreecodeInitialization() {
 		}
 	}
 
+
 	return 0;
 }
 
@@ -190,7 +177,6 @@ int TreecodeFinalization()
     // make_vector(temp_area, nface);
     // make_vector(temp_source, 2 * nface);
     // make_vector(temp_xvct, 2 * nface);
-
     temp_position=Make2DDoubleArray(3,nface,"temp_position");
     temp_normal=Make2DDoubleArray(3,nface,"temp_normal");
     temp_area=(double *) calloc(nface, sizeof(double));
@@ -375,8 +361,8 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 /**********************************************************/
 int *psolve(double *z, double *r) {
 /* r as original while z as scaled */
-	int i, j, jj, k = 0;
-  	int idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
+
+  	int i, j, idx = 0, nrow, nrow2, ibeg = 0, iend = 0, k=0;
   	int *ipiv, inc;
   	double **matrixA; 
   	double *rhs;
@@ -399,7 +385,6 @@ int *psolve(double *z, double *r) {
 	rhs=(double *) calloc(2*maxparnode, sizeof(double));
   	printf("maxparnode is %d\n", maxparnode);
 
-
 //////////////////////////////////////////////
 	int arridx = 0;
 	int leafarr[3][Nleaf];
@@ -419,7 +404,6 @@ int *psolve(double *z, double *r) {
 		idx += nrow;
 	}
 
-	// system("pause");
 	idx = 0;
   	// while ( idx < nface ) {
     // 	leaflength(s_tree_root, idx);
@@ -431,49 +415,19 @@ int *psolve(double *z, double *r) {
     // 	Nleafc += 1;
     	// printf("idx ibeg iend is %d, %d, %d\n",idx,ibeg,iend);
 	
-
 	for (k = 0; k < Nleaf; k++){
 		ibeg = leafarr[0][k];
 		nrow = leafarr[1][k];
-		iend = leafarr[2][k];
 		nrow2 = nrow*2;
-		// printf("ibeg nrow iend is %d, %d, %d\n",ibeg,nrow,iend);
+		iend = leafarr[2][k];
 
-	// Kokkos::parallel_for("psolve", Nleaf, KOKKOS_LAMBDA(int k) {
-		// double tp[3], tq[3], sp[3], sq[3];
-		// double r_s[3], rs, irs, sumrs;
-		// double G0, kappa_rs, exp_kappa_rs, Gk;
-  		// double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
-  		// double G10, G20, G1, G2, G3, G4;
-  	  	// double L1, L2, L3, L4, area;
-  	  		
     	for ( i = ibeg; i <= iend; i++ ) {
-  	  	// Kokkos::parallel_for("2ndpsolve", nrow, KOKKOS_LAMBDA(int i) {
-    		// double tp[3], tq[3], sp[3], sq[3];
-			// double r_s[3], rs, irs, sumrs;
-			// double G0, kappa_rs, exp_kappa_rs, Gk;
-  			// double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
-  			// double G10, G20, G1, G2, G3, G4;
-  	  		// double L1, L2, L3, L4, area;
-  	  		// :tr_xyz[3*j+i] = tr_xyz2D[i][j];
     		tp[0] = tr_xyz2D[0][i];
 			tp[1] = tr_xyz2D[1][i];
 			tp[2] = tr_xyz2D[2][i];
 			tq[0] = tr_q2D[0][i];
 			tq[1] = tr_q2D[1][i];
 			tq[2] = tr_q2D[2][i];
-    		// tp[0] = tr_xyz2D(0,i);
-			// tp[1] = tr_xyz2D(1,i);
-			// tp[2] = tr_xyz2D(2,i);
-			// tq[0] = tr_q2D(0,i);
-			// tq[1] = tr_q2D(1,i);
-			// tq[2] = tr_q2D(2,i);
-    		// tp[0] = tr_xyz[3*i+0];
-			// tp[1] = tr_xyz[3*i+1];
-			// tp[2] = tr_xyz[3*i+2];
-			// tq[0] = tr_q[3*i+0];
-			// tq[1] = tr_q[3*i+1];
-			// tq[2] = tr_q[3*i+2];
 
       		for ( j = ibeg; j < i; j++ ) {
         		sp[0] = tr_xyz2D[0][j];
@@ -482,13 +436,7 @@ int *psolve(double *z, double *r) {
         		sq[0] = tr_q2D[0][j];
         		sq[1] = tr_q2D[1][j];
         		sq[2] = tr_q2D[2][j];    			
-        		// sp[0] = tr_xyz[3*j+0];
-        		// sp[1] = tr_xyz[3*j+1];
-        		// sp[2] = tr_xyz[3*j+2];
-        		// sq[0] = tr_q[3*j+0];
-        		// sq[1] = tr_q[3*j+1];
-        		// sq[2] = tr_q[3*j+2];	
-
+				
         		r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
         		sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
 
@@ -530,27 +478,13 @@ int *psolve(double *z, double *r) {
       		matrixA[i-ibeg][i-ibeg] = pre1;
       		matrixA[i+nrow-ibeg][i+nrow-ibeg] = pre2;
 
-    		// double tp[3], tq[3], sp[3], sq[3];
-			// double r_s[3], rs, irs, sumrs;
-			// double G0, kappa_rs, exp_kappa_rs, Gk;
-  			// double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
-  			// double G10, G20, G1, G2, G3, G4;
-  	  		// double L1, L2, L3, L4, area;
-
       		for ( j = i+1; j <= iend; j++ ) {
         		sp[0] = tr_xyz2D[0][j];
         		sp[1] = tr_xyz2D[1][j];
         		sp[2] = tr_xyz2D[2][j];
         		sq[0] = tr_q2D[0][j];
         		sq[1] = tr_q2D[1][j];
-        		sq[2] = tr_q2D[2][j]; 
-        		// sp[0] =tr_xyz[3*jj+0];
-        		// sp[1] =tr_xyz[3*jj+1];
-        		// sp[2] =tr_xyz[3*jj+2];
-        		// sq[0] =tr_q[3*jj+0];
-        		// sq[1] =tr_q[3*jj+1];
-        		// sq[2] =tr_q[3*jj+2];
-
+        		sq[2] = tr_q2D[2][j];      			
 
 	        	r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
 				sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
@@ -575,7 +509,7 @@ int *psolve(double *z, double *r) {
 	        	dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
 	        	G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
 	        	G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
-	        	area = tr_area[jj];
+	        	area = tr_area[j];
 		
 	        	L1 = G1 - eps*G2;
 	        	L2 = G0 - Gk;
@@ -588,9 +522,6 @@ int *psolve(double *z, double *r) {
 	        	matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
       		}
     	}
-	    // });
-
-  	  	// Kokkos::fence();
 
     	for ( i = 0; i < nrow; i++) {
       		rhs[i] = r[i+ibeg];
@@ -608,11 +539,8 @@ int *psolve(double *z, double *r) {
     	//printf("%d %d %d %d\n", idx, ibeg, iend, nrow);
 
     	idx += nrow;
-    	// k += 1;
-  	// }
-    // });
-	}
 
+  	}
   	printf("Nleafc is %d\n",Nleafc);
   	// free_matrix(matrixA);
   	// free_vector(rhs);
@@ -630,7 +558,6 @@ int *psolve(double *z, double *r) {
   	//   z[i] = r[i]/pre1;
   	//   z[i+nface] = r[i+nface]/pre2;
   	// }
-    // Kokkos::fence();
 
   	return 0;
 
@@ -659,7 +586,6 @@ int Setup(double xyz_limits[6]) {
 	// }
    	// make_vector(s_order_arr, nface);
    	s_order_arr=(int *) calloc(nface, sizeof(int));
-
 	for (i=0; i<nface; i++) {
 		s_order_arr[i] = i;
 	}
