@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
    sprintf(density,"%s",argv[2]);
 	readin(fname, density);
 	comp_source_wrapper(); //wraps the solvation energy computation
-	Kokkos::deep_copy( bvct, d_bvct );
+	// Kokkos::deep_copy( bvct, d_bvct );
 	Kokkos::fence();
 
 	/* parameters for GMRES */

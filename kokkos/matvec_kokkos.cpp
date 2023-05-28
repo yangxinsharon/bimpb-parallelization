@@ -193,5 +193,5 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
     	}
     });
     Kokkos::fence();
-    // Kokkos::deep_copy( bvct, d_bvct );
+    Kokkos::deep_copy( bvct, d_bvct );
 }
