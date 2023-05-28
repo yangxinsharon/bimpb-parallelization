@@ -15,7 +15,7 @@ extern int **extr_f;						//[2][nface]
 extern int **face, **face_copy;				//[3][nface]
 extern double **vert, **snrm;				//[3][nspt];
 extern double *tr_xyz, *tr_q;				//[3][nface]
-extern double *tr_area, *bvct, *xvct;		//[nface];
+extern double *tr_area,  *xvct;		//[nface];	*bvct,
 extern double **atmpos;						//[3][natm/nchr];
 extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr]; 
 
