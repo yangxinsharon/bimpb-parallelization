@@ -318,8 +318,8 @@ exit:	ichanged=nface-nfacenew;
 	tr_area=(double *) (Kokkos::kokkos_malloc(nface * sizeof(double)));
 	// bvct=(double *) (Kokkos::kokkos_malloc(2*nface * sizeof(double)));
 
-
-  	ViewVectorType bvct( "bvct", 2*nface );
+	Kokkos::View<double*,  Kokkos::CudaUVMSpace> bvct( "bvct", 2*nface );
+  	// ViewVectorType bvct( "bvct", 2*nface );
 
 
     for (i=0;i<nface;i++){

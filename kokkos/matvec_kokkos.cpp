@@ -168,8 +168,10 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
 	double *tr_xyz,double *tr_q, int nface, int nchr) {
 
 	Kokkos::parallel_for("comp_source", dev_range_policy(0,nface), KOKKOS_LAMBDA(int i) {
-    	bvct[i] = 0.0;
-    	bvct[i+nface] = 0.0;
+    	// bvct[i] = 0.0;
+    	// bvct[i+nface] = 0.0;
+    	bvct(i) = 0.0;
+    	bvct(i+nface) = 0.0;    	
     	for (int j=0; j<nchr; j++) {
     	    double r_s[3] = {chrpos[3*j]-tr_xyz[3*i], chrpos[3*j+1]-tr_xyz[3*i+1], 
     	    	chrpos[3*j+2]-tr_xyz[3*i+2]};
@@ -181,8 +183,10 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
     	    G0 = G0*irs;
     	    double tp1 = G0*irs;
     	    double G1 = cos_theta*tp1;
-    	    bvct[i] = bvct[i]+atmchr[j]*G0;
-    	    bvct[nface+i] = bvct[nface+i]+atmchr[j]*G1;
+    	    // bvct[i] = bvct[i]+atmchr[j]*G0;
+    	    // bvct[nface+i] = bvct[nface+i]+atmchr[j]*G1;
+    	    bvct(i) = bvct(i)+atmchr[j]*G0;
+    	    bvct(nface+i) = bvct(nface+i)+atmchr[j]*G1;
     	}
     });
     Kokkos::fence();
