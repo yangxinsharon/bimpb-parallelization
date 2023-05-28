@@ -72,8 +72,8 @@ int main(int argc, char *argv[]) {
    typedef Kokkos::LayoutRight  Layout;
    typedef Kokkos::RangePolicy<HostExecSpace>  host_range_policy;
   	typedef Kokkos::RangePolicy<DevExecSpace>   dev_range_policy;
-  	typedef Kokkos::View<double*, Layout, MemSpace>   ViewVectorType;
-  	typedef Kokkos::View<double**, Layout, MemSpace>  ViewMatrixType;
+  	// typedef Kokkos::View<double*, Layout, MemSpace>   ViewVectorType;
+  	// typedef Kokkos::View<double**, Layout, MemSpace>  ViewMatrixType;
   	// typedef Kokkos::View<double*,  Kokkos::CudaUVMSpace>  ViewVectorType;
   	// typedef Kokkos::View<double**, Kokkos::CudaUVMSpace>  ViewMatrixType;
 
@@ -151,6 +151,16 @@ int main(int argc, char *argv[]) {
 		free(atmpos[i]);
 	}
 	free(atmpos);
+
+	for(i=0;i<3;i++) {
+		free(tr_xyz2D[i]);
+	}	
+	free(tr_xyz2D);
+
+	for(i=0;i<3;i++) {
+		free(tr_q2D[i]);
+	}
+	free(tr_q2D);
 
 	Kokkos::kokkos_free(tr_xyz);
 	Kokkos::kokkos_free(tr_q);

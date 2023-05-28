@@ -322,10 +322,10 @@ exit:	ichanged=nface-nfacenew;
 	tr_area=(double *) (Kokkos::kokkos_malloc(nface * sizeof(double)));
 	bvct=(double *) (Kokkos::kokkos_malloc(2*nface * sizeof(double)));
   	
-	Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_xyz ("dev_tr_xyz", 3*nface);
-	Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_q ("dev_tr_q", 3*nface);
-	Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_area ("dev_tr_area", nface);
-	Kokkos::View<double*,Kokkos::CudaSpace> dev_bvct ("dev_bvct", 2*nface);
+	// Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_xyz ("dev_tr_xyz", 3*nface);
+	// Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_q ("dev_tr_q", 3*nface);
+	// Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_area ("dev_tr_area", nface);
+	// Kokkos::View<double*,Kokkos::CudaSpace> dev_bvct ("dev_bvct", 2*nface);
 
   	// ViewVectorType::HostMirror h_y = Kokkos::create_mirror_view( tr_xyz );
   	// ViewVectorType::HostMirror h_x = Kokkos::create_mirror_view( tr_q);
@@ -378,19 +378,19 @@ exit:	ichanged=nface-nfacenew;
         tr_area[i]=triangle_area(r);
         sum=sum+tr_area[i];
 
-		// for kokkos host and device:
-        for (j=0;j<3*nface;j++){
-        	dev_tr_xyz(j)=tr_xyz[j];
-			dev_tr_q(j)=tr_q[j];
-        }
+		// // for kokkos host and device:
+        // for (j=0;j<3*nface;j++){
+        // 	dev_tr_xyz(j)=tr_xyz[j];
+		// 	dev_tr_q(j)=tr_q[j];
+        // }
 
-        for (j=0;j<nface;j++){
-			dev_tr_area(j)=tr_area[j];
-        }
+        // for (j=0;j<nface;j++){
+		// 	dev_tr_area(j)=tr_area[j];
+        // }
 
-        for (j=0;j<2*nface;j++){
-			dev_bvct(j)=bvct[j];
-        }
+        // for (j=0;j<2*nface;j++){
+		// 	dev_bvct(j)=bvct[j];
+        // }
 
 	}
     printf("total area = %f\n",sum);

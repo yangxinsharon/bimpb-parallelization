@@ -16,7 +16,6 @@
 #include <cstring>
 
 #include "utilities.h"
-// #include "array.h"
 #include "tree_node_struct.h"
 #include "gl_constants.h"
 
@@ -380,25 +379,23 @@ int *psolve(double *z, double *r) {
   	pre1 = 0.5*(1.0+eps);
   	pre2 = 0.5*(1.0+1.0/eps);
 
-  	// make_matrix(matrixA, 2*maxparnode, 2*maxparnode);
-  	// make_vector(ipiv, 2*maxparnode);
-  	// make_vector(rhs, 2*maxparnode);
   	// matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
 	// ipiv=(int *) calloc(2*maxparnode, sizeof(int));
 	// rhs=(double *) calloc(2*maxparnode, sizeof(double));
 
 
-
-	Kokkos::View<double**, Kokkos::CudaSpace> matrixA("matrixA", 2*maxparnode, 2*maxparnode);
+	Kokkos::View<double**, Kokkos::CudaUVMSpace> matrixA("matrixA", 2*maxparnode, 2*maxparnode);
+	// Kokkos::View<int*,  Kokkos::CudaUVMSpace> ipiv("ipiv",2*maxparnode);
+	// Kokkos::View<double*,  Kokkos::CudaUVMSpace> rhs("rhs",2*maxparnode);
 	ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
 	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
-  	// printf("maxparnode is %d\n", maxparnode);
+  
 
 
 //////////////////////////////////////////////
 	int arridx = 0;
 	// int leafarr[3][Nleaf];
-	Kokkos::View<int**, Kokkos::CudaSpace> leafarr("leafarr", 3, Nleaf);
+	Kokkos::View<int**, Kokkos::CudaUVMSpace> leafarr("leafarr", 3, Nleaf);
 	while ( idx < nface ) {
 	    leaflength(s_tree_root, idx);
 	    nrow  = Nrow;
@@ -421,24 +418,24 @@ int *psolve(double *z, double *r) {
 	// system("pause");
 	idx = 0;
   	// while ( idx < nface ) {
-	Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_xyz ("dev_tr_xyz", 3*nface);
-	Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_q ("dev_tr_q", 3*nface);
-	Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_area ("dev_tr_area", nface);
-	Kokkos::View<double*,Kokkos::CudaSpace> dev_bvct ("dev_bvct", 2*nface);
+	// Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_xyz ("dev_tr_xyz", 3*nface);
+	// Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_q ("dev_tr_q", 3*nface);
+	// Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_area ("dev_tr_area", nface);
+	// Kokkos::View<double*,Kokkos::CudaSpace> dev_bvct ("dev_bvct", 2*nface);
 
-	// for kokkos host and device:
-    for (j=0;j<3*nface;j++){
-    	dev_tr_xyz(j)=tr_xyz[j];
-		dev_tr_q(j)=tr_q[j];
-    }
+	// // for kokkos host and device:
+    // for (j=0;j<3*nface;j++){
+    // 	dev_tr_xyz(j)=tr_xyz[j];
+	// 	dev_tr_q(j)=tr_q[j];
+    // }
 
-    for (j=0;j<nface;j++){
-		dev_tr_area(j)=tr_area[j];
-    }
+    // for (j=0;j<nface;j++){
+	// 	dev_tr_area(j)=tr_area[j];
+    // }
 
-    for (j=0;j<2*nface;j++){
-		dev_bvct(j)=bvct[j];
-    }
+    // for (j=0;j<2*nface;j++){
+	// 	dev_bvct(j)=bvct[j];
+    // }
 
 	Kokkos::parallel_for("psolve", Nleaf, KOKKOS_LAMBDA(int k) {
 	// for (k = 0; k < Nleaf; k++){
@@ -455,7 +452,7 @@ int *psolve(double *z, double *r) {
 
 		double tp[3], tq[3], sp[3], sq[3];
 		double r_s[3], rs, irs, sumrs;
-		double G0, kappa_rs, exp_kappa_rs, Gk;
+		double G0, kappa_r/s, exp_kappa_rs, Gk;
   		double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
   		double G10, G20, G1, G2, G3, G4;
   	  	double L1, L2, L3, L4, area;
@@ -482,19 +479,19 @@ int *psolve(double *z, double *r) {
 			// tq[1] = tr_q2D(1,i);
 			// tq[2] = tr_q2D(2,i);
 
-    		// tp[0] = tr_xyz[3*i+0];
-			// tp[1] = tr_xyz[3*i+1];
-			// tp[2] = tr_xyz[3*i+2];
-			// tq[0] = tr_q[3*i+0];
-			// tq[1] = tr_q[3*i+1];
-			// tq[2] = tr_q[3*i+2];
+    		tp[0] = tr_xyz[3*i+0];
+			tp[1] = tr_xyz[3*i+1];
+			tp[2] = tr_xyz[3*i+2];
+			tq[0] = tr_q[3*i+0];
+			tq[1] = tr_q[3*i+1];
+			tq[2] = tr_q[3*i+2];
 
-    		tp[0] = dev_tr_xyz(3*i+0);
-			tp[1] = dev_tr_xyz(3*i+1);
-			tp[2] = dev_tr_xyz(3*i+2);
-			tq[0] = dev_tr_q(3*i+0);
-			tq[1] = dev_tr_q(3*i+1);
-			tq[2] = dev_tr_q(3*i+2);
+    		// tp[0] = dev_tr_xyz(3*i+0);
+			// tp[1] = dev_tr_xyz(3*i+1);
+			// tp[2] = dev_tr_xyz(3*i+2);
+			// tq[0] = dev_tr_q(3*i+0);
+			// tq[1] = dev_tr_q(3*i+1);
+			// tq[2] = dev_tr_q(3*i+2);
       		for ( j = ibeg; j < i; j++ ) {
         		// sp[0] = tr_xyz2D[0][j];
         		// sp[1] = tr_xyz2D[1][j];
@@ -502,19 +499,19 @@ int *psolve(double *z, double *r) {
         		// sq[0] = tr_q2D[0][j];
         		// sq[1] = tr_q2D[1][j];
         		// sq[2] = tr_q2D[2][j];    			
-        		// sp[0] = tr_xyz[3*j+0];
-        		// sp[1] = tr_xyz[3*j+1];
-        		// sp[2] = tr_xyz[3*j+2];
-        		// sq[0] = tr_q[3*j+0];
-        		// sq[1] = tr_q[3*j+1];
-        		// sq[2] = tr_q[3*j+2];	
+        		sp[0] = tr_xyz[3*j+0];
+        		sp[1] = tr_xyz[3*j+1];
+        		sp[2] = tr_xyz[3*j+2];
+        		sq[0] = tr_q[3*j+0];
+        		sq[1] = tr_q[3*j+1];
+        		sq[2] = tr_q[3*j+2];	
 
-        		sp[0] = dev_tr_xyz(3*j+0);
-        		sp[1] = dev_tr_xyz(3*j+1);
-        		sp[2] = dev_tr_xyz(3*j+2);
-        		sq[0] = dev_tr_q(3*j+0);
-        		sq[1] = dev_tr_q(3*j+1);
-        		sq[2] = dev_tr_q(3*j+2);
+        		// sp[0] = dev_tr_xyz(3*j+0);
+        		// sp[1] = dev_tr_xyz(3*j+1);
+        		// sp[2] = dev_tr_xyz(3*j+2);
+        		// sq[0] = dev_tr_q(3*j+0);
+        		// sq[1] = dev_tr_q(3*j+1);
+        		// sq[2] = dev_tr_q(3*j+2);
 
 
         		r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
@@ -542,8 +539,8 @@ int *psolve(double *z, double *r) {
         		G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
         		G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
 		
-        		// area = tr_area[j];
-        		area = dev_tr_area(j); 
+        		area = tr_area[j];
+        		// area = dev_tr_area(j); 
 		
         		L1 = G1 - eps*G2;
         		L2 = G0 - Gk;
@@ -579,19 +576,19 @@ int *psolve(double *z, double *r) {
         		// sq[0] = tr_q2D[0][j];
         		// sq[1] = tr_q2D[1][j];
         		// sq[2] = tr_q2D[2][j]; 
-        		// sp[0] =tr_xyz[3*j+0];
-        		// sp[1] =tr_xyz[3*j+1];
-        		// sp[2] =tr_xyz[3*j+2];
-        		// sq[0] =tr_q[3*j+0];
-        		// sq[1] =tr_q[3*j+1];
-        		// sq[2] =tr_q[3*j+2];
+        		sp[0] =tr_xyz[3*j+0];
+        		sp[1] =tr_xyz[3*j+1];
+        		sp[2] =tr_xyz[3*j+2];
+        		sq[0] =tr_q[3*j+0];
+        		sq[1] =tr_q[3*j+1];
+        		sq[2] =tr_q[3*j+2];
 
-        		sp[0] = dev_tr_xyz(3*j+0);
-        		sp[1] = dev_tr_xyz(3*j+1);
-        		sp[2] = dev_tr_xyz(3*j+2);
-        		sq[0] = dev_tr_q(3*j+0);
-        		sq[1] = dev_tr_q(3*j+1);
-        		sq[2] = dev_tr_q(3*j+2);
+        		// sp[0] = dev_tr_xyz(3*j+0);
+        		// sp[1] = dev_tr_xyz(3*j+1);
+        		// sp[2] = dev_tr_xyz(3*j+2);
+        		// sq[0] = dev_tr_q(3*j+0);
+        		// sq[1] = dev_tr_q(3*j+1);
+        		// sq[2] = dev_tr_q(3*j+2);
 
 	        	r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
 				sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
@@ -616,8 +613,8 @@ int *psolve(double *z, double *r) {
 	        	dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
 	        	G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
 	        	G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
-	        	// area = tr_area[j];
-	        	area = dev_tr_area(j);
+	        	area = tr_area[j];
+	        	// area = dev_tr_area(j);
 		
 	        	L1 = G1 - eps*G2;
 	        	L2 = G0 - Gk;
@@ -642,17 +639,20 @@ int *psolve(double *z, double *r) {
       		rhs[i] = r[i+ibeg];
       		rhs[i+nrow] = r[i+ibeg+nface];
     	}
-    	// inc = lu_decomp( matrixA, nrow2, ipiv );
-    	// lu_solve( matrixA, nrow2, ipiv, rhs );
-    	double **h_matrixA;
-		h_matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "h_matrixA");
-		for (i=0;i<2*maxparnode;i++){
-			for (j=0;j<2*maxparnode;j++){
-				h_matrixA[i][j] = matrixA(i,j);
-			}
-		}
-    	int inc = lu_decomp( h_matrixA, nrow2, ipiv );
-    	lu_solve( h_matrixA, nrow2, ipiv, rhs );
+    	int inc = lu_decomp( matrixA, nrow2, ipiv );
+    	lu_solve( matrixA, nrow2, ipiv, rhs );
+
+    	// double **h_matrixA;
+		// h_matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "h_matrixA");
+		// for (i=0;i<2*maxparnode;i++){
+		// 	for (j=0;j<2*maxparnode;j++){
+		// 		h_matrixA[i][j] = matrixA(i,j);
+		// 	}
+		// }
+
+
+    	// int inc = lu_decomp( h_matrixA, nrow2, ipiv );
+    	// lu_solve( h_matrixA, nrow2, ipiv, rhs );
     	
 
     	for ( i = 0; i < nrow; i++) {
@@ -684,7 +684,7 @@ int *psolve(double *z, double *r) {
   	//   z[i] = r[i]/pre1;
   	//   z[i+nface] = r[i+nface]/pre2;
   	// }
-    Kokkos::fence();
+    // Kokkos::fence();
 
   	return 0;
 
