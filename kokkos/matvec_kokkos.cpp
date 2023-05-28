@@ -27,7 +27,7 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
 void comp_source( double* bvct, double *atmchr, double *chrpos, 
 	double *tr_xyz, double *tr_q, int nface, int nchr);
 
- 
+
 void matvecmul(const double *x, double *y, double *q, int nface, 
 	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta) {
 	double pre1, pre2;
@@ -103,8 +103,8 @@ void comp_soleng_wrapper(double soleng) {
     units_para = units_para *units_coef;
     units_para = units_para*pi;
 
-	// if ((chrptl=(double *) malloc(nface*sizeof(double)))==NULL) {
-    if ((chrptl=(double *) (Kokkos::kokkos_malloc(nface*sizeof(double))))==NULL) {
+	if ((chrptl=(double *) malloc(nface*sizeof(double)))==NULL) {
+    // if ((chrptl=(double *) (Kokkos::kokkos_malloc(nface*sizeof(double))))==NULL) {
 		printf("error in allcating chrptl");
 	}
 

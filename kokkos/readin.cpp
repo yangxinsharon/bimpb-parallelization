@@ -310,12 +310,12 @@ exit:	ichanged=nface-nfacenew;
 	// tr_xyz=(double *) calloc(3*nface, sizeof(double));
 	// tr_q=(double *) calloc(3*nface, sizeof(double));
 	// tr_area=(double *) calloc(nface, sizeof(double));
-	// bvct=(double *) calloc(2*nface, sizeof(double));
+	bvct=(double *) calloc(2*nface, sizeof(double));
 
 	tr_xyz=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)));
 	tr_q=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)));
 	tr_area=(double *) (Kokkos::kokkos_malloc(nface * sizeof(double)));
-	bvct=(double *) (Kokkos::kokkos_malloc(2*nface * sizeof(double)));
+	// bvct=(double *) (Kokkos::kokkos_malloc(2*nface * sizeof(double)));
 
     for (i=0;i<nface;i++){
         for (j=0;j<=2;j++){
