@@ -452,7 +452,7 @@ int *psolve(double *z, double *r) {
 
 		double tp[3], tq[3], sp[3], sq[3];
 		double r_s[3], rs, irs, sumrs;
-		double G0, kappa_r/s, exp_kappa_rs, Gk;
+		double G0, kappa_rs, exp_kappa_rs, Gk;
   		double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
   		double G10, G20, G1, G2, G3, G4;
   	  	double L1, L2, L3, L4, area;
