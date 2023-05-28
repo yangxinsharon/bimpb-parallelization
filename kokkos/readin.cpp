@@ -7,6 +7,7 @@
 #include <cmath>
 #include <cstring>
 #include <Kokkos_Core.hpp>
+#include "env_kokkos.h"
 
 extern int nface, nspt, natm, nchr;
 extern int **extr_v;						//[3][nspt]
@@ -315,7 +316,11 @@ exit:	ichanged=nface-nfacenew;
 	tr_xyz=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)));
 	tr_q=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)));
 	tr_area=(double *) (Kokkos::kokkos_malloc(nface * sizeof(double)));
-	bvct=(double *) (Kokkos::kokkos_malloc(2*nface * sizeof(double)));
+	// bvct=(double *) (Kokkos::kokkos_malloc(2*nface * sizeof(double)));
+
+
+  	ViewVectorType bvct( "bvct", 2*nface );
+
 
     for (i=0;i<nface;i++){
         for (j=0;j<=2;j++){

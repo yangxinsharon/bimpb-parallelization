@@ -158,7 +158,7 @@ int main(int argc, char *argv[]) {
 	Kokkos::kokkos_free(tr_q);
 
 	Kokkos::kokkos_free(tr_area);
-	Kokkos::kokkos_free(bvct);
+	// Kokkos::kokkos_free(bvct);
 	Kokkos::kokkos_free(xvct);
 
 
