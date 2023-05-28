@@ -194,7 +194,7 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
     });
     Kokkos::fence();
     // Kokkos::deep_copy( bvct, d_bvct );
-    for (i =0; i<nface; i++){
+    for (int i =0; i<nface; i++){
     	bvct[i]=d_bvct(i);
     	bvct[i+nface]=d_bvct(i+nface);
     }
