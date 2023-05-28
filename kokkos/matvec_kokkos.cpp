@@ -103,8 +103,8 @@ void comp_soleng_wrapper(double soleng) {
     units_para = units_para *units_coef;
     units_para = units_para*pi;
 
-	if ((chrptl=(double *) malloc(nface*sizeof(double)))==NULL) {
-    // if ((chrptl=(double *) (Kokkos::kokkos_malloc(nface*sizeof(double))))==NULL) {
+	// if ((chrptl=(double *) malloc(nface*sizeof(double)))==NULL) {
+    if ((chrptl=(double *) (Kokkos::kokkos_malloc(nface*sizeof(double))))==NULL) {
 		printf("error in allcating chrptl");
 	}
 
