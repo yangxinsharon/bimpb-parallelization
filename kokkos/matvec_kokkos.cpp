@@ -168,7 +168,7 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
 	double *tr_xyz,double *tr_q, int nface, int nchr) {
 	ViewVectorType d_bvct( "d_bvct", 2*nface );
 	// ViewVectorType d_bvct( "d_bvct", 2*nface );
-	ViewVectorType::HostMirror bvct = Kokkos::create_mirror_view( d_bvct );
+	// ViewVectorType::HostMirror bvct = Kokkos::create_mirror_view( d_bvct );
 
 	Kokkos::parallel_for("comp_source", dev_range_policy(0,nface), KOKKOS_LAMBDA(int i) {
     	// bvct[i] = 0.0;
@@ -193,5 +193,9 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
     	}
     });
     Kokkos::fence();
-    Kokkos::deep_copy( bvct, d_bvct );
+    // Kokkos::deep_copy( bvct, d_bvct );
+    for (i =0; i<nface; i++){
+    	bvct[i]=d_bvct(i);
+    	bvct[i+nface]=d_bvct(i+nface);
+    }
 }

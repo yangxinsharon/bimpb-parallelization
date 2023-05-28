@@ -24,14 +24,11 @@ extern int **extr_f;								// [2][nface]
 extern int **face, **face_copy;				// [3][nface]
 extern double **vert, **snrm;					// [3][nspt]
 extern double *tr_xyz, *tr_q;					// [3][nface]
-extern double *tr_area, *xvct;		// [nface]
-// *bvct
+extern double *tr_area, *bvct, *xvct;		// [nface]
 extern double **atmpos;							// [3][natm/nchr]
 extern double *atmrad, *atmchr, *chrpos;	// [natm/nchr]
 extern double *work, *h;
 extern double *h_pot;
-
-// extern ViewVectorType d_bvct, ViewVectorType bvct;
 
 const double eps = 80.0;
 
@@ -39,9 +36,6 @@ const double eps = 80.0;
 extern "C"
 {
 #endif
-// int *matvec ();
-// int *psolve ();
-// double eps;
 int gmres_(long int *n, double *b, double *x, long int *restrt, double *work, long int *ldw, 
 		double *h, long int *ldh, long int *iter, double *resid, 
 		int *matvec (double *alpha, double *x, double *beta, double *y), 
@@ -84,8 +78,7 @@ int main(int argc, char *argv[]) {
    sprintf(fname,"%s",argv[1]);
    sprintf(density,"%s",argv[2]);
 	readin(fname, density);
-	comp_source_wrapper(); //wraps the solvation energy computation
-	// Kokkos::deep_copy( bvct, d_bvct );
+	comp_source_wrapper(); //wraps the solvation energy computation;
 	Kokkos::fence();
 
 	/* parameters for GMRES */
@@ -153,7 +146,7 @@ int main(int argc, char *argv[]) {
 	// free(tr_q);
 
 	// free(tr_area);
-	// free(bvct);
+	free(bvct);
 	// free(xvct);
 	// free(atmchr);
 	// free(chrpos);

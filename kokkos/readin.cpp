@@ -15,7 +15,7 @@ extern int **extr_f;						//[2][nface]
 extern int **face, **face_copy;				//[3][nface]
 extern double **vert, **snrm;				//[3][nspt];
 extern double *tr_xyz, *tr_q;				//[3][nface]
-extern double *tr_area,  *xvct;		//[nface];	*bvct,
+extern double *tr_area, *bvct, *xvct;		//[nface];
 extern double **atmpos;						//[3][natm/nchr];
 extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr]; 
 
@@ -311,7 +311,7 @@ exit:	ichanged=nface-nfacenew;
 	// tr_xyz=(double *) calloc(3*nface, sizeof(double));
 	// tr_q=(double *) calloc(3*nface, sizeof(double));
 	// tr_area=(double *) calloc(nface, sizeof(double));
-	// bvct=(double *) calloc(2*nface, sizeof(double));
+	bvct=(double *) calloc(2*nface, sizeof(double));
 
 	tr_xyz=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)));
 	tr_q=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)));
