@@ -17,8 +17,7 @@ extern double *tr_xyz, *tr_q;				//[3][nface]
 extern double *tr_area, *bvct, *xvct;		//[nface];
 extern double **atmpos;						//[3][natm/nchr];
 extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr]; 
-extern double *work, *h;
-extern double *h_pot;
+
 
 /* function computing the area of a triangle given vertices coodinates */
 double triangle_area(double v[3][3]) {

@@ -75,13 +75,15 @@ int main(int argc, char *argv[]) {
    Kokkos::initialize(argc, argv);
    {
 
-   typedef Kokkos::Serial   HostExecSpace;
-   typedef Kokkos::Cuda     DevExecSpace;
-   typedef Kokkos::CudaSpace    MemSpace;
-   typedef Kokkos::LayoutRight  Layout;
-   typedef Kokkos::RangePolicy<HostExecSpace>  host_range_policy;
-  	typedef Kokkos::RangePolicy<DevExecSpace>   dev_range_policy;
+   // typedef Kokkos::Serial   HostExecSpace;
+   // typedef Kokkos::Cuda     DevExecSpace;
+   // typedef Kokkos::CudaSpace    MemSpace;
+   // typedef Kokkos::LayoutRight  Layout;
+   // typedef Kokkos::RangePolicy<HostExecSpace>  host_range_policy;
+  	// typedef Kokkos::RangePolicy<DevExecSpace>   dev_range_policy;
 
+  	// typedef Kokkos::View<double*, Layout, MemSpace>   ViewVectorType;
+  	// typedef Kokkos::View<double**, Layout, MemSpace>  ViewMatrixType;
 
 	timer_start((char*) "TOTAL_TIME");
 	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);

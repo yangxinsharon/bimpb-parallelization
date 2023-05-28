@@ -16,7 +16,7 @@
 #include <cstdio>
 #include <cmath>
 #include <Kokkos_Core.hpp>
-
+#include "env_kokkos.h"
 
 /* Prototypes */
 int *matvec(double *alpha, double *x, double *beta, double *y);
@@ -167,7 +167,7 @@ void comp_source_wrapper() {
 void comp_source( double* bvct, double *atmchr, double *chrpos, 
 	double *tr_xyz,double *tr_q, int nface, int nchr) {
 
-	Kokkos::parallel_for("comp_source", nface, KOKKOS_LAMBDA(int i) {
+	Kokkos::parallel_for("comp_source", dev_range_policy(0,nface), KOKKOS_LAMBDA(int i) {
     	bvct[i] = 0.0;
     	bvct[i+nface] = 0.0;
     	for (int j=0; j<nchr; j++) {
