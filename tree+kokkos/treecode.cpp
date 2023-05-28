@@ -639,20 +639,20 @@ int *psolve(double *z, double *r) {
       		rhs[i] = r[i+ibeg];
       		rhs[i+nrow] = r[i+ibeg+nface];
     	}
-    	int inc = lu_decomp( matrixA, nrow2, ipiv );
-    	lu_solve( matrixA, nrow2, ipiv, rhs );
+    	// int inc = lu_decomp( matrixA, nrow2, ipiv );
+    	// lu_solve( matrixA, nrow2, ipiv, rhs );
 
-    	// double **h_matrixA;
-		// h_matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "h_matrixA");
-		// for (i=0;i<2*maxparnode;i++){
-		// 	for (j=0;j<2*maxparnode;j++){
-		// 		h_matrixA[i][j] = matrixA(i,j);
-		// 	}
-		// }
+    	double **h_matrixA;
+		h_matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "h_matrixA");
+		for (i=0;i<2*maxparnode;i++){
+			for (j=0;j<2*maxparnode;j++){
+				h_matrixA[i][j] = matrixA(i,j);
+			}
+		}
 
 
-    	// int inc = lu_decomp( h_matrixA, nrow2, ipiv );
-    	// lu_solve( h_matrixA, nrow2, ipiv, rhs );
+    	int inc = lu_decomp( h_matrixA, nrow2, ipiv );
+    	lu_solve( h_matrixA, nrow2, ipiv, rhs );
     	
 
     	for ( i = 0; i < nrow; i++) {
