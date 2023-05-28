@@ -191,11 +191,13 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
     	    d_bvct(i) = d_bvct(i)+atmchr[j]*G0;
     	    d_bvct(nface+i) = d_bvct(nface+i)+atmchr[j]*G1;
     	}
+    	bvct[i]=d_bvct(i);
+    	bvct[i+nface]=d_bvct(i+nface);    	
     });
     Kokkos::fence();
     // Kokkos::deep_copy( bvct, d_bvct );
-    for (int i =0; i<nface; i++){
-    	bvct[i]=d_bvct(i);
-    	bvct[i+nface]=d_bvct(i+nface);
-    }
+    // for (int i =0; i<nface; i++){
+    	// bvct[i]=d_bvct(i);
+    	// bvct[i+nface]=d_bvct(i+nface);
+    // }
 }

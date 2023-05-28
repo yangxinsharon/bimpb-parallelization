@@ -15,7 +15,7 @@
 #include <cmath>
 
 /* kokkos */
-#include "env_kokkos.h"
+// #include "env_kokkos.h"
 #include <Kokkos_Core.hpp>
 
 extern int nface, nspt, natm, nchr;			// number of faces, points, atoms, and charges
