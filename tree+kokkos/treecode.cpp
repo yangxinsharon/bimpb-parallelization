@@ -409,7 +409,10 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double 
 		// ibeg = leafarr[0][k];
 		// nrow = leafarr[1][k];
 		// iend = leafarr[2][k];
-		ViewMatrixDouble matrixA("matrixA", 2*maxparnode, 2*maxparnode);
+		// ViewMatrixDouble matrixA("matrixA", 2*maxparnode, 2*maxparnode);
+    	double **matrixA;
+		matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
+		
 		int ibeg = leafarr(0,k);
 		int nrow = leafarr(1,k);
 		int iend = leafarr(2,k);
@@ -513,20 +516,20 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double 
         		L3 = G4 - G3;
         		L4 = G10 - G20/eps;
 
-        		// matrixA[i-ibeg][j-ibeg] = -L1*area;
-        		// matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
-        		// matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
-        		// matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
-        		matrixA(i-ibeg,j-ibeg) = -L1*area;
-        		matrixA(i-ibeg,j+nrow-ibeg) = -L2*area;
-        		matrixA(i+nrow-ibeg,j-ibeg) = -L3*area;
-        		matrixA(i+nrow-ibeg,j+nrow-ibeg) = -L4*area;
+        		matrixA[i-ibeg][j-ibeg] = -L1*area;
+        		matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
+        		matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
+        		matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
+        		// matrixA(i-ibeg,j-ibeg) = -L1*area;
+        		// matrixA(i-ibeg,j+nrow-ibeg) = -L2*area;
+        		// matrixA(i+nrow-ibeg,j-ibeg) = -L3*area;
+        		// matrixA(i+nrow-ibeg,j+nrow-ibeg) = -L4*area;
       		}
 
-      		// matrixA[i-ibeg][i-ibeg] = pre1;
-      		// matrixA[i+nrow-ibeg][i+nrow-ibeg] = pre2;
-      		matrixA(i-ibeg,i-ibeg)= pre1;
-      		matrixA(i+nrow-ibeg,i+nrow-ibeg)= pre2;
+      		matrixA[i-ibeg][i-ibeg] = pre1;
+      		matrixA[i+nrow-ibeg][i+nrow-ibeg] = pre2;
+      		// matrixA(i-ibeg,i-ibeg)= pre1;
+      		// matrixA(i+nrow-ibeg,i+nrow-ibeg)= pre2;
 
     		// double tp[3], tq[3], sp[3], sq[3];
 			// double r_s[3], rs, irs, sumrs;
@@ -587,14 +590,14 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double 
 	        	L3 = G4 - G3;
 	        	L4 = G10 - G20/eps;
 		
-	        	// matrixA[i-ibeg][j-ibeg] = -L1*area;
-	        	// matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
-	        	// matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
-	        	// matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
-	        	matrixA(i-ibeg,j-ibeg) = -L1*area;
-	        	matrixA(i-ibeg,j+nrow-ibeg) = -L2*area;
-	        	matrixA(i+nrow-ibeg,j-ibeg) = -L3*area;
-	        	matrixA(i+nrow-ibeg,j+nrow-ibeg) = -L4*area;
+	        	matrixA[i-ibeg][j-ibeg] = -L1*area;
+	        	matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
+	        	matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
+	        	matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
+	        	// matrixA(i-ibeg,j-ibeg) = -L1*area;
+	        	// matrixA(i-ibeg,j+nrow-ibeg) = -L2*area;
+	        	// matrixA(i+nrow-ibeg,j-ibeg) = -L3*area;
+	        	// matrixA(i+nrow-ibeg,j+nrow-ibeg) = -L4*area;
       		}
     	}
 	    // });
@@ -605,19 +608,19 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double 
       		rhs[i] = r[i+ibeg];
       		rhs[i+nrow] = r[i+ibeg+nface];
     	}
-    	// int inc = lu_decomp( matrixA, nrow2, ipiv );
-    	// lu_solve( matrixA, nrow2, ipiv, rhs );
+    	int inc = lu_decomp( matrixA, nrow2, ipiv );
+    	lu_solve( matrixA, nrow2, ipiv, rhs );
 
 
-		for (i=0;i<2*maxparnode;i++){
-			for (j=0;j<2*maxparnode;j++){
-				c_matrixA[i][j] = matrixA(i,j);
-			}
-		}
+		// for (i=0;i<2*maxparnode;i++){
+		// 	for (j=0;j<2*maxparnode;j++){
+		// 		c_matrixA[i][j] = matrixA(i,j);
+		// 	}
+		// }
 
 
-    	int inc = lu_decomp( c_matrixA, nrow2, ipiv );
-    	lu_solve( c_matrixA, nrow2, ipiv, rhs );
+    	// int inc = lu_decomp( c_matrixA, nrow2, ipiv );
+    	// lu_solve( c_matrixA, nrow2, ipiv, rhs );
     	
 // ! yang: z in kokkos form
     	for ( i = 0; i < nrow; i++) {
@@ -630,15 +633,21 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double 
     	// idx += nrow;
     	// k += 1;
   	// }
+
+
+    	// for(i=0;i<2*maxparnode;i++) {
+		// 	free(matrixA[i]);
+		// }	
+		// free(matrixA);
     });
 	// }
     Kokkos::fence();
   	printf("Nleafc is %d\n",Nleafc);
 
-    // for(i=0;i<2*maxparnode;i++) {
-	// 	free(matrixA[i]);
-	// }	
-	// free(matrixA);
+    for(i=0;i<2*maxparnode;i++) {
+		free(matrixA[i]);
+	}	
+	free(matrixA);
 
   	// free(rhs);
   	// free(ipiv);
