@@ -635,19 +635,19 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double 
   	// }
 
 
-    	// for(i=0;i<2*maxparnode;i++) {
-		// 	free(matrixA[i]);
-		// }	
-		// free(matrixA);
+    	for(i=0;i<2*maxparnode;i++) {
+			free(matrixA[i]);
+		}	
+		free(matrixA);
     });
 	// }
     Kokkos::fence();
   	printf("Nleafc is %d\n",Nleafc);
 
-    for(i=0;i<2*maxparnode;i++) {
-		free(matrixA[i]);
-	}	
-	free(matrixA);
+    // for(i=0;i<2*maxparnode;i++) {
+	// 	free(matrixA[i]);
+	// }	
+	// free(matrixA);
 
   	// free(rhs);
   	// free(ipiv);
