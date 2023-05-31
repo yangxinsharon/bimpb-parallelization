@@ -146,7 +146,7 @@ int main(int argc, char *argv[]) {
 	}
 	free(tr_q2D);
 
-	Kokkos::kokkos_free(tr_xyz);
+	// Kokkos::kokkos_free(tr_xyz);
 	Kokkos::kokkos_free(tr_q);
 
 	Kokkos::kokkos_free(tr_area);
