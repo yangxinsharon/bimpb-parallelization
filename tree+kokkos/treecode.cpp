@@ -56,6 +56,7 @@ static int Nleaf = 0;
 static int Nleafc = 0;
 
 /* internal functions */
+int *psolve(double *z, double *r);
 int Setup(double xyz_limits[6]);
 void leaflength(TreeNode *p, int idx);
 int Partition(double *a, double *b, double *c, int *indarr,
@@ -328,12 +329,12 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 
 /* This subroutine wraps the matrix-vector multiplication */
 int *psolve(double *z, double *r) {
-    psolvemul(nface, tr_xyz, tr_q, tr_area);
+    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r);
     return NULL;
 }
 /**********************************************************/
 // int *psolve(double *z, double *r) {
-void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area){
+void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double *z, double *r){
 /* r as original while z as scaled */
 	int i, j, jj, k = 0;
   	int idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
