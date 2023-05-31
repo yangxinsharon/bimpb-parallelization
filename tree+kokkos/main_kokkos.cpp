@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cmath>
-
+#include "gl_constants.h"
 /* kokkos */
 #include <Kokkos_Core.hpp>
 
@@ -28,7 +28,7 @@ extern double *h_pot;
 extern const double eps;
 extern double **tr_xyz2D, **tr_q2D;
 extern double **matrixA;
-static extern int maxparnode;
+// extern int maxparnode;
 
 #ifdef __cplusplus
 extern "C"
