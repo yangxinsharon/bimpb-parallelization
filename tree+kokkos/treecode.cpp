@@ -18,9 +18,9 @@
 #include "utilities.h"
 #include "tree_node_struct.h"
 #include "gl_constants.h"
-
+#include "env_kokkos.h"
 #include <Kokkos_Core.hpp>
-// static extern int nface;
+
 extern int nface, nspt, natm, nchr;
 extern int **extr_v;						//[3][nspt]
 extern int **extr_f;						//[2][nface]
@@ -34,34 +34,8 @@ extern double *work, *h;
 
 extern double **tr_xyz2D, **tr_q2D;
 
-
-
-// #ifdef __cplusplus
-// extern "C"
-// {
-// #endif
-// extern make_vector(v,n);
-
-// extern double pi;
-// extern double one_over_4pi;
-// extern double bulk_coef;
-// extern double units_coef;
-// extern double epsw;
-// extern double epsp;
-// extern double eps;
-// extern double bulk_strength;	//ion_strength in M
-// extern double kappa2;	//kappa2=bulk_coef*bulk_strength/epsw;
-// extern double kappa;
-
-// extern int order;
-// extern int maxparnode;
-// extern double theta;
-
 extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]);
 extern int** Make2DIntArray(int arraySizeX, int arraySizeY,char info[]);
-// #ifdef __cplusplus
-// }
-// #endif
 
 
 /* variables for tracking tree information */
@@ -74,6 +48,7 @@ static double s_target_normal[3];
 
 /* global variables for reordering arrays */
 static int *s_order_arr = NULL;
+
 /* root node of tree */
 static TreeNode *s_tree_root = NULL;
 
@@ -172,12 +147,6 @@ int TreecodeFinalization()
 
 /***********reorder particles*************/
 
-    // make_matrix(temp_position, 3, nface);
-    // make_matrix(temp_normal, 3, nface);
-    // make_vector(temp_area, nface);
-    // make_vector(temp_source, 2 * nface);
-    // make_vector(temp_xvct, 2 * nface);
-
     temp_position=Make2DDoubleArray(3,nface,"temp_position");
     temp_normal=Make2DDoubleArray(3,nface,"temp_normal");
     temp_area=(double *) calloc(nface, sizeof(double));
@@ -208,11 +177,6 @@ int TreecodeFinalization()
         xvct[s_order_arr[i] + nface] = temp_xvct[i + nface];
     }
 
-    // free_matrix(temp_position);
-    // free_matrix(temp_normal);
-    // free_vector(temp_area);
-    // free_vector(temp_source);
-    // free_vector(temp_xvct);
     for(i=0;i<3;i++) {
 		free(temp_position[i]);
 	}	
@@ -365,17 +329,10 @@ int *psolve(double *z, double *r) {
 /* r as original while z as scaled */
 	int i, j, jj, k = 0;
   	int idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
-  	int *ipiv, inc;
+  	int *ipiv;
   	// double **matrixA; 
   	double *rhs;
-  	double L1, L2, L3, L4, area;
-  	double tp[3], tq[3], sp[3], sq[3];
-  	double r_s[3], rs, irs, sumrs;
-  	double G0, kappa_rs, exp_kappa_rs, Gk;
-  	double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
-  	double G10, G20, G1, G2, G3, G4;
   	double pre1, pre2;
-	
   	pre1 = 0.5*(1.0+eps);
   	pre2 = 0.5*(1.0+1.0/eps);
 
@@ -384,22 +341,22 @@ int *psolve(double *z, double *r) {
 	// rhs=(double *) calloc(2*maxparnode, sizeof(double));
 
 
-	Kokkos::View<double**, Kokkos::CudaUVMSpace> matrixA("matrixA", 2*maxparnode, 2*maxparnode);
-	// Kokkos::View<int*,  Kokkos::CudaUVMSpace> ipiv("ipiv",2*maxparnode);
-	// Kokkos::View<double*,  Kokkos::CudaUVMSpace> rhs("rhs",2*maxparnode);
+	ViewMatrixDouble matrixA("matrixA", 2*maxparnode, 2*maxparnode);
 	ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
 	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
   
-
-
+  	// ViewMatrixType::HostMirror h_matrixA = Kokkos::create_mirror_view(matrixA);
+    
+    // Kokkos c format:
+    double **c_matrixA;
+	c_matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "c_matrixA");
 //////////////////////////////////////////////
-	int arridx = 0;
+	int arridx = 0; // check if =Nleaf
 	// int leafarr[3][Nleaf];
-	Kokkos::View<int**, Kokkos::CudaUVMSpace> leafarr("leafarr", 3, Nleaf);
+	ViewMatrixInt leafarr("leafarr", 3, Nleaf);
 	while ( idx < nface ) {
 	    leaflength(s_tree_root, idx);
 	    nrow  = Nrow;
-	    nrow2 = nrow*2;
 	    ibeg  = idx;
 	    iend  = idx + nrow - 1;
 	    // leafarr[0][arridx] = ibeg;
@@ -415,9 +372,9 @@ int *psolve(double *z, double *r) {
 		idx += nrow;
 	}
 
-	// system("pause");
-	idx = 0;
+	// idx = 0;
   	// while ( idx < nface ) {
+	
 	// Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_xyz ("dev_tr_xyz", 3*nface);
 	// Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_q ("dev_tr_q", 3*nface);
 	// Kokkos::View<double*,Kokkos::CudaSpace> dev_tr_area ("dev_tr_area", nface);
@@ -437,7 +394,7 @@ int *psolve(double *z, double *r) {
 	// 	dev_bvct(j)=bvct[j];
     // }
 
-	Kokkos::parallel_for("psolve", Nleaf, KOKKOS_LAMBDA(int k) {
+	Kokkos::parallel_for("psolve", arridx, KOKKOS_LAMBDA(int k) {
 	// for (k = 0; k < Nleaf; k++){
 		// ibeg = leafarr[0][k];
 		// nrow = leafarr[1][k];
@@ -446,16 +403,14 @@ int *psolve(double *z, double *r) {
 		int nrow = leafarr(1,k);
 		int iend = leafarr(2,k);
 		int nrow2 = nrow*2;
-		// int nface = 6030;
 		// printf("ibeg nrow iend is %d, %d, %d\n",ibeg,nrow,iend);
 		int i, j, jj,idx = 0;
-
+  	  	double L1, L2, L3, L4, area;
 		double tp[3], tq[3], sp[3], sq[3];
 		double r_s[3], rs, irs, sumrs;
 		double G0, kappa_rs, exp_kappa_rs, Gk;
   		double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
   		double G10, G20, G1, G2, G3, G4;
-  	  	double L1, L2, L3, L4, area;
   	  		
     	for ( i = ibeg; i <= iend; i++ ) {
   	  	// Kokkos::parallel_for("2ndpsolve", nrow, KOKKOS_LAMBDA(int i) {
@@ -642,19 +597,18 @@ int *psolve(double *z, double *r) {
     	// int inc = lu_decomp( matrixA, nrow2, ipiv );
     	// lu_solve( matrixA, nrow2, ipiv, rhs );
 
-    	double **h_matrixA;
-		h_matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "h_matrixA");
+
 		for (i=0;i<2*maxparnode;i++){
 			for (j=0;j<2*maxparnode;j++){
-				h_matrixA[i][j] = matrixA(i,j);
+				c_matrixA[i][j] = matrixA(i,j);
 			}
 		}
 
 
-    	int inc = lu_decomp( h_matrixA, nrow2, ipiv );
-    	lu_solve( h_matrixA, nrow2, ipiv, rhs );
+    	int inc = lu_decomp( c_matrixA, nrow2, ipiv );
+    	lu_solve( c_matrixA, nrow2, ipiv, rhs );
     	
-
+// ! yang: z in kokkos form
     	for ( i = 0; i < nrow; i++) {
       		z[i+ibeg] = rhs[i];
       		z[i+ibeg+nface] = rhs[i+nrow];
@@ -662,12 +616,12 @@ int *psolve(double *z, double *r) {
 
     	//printf("%d %d %d %d\n", idx, ibeg, iend, nrow);
 
-    	idx += nrow;
+    	// idx += nrow;
     	// k += 1;
   	// }
     });
 	// }
-
+    Kokkos::fence();
   	printf("Nleafc is %d\n",Nleafc);
 
     // for(i=0;i<2*maxparnode;i++) {
@@ -684,7 +638,7 @@ int *psolve(double *z, double *r) {
   	//   z[i] = r[i]/pre1;
   	//   z[i+nface] = r[i+nface]/pre2;
   	// }
-    // Kokkos::fence();
+
 
   	return 0;
 

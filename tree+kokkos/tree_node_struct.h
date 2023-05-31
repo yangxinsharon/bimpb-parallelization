@@ -37,26 +37,3 @@ typedef struct sTreeNode {
 
 
 #endif /* H_TREE_NODE_STRUCT */
-
-// yang:
-// // node structure and node type declarations
-// struct tnode; //incomplete declaration
-
-// typedef struct tnode_pointer {
-//     tnode *p_to_tnode;
-// }
-
-// typedef struct tnode {
-//     int numpar, ibeg, iend;
-//     double x_min, y_min, z_min;
-//     double x_max, y_max, z_max;
-//     double x_mid, y_mid, z_mid;
-//     double aspect, radius;
-//     int exist_ms, level, num_children;
-//     double ***ms; //dim(:,:,:,:)
-//     tnode_pointer child[8]; //dim(8)
-// };
-
-// tnode *troot = NULL;
-
-

@@ -66,17 +66,6 @@ int main(int argc, char *argv[]) {
    Kokkos::initialize(argc, argv);
    {
 
-   typedef Kokkos::Serial   HostExecSpace;
-   typedef Kokkos::Cuda     DevExecSpace;
-   typedef Kokkos::CudaSpace    MemSpace;
-   typedef Kokkos::LayoutRight  Layout;
-   typedef Kokkos::RangePolicy<HostExecSpace>  host_range_policy;
-  	typedef Kokkos::RangePolicy<DevExecSpace>   dev_range_policy;
-  	// typedef Kokkos::View<double*, Layout, MemSpace>   ViewVectorType;
-  	// typedef Kokkos::View<double**, Layout, MemSpace>  ViewMatrixType;
-  	// typedef Kokkos::View<double*,  Kokkos::CudaUVMSpace>  ViewVectorType;
-  	// typedef Kokkos::View<double**, Kokkos::CudaUVMSpace>  ViewMatrixType;
-
 	timer_start((char*) "TOTAL_TIME");
 	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
 
@@ -97,11 +86,6 @@ int main(int argc, char *argv[]) {
 	ldh=RESTRT+1;
 	iter=100;
 	resid=1e-4;
-
-   // ViewVectorType dev_tr_xyz( "dev_tr_xyz", 3*nface );
-	// ViewVectorType dev_tr_q( "dev_tr_q", 3*nface );
-	// ViewVectorType::HostMirror tr_xyz = Kokkos::create_mirror_view(dev_tr_xyz);
-  	// ViewVectorType::HostMirror tr_q = Kokkos::create_mirror_view(dev_tr_q);
 
 	xvct=(double *) (Kokkos::kokkos_malloc(N * sizeof(double)));
 	work=(double *) (Kokkos::kokkos_malloc(ldw*(RESTRT+4) * sizeof(double)));
