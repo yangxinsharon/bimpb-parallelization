@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
 
    extern void timer_start(char *n); // yang
    extern void timer_end(void); // yang
-   extern int TreecodeInitialization();
+   extern int TreecodeInitialization(double *tr_xyz, double *tr_q);
 	extern int TreecodeFinalization();
 
    Kokkos::initialize(argc, argv);
@@ -91,7 +91,7 @@ int main(int argc, char *argv[]) {
 	work=(double *) (Kokkos::kokkos_malloc(ldw*(RESTRT+4) * sizeof(double)));
 	h=(double *) (Kokkos::kokkos_malloc(ldh*(RESTRT+2) * sizeof(double)));
 
-	TreecodeInitialization();
+	TreecodeInitialization(tr_xyz, tr_q);
 	Kokkos::fence();
 
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
@@ -146,7 +146,7 @@ int main(int argc, char *argv[]) {
 	}
 	free(tr_q2D);
 
-	// Kokkos::kokkos_free(tr_xyz);
+	Kokkos::kokkos_free(tr_xyz);
 	Kokkos::kokkos_free(tr_q);
 
 	Kokkos::kokkos_free(tr_area);
