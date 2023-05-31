@@ -650,7 +650,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double 
   	// }
 
 
-  	return 0;
+  	// return 0;
 
 }
 
@@ -681,7 +681,7 @@ int Setup(double xyz_limits[6]) {
 	for (i=0; i<nface; i++) {
 		s_order_arr[i] = i;
 	}
-	// return 0;
+	return 0;
 }
 
 
