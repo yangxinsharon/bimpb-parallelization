@@ -28,7 +28,7 @@ extern double *h_pot;
 extern const double eps;
 extern double **tr_xyz2D, **tr_q2D;
 extern double **matrixA;
-extern int maxparnode;
+static extern int maxparnode;
 
 #ifdef __cplusplus
 extern "C"
