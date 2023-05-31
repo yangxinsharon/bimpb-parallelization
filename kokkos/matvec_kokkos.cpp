@@ -17,7 +17,7 @@
 #include <cmath>
 #include <Kokkos_Core.hpp>
 #include "env_kokkos.h"
-
+extern double *tr_xyz, *tr_q;	
 /* Prototypes */
 int *matvec(double *alpha, double *x, double *beta, double *y);
 void comp_soleng_wrapper(double soleng);
