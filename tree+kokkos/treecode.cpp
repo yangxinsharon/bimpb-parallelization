@@ -33,7 +33,7 @@ extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr];
 extern double *work, *h;
 
 extern double **tr_xyz2D, **tr_q2D;
-
+extern double **matrixA;
 extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]);
 extern int** Make2DIntArray(int arraySizeX, int arraySizeY,char info[]);
 

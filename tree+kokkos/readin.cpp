@@ -389,4 +389,5 @@ exit:	ichanged=nface-nfacenew;
 
 	}
     printf("total area = %f\n",sum);
+    
 }
