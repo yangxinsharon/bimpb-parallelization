@@ -7,7 +7,7 @@
 #include <cmath>
 #include <cstring>
 #include <Kokkos_Core.hpp>
-#include <env_kokkos.h>
+#include "env_kokkos.h"
 
 extern int nface, nspt, natm, nchr;
 extern int **extr_v;						//[3][nspt]
