@@ -26,7 +26,7 @@ extern int **extr_v;						//[3][nspt]
 extern int **extr_f;						//[2][nface]
 extern int **face, **face_copy;				//[3][nface]
 extern double **vert, **snrm;				//[3][nspt];
-// extern double *tr_xyz, *tr_q;				//[3][nface]
+extern double *tr_xyz, *tr_q;				//[3][nface]
 extern double *tr_area, *bvct, *xvct;		//[nface];
 extern double **atmpos;						//[3][natm/nchr];
 extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr]; 
@@ -324,8 +324,16 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 }
 
 
-/**********************************************************/
+
+
+/* This subroutine wraps the matrix-vector multiplication */
 int *psolve(double *z, double *r) {
+    psolvemul(nface, tr_xyz, tr_q, tr_area);
+    return NULL;
+}
+/**********************************************************/
+// int *psolve(double *z, double *r) {
+void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area){
 /* r as original while z as scaled */
 	int i, j, jj, k = 0;
   	int idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
