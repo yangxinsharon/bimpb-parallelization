@@ -56,6 +56,7 @@ static int Nleaf = 0;
 static int Nleafc = 0;
 
 /* internal functions */
+void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double *z, double *r);
 int *psolve(double *z, double *r);
 int Setup(double xyz_limits[6]);
 void leaflength(TreeNode *p, int idx);
@@ -680,7 +681,7 @@ int Setup(double xyz_limits[6]) {
 	for (i=0; i<nface; i++) {
 		s_order_arr[i] = i;
 	}
-	return 0;
+	// return 0;
 }
 
 
