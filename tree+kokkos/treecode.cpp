@@ -351,7 +351,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double 
 	// rhs=(double *) calloc(2*maxparnode, sizeof(double));
 
 
-	ViewMatrixDouble matrixA("matrixA", 2*maxparnode, 2*maxparnode);
+	// ViewMatrixDouble matrixA("matrixA", 2*maxparnode, 2*maxparnode);
 	ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
 	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
   
@@ -409,6 +409,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double 
 		// ibeg = leafarr[0][k];
 		// nrow = leafarr[1][k];
 		// iend = leafarr[2][k];
+		ViewMatrixDouble matrixA("matrixA", 2*maxparnode, 2*maxparnode);
 		int ibeg = leafarr(0,k);
 		int nrow = leafarr(1,k);
 		int iend = leafarr(2,k);
