@@ -56,7 +56,7 @@ static int Nleaf = 0;
 static int Nleafc = 0;
 
 /* internal functions */
-void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double *z, double *r);
+void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double *z, double *r, double **matrixA);
 int *psolve(double *z, double *r);
 int Setup(double xyz_limits[6]);
 void leaflength(TreeNode *p, int idx);
@@ -330,12 +330,15 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 
 /* This subroutine wraps the matrix-vector multiplication */
 int *psolve(double *z, double *r) {
-    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r);
+	double **matrixA;
+	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
+    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA);
+
     return NULL;
 }
 /**********************************************************/
 // int *psolve(double *z, double *r) {
-void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double *z, double *r){
+void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double *z, double *r, double **matrixA){
 /* r as original while z as scaled */
 	int i, j, jj, k = 0;
   	int idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
@@ -358,8 +361,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double 
   	// ViewMatrixType::HostMirror h_matrixA = Kokkos::create_mirror_view(matrixA);
     
     // Kokkos c format:
-    double **c_matrixA;
-	c_matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "c_matrixA");
+    // double **c_matrixA;
+	// c_matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "c_matrixA");
 //////////////////////////////////////////////
 	int arridx = 0; // check if =Nleaf
 	// int leafarr[3][Nleaf];
@@ -410,8 +413,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double 
 		// nrow = leafarr[1][k];
 		// iend = leafarr[2][k];
 		// ViewMatrixDouble matrixA("matrixA", 2*maxparnode, 2*maxparnode);
-    	double **matrixA;
-		matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
+    	// double **matrixA;
+		// matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
 		
 		int ibeg = leafarr(0,k);
 		int nrow = leafarr(1,k);
@@ -635,10 +638,10 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double 
   	// }
 
 
-    	for(i=0;i<2*maxparnode;i++) {
-			free(matrixA[i]);
-		}	
-		free(matrixA);
+    	// for(i=0;i<2*maxparnode;i++) {
+		// 	free(matrixA[i]);
+		// }	
+		// free(matrixA);
     });
 	// }
     Kokkos::fence();
