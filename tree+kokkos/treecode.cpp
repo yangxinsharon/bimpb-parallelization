@@ -34,8 +34,8 @@ extern double *work, *h;
 
 extern double **tr_xyz2D, **tr_q2D;
 // extern double **matrixA;
-// extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]);
-// extern int** Make2DIntArray(int arraySizeX, int arraySizeY,char info[]);
+extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]);
+extern int** Make2DIntArray(int arraySizeX, int arraySizeY,char info[]);
 
 
 /* variables for tracking tree information */
@@ -55,7 +55,6 @@ static TreeNode *s_tree_root = NULL;
 static int Nleaf = 0;
 static int Nleafc = 0;
 
-extern int maxparnode;
 
 /* internal functions */
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double *z, double *r, double **matrixA);
