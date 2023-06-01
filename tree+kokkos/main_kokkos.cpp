@@ -28,6 +28,7 @@ extern double *h_pot;
 // extern double *dev_tr_xyz, *dev_tr_q, *dev_tr_area, *dev_bvct;
 extern const double eps;
 extern double **tr_xyz2D, **tr_q2D;
+extern int *ipiv, double *rhs;
 // extern double **matrixA;
 // extern int maxparnode;
 
@@ -92,7 +93,12 @@ int main(int argc, char *argv[]) {
 	xvct=(double *) (Kokkos::kokkos_malloc(N * sizeof(double)));
 	work=(double *) (Kokkos::kokkos_malloc(ldw*(RESTRT+4) * sizeof(double)));
 	h=(double *) (Kokkos::kokkos_malloc(ldh*(RESTRT+2) * sizeof(double)));
+	
 
+
+	ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
+	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
+  
 	TreecodeInitialization();
 	Kokkos::fence();
 
@@ -163,6 +169,11 @@ int main(int argc, char *argv[]) {
 
   	Kokkos::kokkos_free(atmchr);
   	Kokkos::kokkos_free(chrpos);
+
+
+ 	// *psolve
+  	Kokkos::kokkos_free(rhs);
+	Kokkos::kokkos_free(ipiv);
 
 	}
 	Kokkos::finalize();

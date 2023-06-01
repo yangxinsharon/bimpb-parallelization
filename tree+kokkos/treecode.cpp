@@ -57,7 +57,8 @@ static int Nleafc = 0;
 
 
 /* internal functions */
-void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double *z, double *r, double **matrixA);
+void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
+	double *z, double *r, double **matrixA, int *ipiv, double *rhs);
 int *psolve(double *z, double *r);
 int Setup(double xyz_limits[6]);
 void leaflength(TreeNode *p, int idx);
@@ -355,7 +356,8 @@ int *psolve(double *z, double *r) {
 }
 /**********************************************************/
 // int *psolve(double *z, double *r) {
-void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double *z, double *r, double **matrixA){
+void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
+	double *z, double *r, double **matrixA, int *ipiv, double *rhs){
 // (const double *x, double *y, double *q, int nface, 
 // 	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta)
 /* r as original while z as scaled */
@@ -388,17 +390,17 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double 
   	double pre1, pre2;
   	pre1 = 0.5*(1.0+eps);
   	pre2 = 0.5*(1.0+1.0/eps);
-  	int *ipiv;
-  	// double **matrixA; 
-  	double *rhs;
+  	// int *ipiv;
+  	// double *rhs;
+
   	// matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
 	// ipiv=(int *) calloc(2*maxparnode, sizeof(int));
 	// rhs=(double *) calloc(2*maxparnode, sizeof(double));
 
 
 	// ViewMatrixDouble matrixA("matrixA", 2*maxparnode, 2*maxparnode);
-	ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
-	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
+	// ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
+	// rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
   
   	// ViewMatrixType::HostMirror h_matrixA = Kokkos::create_mirror_view(matrixA);
     
@@ -676,8 +678,9 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double 
 
   	// free(rhs);
   	// free(ipiv);
-  	Kokkos::kokkos_free(rhs);
-	Kokkos::kokkos_free(ipiv);
+
+  	// Kokkos::kokkos_free(rhs);
+	// Kokkos::kokkos_free(ipiv);
 
   	// for ( i = 0; i < nface; i++) {
   	//   z[i] = r[i]/pre1;
