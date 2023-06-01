@@ -96,8 +96,8 @@ int TreecodeInitialization() {
     temp_normal = Make2DDoubleArray(3,nface,"temp_normal");
     // temp_area=(double *) calloc(nface, sizeof(double));
     // temp_source=(double *) calloc(2*nface, sizeof(double));
-    temp_area=(double *) Kokkos::kokkos_malloc(nface, sizeof(double));
-    temp_source=(double *) Kokkos::kokkos_malloc(2*nface, sizeof(double));
+    temp_area=(double *) Kokkos::kokkos_malloc(nface* sizeof(double));
+    temp_source=(double *) Kokkos::kokkos_malloc(2*nface* sizeof(double));
 
 	Setup(xyz_limits);
 	s_tree_root = (TreeNode*)calloc(1, sizeof(TreeNode));
@@ -158,9 +158,9 @@ int TreecodeFinalization()
     // temp_area=(double *) calloc(nface, sizeof(double));
     // temp_source=(double *) calloc(2*nface, sizeof(double));
     // temp_xvct=(double *) calloc(2*nface, sizeof(double));
-    temp_area=(double *) Kokkos::kokkos_malloc(nface, sizeof(double));
-    temp_source=(double *) Kokkos::kokkos_malloc(2*nface, sizeof(double));
-    temp_xvct=(double *) Kokkos::kokkos_malloc(2*nface, sizeof(double));
+    temp_area=(double *) Kokkos::kokkos_malloc(nface* sizeof(double));
+    temp_source=(double *) Kokkos::kokkos_malloc(2*nface* sizeof(double));
+    temp_xvct=(double *) Kokkos::kokkos_malloc(2*nface* sizeof(double));
 
     memcpy(temp_position[0], tr_xyz2D[0], nface*sizeof(double));
     memcpy(temp_position[1], tr_xyz2D[1], nface*sizeof(double));
@@ -311,7 +311,7 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 
   	// make_vector(xtemp, N);
   	// xtemp=(double *) calloc(N, sizeof(double));
-  	xtemp=(double *) Kokkos::kokkos_malloc(N, sizeof(double));
+  	xtemp=(double *) Kokkos::kokkos_malloc(N* sizeof(double));
 
   	int i, k ;
   	for (i = 0; i < N; i++) {
@@ -712,7 +712,7 @@ int Setup(double xyz_limits[6]) {
 	// }
    	// make_vector(s_order_arr, nface);
    	// s_order_arr=(int *) calloc(nface, sizeof(int));
-   	s_order_arr=(int *) Kokkos::kokkos_malloc(nface, sizeof(int));
+   	s_order_arr=(int *) Kokkos::kokkos_malloc(nface* sizeof(int));
 
 	for (i=0; i<nface; i++) {
 		s_order_arr[i] = i;
