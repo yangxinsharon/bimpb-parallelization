@@ -28,7 +28,8 @@ extern double *h_pot;
 // extern double *dev_tr_xyz, *dev_tr_q, *dev_tr_area, *dev_bvct;
 extern const double eps;
 extern double **tr_xyz2D, **tr_q2D;
-extern int *ipiv, double *rhs;
+extern int *ipiv;
+extern double *rhs;
 // extern double **matrixA;
 // extern int maxparnode;
 
