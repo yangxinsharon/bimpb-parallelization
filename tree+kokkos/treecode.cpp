@@ -18,22 +18,25 @@
 #include "utilities.h"
 #include "tree_node_struct.h"
 #include "gl_constants.h"
-#include "gl_variables.h"
+// #include "gl_variables.h"
 #include "env_kokkos.h"
 #include <Kokkos_Core.hpp>
 
-// extern int nface, nspt, natm, nchr;
-// extern int **extr_v;						//[3][nspt]
-// extern int **extr_f;						//[2][nface]
-// extern int **face, **face_copy;				//[3][nface]
-// extern double **vert, **snrm;				//[3][nspt];
-// extern double *tr_xyz, *tr_q;				//[3][nface]
-// extern double *tr_area, *bvct, *xvct;		//[nface];
-// extern double **atmpos;						//[3][natm/nchr];
-// extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr]; 
-// extern double *work, *h;
+extern int nface, nspt, natm, nchr;
+extern int **extr_v;						//[3][nspt]
+extern int **extr_f;						//[2][nface]
+extern int **face, **face_copy;				//[3][nface]
+extern double **vert, **snrm;				//[3][nspt];
+extern double *tr_xyz, *tr_q;				//[3][nface]
+extern double *tr_area, *bvct, *xvct;		//[nface];
+extern double **atmpos;						//[3][natm/nchr];
+extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr]; 
+extern double *work, *h;
 
-// extern double **tr_xyz2D, **tr_q2D;
+extern double **tr_xyz2D, **tr_q2D;
+extern double **matrixA;
+extern int *ipiv;
+extern double *rhs;
 // extern double **matrixA;
 extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]);
 extern int** Make2DIntArray(int arraySizeX, int arraySizeY,char info[]);
