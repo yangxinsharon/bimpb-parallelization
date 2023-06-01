@@ -346,7 +346,7 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 int *psolve(double *z, double *r) {
 	double **matrixA;
 	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
-    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA);
+    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs);
 
 	for(int i=0;i<2*maxparnode;i++) {
 		free(matrixA[i]);
