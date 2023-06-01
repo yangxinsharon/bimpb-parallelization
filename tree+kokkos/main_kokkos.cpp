@@ -105,7 +105,7 @@ int main(int argc, char *argv[]) {
 	Kokkos::fence();
 	timer_end();
 	TreecodeFinalization();
-	fence();
+	Kokkos::fence();
 
 	/* free memory */
 	for(i=0;i<3;i++) {
