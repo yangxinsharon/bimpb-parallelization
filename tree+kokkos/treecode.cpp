@@ -33,9 +33,9 @@ extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr];
 extern double *work, *h;
 
 extern double **tr_xyz2D, **tr_q2D;
-extern double **matrixA;
-extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]);
-extern int** Make2DIntArray(int arraySizeX, int arraySizeY,char info[]);
+// extern double **matrixA;
+// extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]);
+// extern int** Make2DIntArray(int arraySizeX, int arraySizeY,char info[]);
 
 
 /* variables for tracking tree information */
@@ -54,6 +54,8 @@ static TreeNode *s_tree_root = NULL;
 
 static int Nleaf = 0;
 static int Nleafc = 0;
+
+extern int maxparnode;
 
 /* internal functions */
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double *z, double *r, double **matrixA);
@@ -74,7 +76,7 @@ int s_ComputeDirectPB(int ibeg, int iend, double *tpoten_old,
 int RemoveNode(TreeNode *p);
 
 /**********************************************************/
-int TreecodeInitialization(double *tr_xyz, double *tr_q) {
+int TreecodeInitialization() {
     
     int level, i, j, k, mm, nn;
 
@@ -93,9 +95,10 @@ int TreecodeInitialization(double *tr_xyz, double *tr_q) {
     level = 0;
 
     temp_normal = Make2DDoubleArray(3,nface,"temp_normal");
-    temp_area=(double *) calloc(nface, sizeof(double));
-    temp_source=(double *) calloc(2*nface, sizeof(double));
-
+    // temp_area=(double *) calloc(nface, sizeof(double));
+    // temp_source=(double *) calloc(2*nface, sizeof(double));
+    temp_area=(double *) Kokkos::kokkos_malloc(nface, sizeof(double));
+    temp_source=(double *) Kokkos::kokkos_malloc(2*nface, sizeof(double));
 
 	Setup(xyz_limits);
 	s_tree_root = (TreeNode*)calloc(1, sizeof(TreeNode));
@@ -125,8 +128,10 @@ int TreecodeInitialization(double *tr_xyz, double *tr_q) {
 		free(temp_normal[i]);
 	}	
 	free(temp_normal);
-	free(temp_area);
-	free(temp_source);
+	// free(temp_area);
+	// free(temp_source);
+  	Kokkos::kokkos_free(temp_area);
+  	Kokkos::kokkos_free(temp_source);
 
     // transform tr_xyz2D and tr_q2D to 1 dimension
 	for (j=0; j<nface; j++){
@@ -151,9 +156,12 @@ int TreecodeFinalization()
 
     temp_position=Make2DDoubleArray(3,nface,"temp_position");
     temp_normal=Make2DDoubleArray(3,nface,"temp_normal");
-    temp_area=(double *) calloc(nface, sizeof(double));
-    temp_source=(double *) calloc(2*nface, sizeof(double));
-    temp_xvct=(double *) calloc(2*nface, sizeof(double));
+    // temp_area=(double *) calloc(nface, sizeof(double));
+    // temp_source=(double *) calloc(2*nface, sizeof(double));
+    // temp_xvct=(double *) calloc(2*nface, sizeof(double));
+    temp_area=(double *) Kokkos::kokkos_malloc(nface, sizeof(double));
+    temp_source=(double *) Kokkos::kokkos_malloc(2*nface, sizeof(double));
+    temp_xvct=(double *) Kokkos::kokkos_malloc(2*nface, sizeof(double));
 
     memcpy(temp_position[0], tr_xyz2D[0], nface*sizeof(double));
     memcpy(temp_position[1], tr_xyz2D[1], nface*sizeof(double));
@@ -188,10 +196,12 @@ int TreecodeFinalization()
     }
 	free(temp_normal);
 
-    free(temp_area);
-    free(temp_source);
-    free(temp_xvct);
-
+    // free(temp_area);
+    // free(temp_source);
+    // free(temp_xvct);
+    Kokkos::kokkos_free(temp_area);
+    Kokkos::kokkos_free(temp_source);
+    Kokkos::kokkos_free(temp_xvct);
 
 /***********clean tree structure**********/
     // free_3array(s_target_charge);
@@ -201,7 +211,8 @@ int TreecodeFinalization()
     free(s_tree_root);
 
     // free_vector(s_order_arr);
-    free(s_order_arr);
+    // free(s_order_arr);
+    Kokkos::kokkos_free(s_order_arr);
 /*****************************************/
 
     printf("\nTABIPB tree structure has been deallocated.\n\n");
@@ -300,7 +311,9 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
   	double *xtemp;
 
   	// make_vector(xtemp, N);
-  	xtemp=(double *) calloc(N, sizeof(double));
+  	// xtemp=(double *) calloc(N, sizeof(double));
+  	xtemp=(double *) Kokkos::kokkos_malloc(N, sizeof(double));
+
   	int i, k ;
   	for (i = 0; i < N; i++) {
    		xtemp[i] = rhs[ipiv[i]];
@@ -322,49 +335,34 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
     	rhs[i] = xtemp[i];
   	}
   	// free_vector(xtemp);
-  	free(xtemp);
+  	// free(xtemp);
+  	Kokkos::kokkos_free(xtemp);
 }
 
 
 
 
-/* This subroutine wraps the matrix-vector multiplication */
+/* This subroutine wraps the psolve multiplication */
 int *psolve(double *z, double *r) {
-	// double **matrixA;
+	double **matrixA;
 	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
     psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA);
 
+	for(int i=0;i<2*maxparnode;i++) {
+		free(matrixA[i]);
+	}	
+	free(matrixA);
     return NULL;
 }
 /**********************************************************/
 // int *psolve(double *z, double *r) {
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double *z, double *r, double **matrixA){
+// (const double *x, double *y, double *q, int nface, 
+// 	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta)
 /* r as original while z as scaled */
-	int i, j, jj, k = 0;
-  	int idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
-  	int *ipiv;
-  	// double **matrixA; 
-  	double *rhs;
-  	double pre1, pre2;
-  	pre1 = 0.5*(1.0+eps);
-  	pre2 = 0.5*(1.0+1.0/eps);
 
-  	// matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
-	// ipiv=(int *) calloc(2*maxparnode, sizeof(int));
-	// rhs=(double *) calloc(2*maxparnode, sizeof(double));
-
-
-	// ViewMatrixDouble matrixA("matrixA", 2*maxparnode, 2*maxparnode);
-	ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
-	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
-  
-  	// ViewMatrixType::HostMirror h_matrixA = Kokkos::create_mirror_view(matrixA);
-    
-    // Kokkos c format:
-    // double **c_matrixA;
-	// c_matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "c_matrixA");
-//////////////////////////////////////////////
-	int arridx = 0; // check if =Nleaf
+/* fetch all index for all leaves using while loop */
+	int idx = 0, nrow = 0,  ibeg = 0, iend = 0, arridx = 0; // check if arridx = Nleaf
 	// int leafarr[3][Nleaf];
 	ViewMatrixInt leafarr("leafarr", 3, Nleaf);
 	while ( idx < nface ) {
@@ -384,6 +382,31 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, double 
 		// Nleafc += 1;
 		idx += nrow;
 	}
+
+
+
+
+  	double pre1, pre2;
+  	pre1 = 0.5*(1.0+eps);
+  	pre2 = 0.5*(1.0+1.0/eps);
+  	int *ipiv;
+  	// double **matrixA; 
+  	double *rhs;
+  	// matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
+	// ipiv=(int *) calloc(2*maxparnode, sizeof(int));
+	// rhs=(double *) calloc(2*maxparnode, sizeof(double));
+
+
+	// ViewMatrixDouble matrixA("matrixA", 2*maxparnode, 2*maxparnode);
+	ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
+	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
+  
+  	// ViewMatrixType::HostMirror h_matrixA = Kokkos::create_mirror_view(matrixA);
+    
+    // Kokkos c format:
+    // double **c_matrixA;
+	// c_matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "c_matrixA");
+
 
 	// idx = 0;
   	// while ( idx < nface ) {
@@ -689,7 +712,8 @@ int Setup(double xyz_limits[6]) {
 	// 	printf("Error allocating copy variables!");
 	// }
    	// make_vector(s_order_arr, nface);
-   	s_order_arr=(int *) calloc(nface, sizeof(int));
+   	// s_order_arr=(int *) calloc(nface, sizeof(int));
+   	s_order_arr=(int *) Kokkos::kokkos_malloc(nface, sizeof(int));
 
 	for (i=0; i<nface; i++) {
 		s_order_arr[i] = i;
@@ -832,48 +856,6 @@ int CreateTree(TreeNode *p, int ibeg, int iend, double xyzmm[6], int level)
     return 0;
 }
 
-/********************************************************/
-// int RunTreecode(TreeNode *p, double *tpoten_old, double tempq[2][16],double peng[2])
-// {
-//   /* RunTreecode() is self recurrence function */
-//     double tx, ty, tz, dist, pengchild[2];
-//     int i;
-
-
-//   /* determine DISTSQ for MAC test */
-//     tx = p->x_mid - s_target_position[0];
-//     ty = p->y_mid - s_target_position[1];
-//     tz = p->z_mid - s_target_position[2];
-//     dist = sqrt(tx*tx + ty*ty + tz*tz);
-
-//   /* initialize potential energy */
-//     peng[0] = 0.0;
-//     peng[1] = 0.0;
-
-// /* If MAC is accepted and there is more than 1 particale in the */
-// /* box use the expansion for the approximation. */
-
-//     if (p->radius < dist*theta && p->numpar > 40) {
-//         s_ComputeTreePB(p, tempq, peng);
-//     } else {
-//         if (p->num_children == 0) {
-//             s_ComputeDirectPB(p->ibeg, p->iend, tpoten_old, peng);
-//         } else {
-//       /* If MAC fails check to see if there are children. If not, perform */
-//       /* direct calculation.  If there are children, call routine */
-//       /* recursively for each. */
-//             for (i = 0; i < p->num_children; i++) {
-//                 pengchild[0] = 0.0;
-//                 pengchild[1] = 0.0;
-//                 s_RunTreecode(p->child[i], tpoten_old, tempq, pengchild);
-//                 peng[0] += pengchild[0];
-//                 peng[1] += pengchild[1];
-//             }
-//         }
-//     }
-
-//     return 0;
-// }
 
 /********************************************************/
 int PartitionEight(double xyzmms[6][8], double xl, double yl, 

@@ -10,6 +10,7 @@
 #include <cstdio>
 #include <cmath>
 #include "gl_constants.h"
+
 /* kokkos */
 #include <Kokkos_Core.hpp>
 
@@ -27,7 +28,7 @@ extern double *h_pot;
 // extern double *dev_tr_xyz, *dev_tr_q, *dev_tr_area, *dev_bvct;
 extern const double eps;
 extern double **tr_xyz2D, **tr_q2D;
-extern double **matrixA;
+// extern double **matrixA;
 // extern int maxparnode;
 
 #ifdef __cplusplus
@@ -62,7 +63,7 @@ int main(int argc, char *argv[]) {
 
    extern void timer_start(char *n); // yang
    extern void timer_end(void); // yang
-   extern int TreecodeInitialization(double *tr_xyz, double *tr_q);
+   extern int TreecodeInitialization();
 	extern int TreecodeFinalization();
 
    Kokkos::initialize(argc, argv);
@@ -76,7 +77,6 @@ int main(int argc, char *argv[]) {
    // sprintf(density, "1");
    sprintf(fname,"%s",argv[1]);
    sprintf(density,"%s",argv[2]);
-
 	readin(fname, density);
 	comp_source_wrapper(); //wraps the solvation energy computation
 	Kokkos::fence();
@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
 	work=(double *) (Kokkos::kokkos_malloc(ldw*(RESTRT+4) * sizeof(double)));
 	h=(double *) (Kokkos::kokkos_malloc(ldh*(RESTRT+2) * sizeof(double)));
 
-	TreecodeInitialization(tr_xyz, tr_q);
+	TreecodeInitialization();
 	Kokkos::fence();
 
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
@@ -105,7 +105,7 @@ int main(int argc, char *argv[]) {
 	Kokkos::fence();
 	timer_end();
 	TreecodeFinalization();
-
+	fence();
 
 	/* free memory */
 	for(i=0;i<3;i++) {
@@ -148,10 +148,10 @@ int main(int argc, char *argv[]) {
 	}
 	free(tr_q2D);
 
-	for(i=0;i<2*maxparnode;i++) {
-		free(matrixA[i]);
-	}	
-	free(matrixA);
+	// for(i=0;i<2*maxparnode;i++) {
+	// 	free(matrixA[i]);
+	// }	
+	// free(matrixA);
 
 	Kokkos::kokkos_free(tr_xyz);
 	Kokkos::kokkos_free(tr_q);
