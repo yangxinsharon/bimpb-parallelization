@@ -430,7 +430,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		double G0, kappa_rs, exp_kappa_rs, Gk;
   		double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
   		double G10, G20, G1, G2, G3, G4;
-  	  		
+  	  	int inc;
     	for ( i = ibeg; i <= iend; i++ ) {
   	  	// Kokkos::parallel_for("2ndpsolve", nrow, KOKKOS_LAMBDA(int i) {
     		// double tp[3], tq[3], sp[3], sq[3];
@@ -613,8 +613,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		rhs[i] = r[i+ibeg];
       		rhs[i+nrow] = r[i+ibeg+nface];
     	}
-    	// int inc = lu_decomp( matrixA, nrow2, ipiv );
     	inc = lu_decomp( matrixA, nrow2, ipiv );
+    	// inc = lu_decomp( matrixA, nrow2, ipiv );
     	lu_solve( matrixA, nrow2, ipiv, rhs );
 
 
