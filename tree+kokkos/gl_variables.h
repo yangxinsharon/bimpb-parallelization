@@ -58,4 +58,6 @@ double **tr_xyz2D, **tr_q2D;
 double **matrixA;
 int *ipiv;
 double *rhs;
+int *leafarr;
+int Nleaf;
 #endif

@@ -56,13 +56,13 @@ static int *s_order_arr = NULL;
 /* root node of tree */
 static TreeNode *s_tree_root = NULL;
 
-static int Nleaf = 0;
+extern int Nleaf = 0;
 static int Nleafc = 0;
 
 
 /* internal functions */
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-	double *z, double *r, double **matrixA, int *ipiv, double *rhs);
+	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr;);
 int *psolve(double *z, double *r);
 int Setup(double xyz_limits[6]);
 void leaflength(TreeNode *p, int idx);
@@ -354,7 +354,7 @@ int *psolve(double *z, double *r) {
 /**********************************************************/
 // int *psolve(double *z, double *r) {
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-	double *z, double *r, double **matrixA, int *ipiv, double *rhs){
+	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr){
 // (const double *x, double *y, double *q, int nface, 
 // 	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta)
 /* r as original while z as scaled */
@@ -363,8 +363,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	int idx = 0, nrow = 0,  ibeg = 0, iend = 0, arridx = 0; // check if arridx = Nleaf
 	// int leafarr[3][Nleaf];
 	// ViewMatrixInt leafarr("leafarr", 3, Nleaf);
-	int *leafarr;
-	leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
+	// leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
 	while ( idx < nface ) {
 	    leaflength(s_tree_root, idx);
 	    nrow  = Nrow;
