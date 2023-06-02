@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
 	// rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
   
 	TreecodeInitialization();
-	Kokkos::fence();
+	// Kokkos::fence();
 
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 

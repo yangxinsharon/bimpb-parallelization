@@ -443,7 +443,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		// ViewMatrixDouble matrixA("matrixA", 2*maxparnode, 2*maxparnode);
     	// double **matrixA;
 		// matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
-		
+		printf("k is %d\n", k);
 		// int ibeg = leafarr(0,k);
 		// int nrow = leafarr(1,k);
 		// int iend = leafarr(2,k);
