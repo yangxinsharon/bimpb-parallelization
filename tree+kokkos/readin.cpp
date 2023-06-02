@@ -20,9 +20,6 @@ extern double **atmpos;						//[3][natm/nchr];
 extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr]; 
 // extern double *dev_tr_xyz, *dev_tr_q, *dev_tr_area, *dev_bvct;
 extern double **tr_xyz2D, **tr_q2D;
-extern int *ipiv;
-extern double *rhs;
-extern double **matrixA;
 
 /* function computing the area of a triangle given vertices coodinates */
 double triangle_area(double v[3][3]) {
@@ -332,9 +329,6 @@ exit:	ichanged=nface-nfacenew;
 
 	// Kokkos::View<double**,Kokkos::CudaUVMSpace> tr_xyz2D ("tr_xyz2D", 3,nface);
 	// Kokkos::View<double**,Kokkos::CudaUVMSpace> tr_q2D ("tr_q2D", 3,nface);
-	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
-	ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
-	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
 
 
     for (i=0;i<nface;i++){
