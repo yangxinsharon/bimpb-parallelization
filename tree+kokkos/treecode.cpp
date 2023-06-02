@@ -63,7 +63,7 @@ static int Nleafc = 0;
 
 /* internal functions */
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr;);
+	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr);
 int *psolve(double *z, double *r);
 int Setup(double xyz_limits[6]);
 void leaflength(TreeNode *p, int idx);
