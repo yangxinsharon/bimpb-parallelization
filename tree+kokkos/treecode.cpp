@@ -267,7 +267,7 @@ void leaflength(TreeNode *p, int idx) {
 /* lapack provide lu decomposition, however, something    */
 /* is wrong with cmake ************************************/
 /**********************************************************/
-KOKKOS_FUNCTION
+// KOKKOS_FUNCTION
 int lu_decomp( double **A, int N, int *ipiv ) {
 
 	int i, j, k, imax;
@@ -312,7 +312,7 @@ int lu_decomp( double **A, int N, int *ipiv ) {
   	return 1;
 }
 
-KOKKOS_FUNCTION
+// KOKKOS_FUNCTION
 void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
   	/* b will contain the solution */
   	double *xtemp;
@@ -436,8 +436,17 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	// 	dev_bvct(j)=bvct[j];
     // }
 
-	Kokkos::parallel_for("psolve", arridx, KOKKOS_LAMBDA(int k) {
-	// for (k = 0; k < Nleaf; k++){
+	// Kokkos::parallel_for("psolve", arridx, KOKKOS_LAMBDA(int k) {
+  	int nrow2;
+	int i, j, jj,idx = 0;
+  	double L1, L2, L3, L4, area;
+	double tp[3], tq[3], sp[3], sq[3];
+	double r_s[3], rs, irs, sumrs;
+	double G0, kappa_rs, exp_kappa_rs, Gk;
+  	double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
+  	double G10, G20, G1, G2, G3, G4;  	
+
+	for (int k = 0; k < arridx; k++){
 		// ibeg = leafarr[0][k];
 		// nrow = leafarr[1][k];
 		// iend = leafarr[2][k];
@@ -448,19 +457,23 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		// int ibeg = leafarr(0,k);
 		// int nrow = leafarr(1,k);
 		// int iend = leafarr(2,k);
-		int ibeg = leafarr[0+3*arridx];
-		int nrow = leafarr[1+3*arridx];
-		int iend = leafarr[2+3*arridx];
-
-		int nrow2 = nrow*2;
+		// int ibeg = leafarr[0+3*arridx];
+		// int nrow = leafarr[1+3*arridx];
+		// int iend = leafarr[2+3*arridx];
+		// int nrow2 = nrow*2;
+		ibeg = leafarr[0+3*arridx];
+		nrow = leafarr[1+3*arridx];
+		iend = leafarr[2+3*arridx];
+		nrow2 = nrow*2;
+		
 		// printf("ibeg nrow iend is %d, %d, %d\n",ibeg,nrow,iend);
-		int i, j, jj,idx = 0;
-  	  	double L1, L2, L3, L4, area;
-		double tp[3], tq[3], sp[3], sq[3];
-		double r_s[3], rs, irs, sumrs;
-		double G0, kappa_rs, exp_kappa_rs, Gk;
-  		double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
-  		double G10, G20, G1, G2, G3, G4;
+		// int i, j, jj,idx = 0;
+  	  	// double L1, L2, L3, L4, area;
+		// double tp[3], tq[3], sp[3], sq[3];
+		// double r_s[3], rs, irs, sumrs;
+		// double G0, kappa_rs, exp_kappa_rs, Gk;
+  		// double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
+  		// double G10, G20, G1, G2, G3, G4;
   	  		
     	for ( i = ibeg; i <= iend; i++ ) {
   	  	// Kokkos::parallel_for("2ndpsolve", nrow, KOKKOS_LAMBDA(int i) {
@@ -644,7 +657,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		rhs[i] = r[i+ibeg];
       		rhs[i+nrow] = r[i+ibeg+nface];
     	}
-    	int inc = lu_decomp( matrixA, nrow2, ipiv );
+    	// int inc = lu_decomp( matrixA, nrow2, ipiv );
+    	inc = lu_decomp( matrixA, nrow2, ipiv );
     	lu_solve( matrixA, nrow2, ipiv, rhs );
 
 
@@ -675,9 +689,9 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		// 	free(matrixA[i]);
 		// }	
 		// free(matrixA);
-    });
-	// }
-    Kokkos::fence();
+    // });
+	}
+    // Kokkos::fence();
   	printf("Nleafc is %d\n",Nleafc);
 
     // for(i=0;i<2*maxparnode;i++) {
