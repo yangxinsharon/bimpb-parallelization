@@ -10,7 +10,6 @@
 
 
 #include "utilities.h"
-#include "array.h"
 #include "tree_node_struct.h"
 #include "gl_constants.h"
 #include "env_kokkos.h"
@@ -387,7 +386,7 @@ int *psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	// make_matrix(matrixA, 2*maxparnode, 2*maxparnode);
   	// make_vector(ipiv, 2*maxparnode);
   	// make_vector(rhs, 2*maxparnode);
-  	
+
   	// matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
 	// ipiv=(int *) calloc(2*maxparnode, sizeof(int));
 	// rhs=(double *) calloc(2*maxparnode, sizeof(double));
