@@ -30,8 +30,8 @@ extern const double eps;
 extern double **tr_xyz2D, **tr_q2D;
 extern int *ipiv;
 extern double *rhs;
-// extern double **matrixA;
-// extern int maxparnode;
+extern double **matrixA;
+
 
 #ifdef __cplusplus
 extern "C"
@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
 	h=(double *) (Kokkos::kokkos_malloc(ldh*(RESTRT+2) * sizeof(double)));
 	
 
-
+	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
 	ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
 	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
   
@@ -155,10 +155,10 @@ int main(int argc, char *argv[]) {
 	}
 	free(tr_q2D);
 
-	// for(i=0;i<2*maxparnode;i++) {
-	// 	free(matrixA[i]);
-	// }	
-	// free(matrixA);
+	for(i=0;i<2*maxparnode;i++) {
+		free(matrixA[i]);
+	}	
+	free(matrixA);
 
 	Kokkos::kokkos_free(tr_xyz);
 	Kokkos::kokkos_free(tr_q);
