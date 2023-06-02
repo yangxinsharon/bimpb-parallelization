@@ -369,7 +369,9 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 /* fetch all index for all leaves using while loop */
 	int idx = 0, nrow = 0,  ibeg = 0, iend = 0, arridx = 0; // check if arridx = Nleaf
 	// int leafarr[3][Nleaf];
-	ViewMatrixInt leafarr("leafarr", 3, Nleaf);
+	// ViewMatrixInt leafarr("leafarr", 3, Nleaf);
+	int *leafarr;
+	leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
 	while ( idx < nface ) {
 	    leaflength(s_tree_root, idx);
 	    nrow  = Nrow;
@@ -378,9 +380,12 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	    // leafarr[0][arridx] = ibeg;
 	    // leafarr[1][arridx] = nrow;
 	    // leafarr[2][arridx] = iend;
-	    leafarr(0,arridx) = ibeg;
-	    leafarr(1,arridx) = nrow;
-	    leafarr(2,arridx) = iend;	    
+	    // leafarr(0,arridx) = ibeg;
+	    // leafarr(1,arridx) = nrow;
+	    // leafarr(2,arridx) = iend;	
+	   	leafarr[0+3*arridx] = ibeg;
+	    leafarr[1+3*arridx] = nrow;
+	    leafarr[2+3*arridx] = iend;    
 	    // printf("ibeg iend nrow: %d, %d, %d\n", leafarr[0][arridx], leafarr[1][arridx], leafarr[2][arridx] );
 		// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
 		arridx += 1;
@@ -444,9 +449,13 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
     	// double **matrixA;
 		// matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
 		
-		int ibeg = leafarr(0,k);
-		int nrow = leafarr(1,k);
-		int iend = leafarr(2,k);
+		// int ibeg = leafarr(0,k);
+		// int nrow = leafarr(1,k);
+		// int iend = leafarr(2,k);
+		int ibeg = leafarr[0+3*arridx];
+		int nrow = leafarr[1+3*arridx];
+		int iend = leafarr[2+3*arridx];
+
 		int nrow2 = nrow*2;
 		// printf("ibeg nrow iend is %d, %d, %d\n",ibeg,nrow,iend);
 		int i, j, jj,idx = 0;
@@ -693,7 +702,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 
   	// return 0;
-
+  	free(leafarr);
 }
 
 
