@@ -37,6 +37,7 @@ extern double **tr_xyz2D, **tr_q2D;
 extern double **matrixA;
 extern int *ipiv;
 extern double *rhs;
+extern int *leafarr;
 // extern double **matrixA;
 extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]);
 extern int** Make2DIntArray(int arraySizeX, int arraySizeY,char info[]);
@@ -348,7 +349,7 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 
 /* This subroutine wraps the psolve multiplication */
 int *psolve(double *z, double *r) {
-    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs);
+    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr);
     return NULL;
 }
 /**********************************************************/
@@ -694,7 +695,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 
   	// return 0;
-  	Kokkos::kokkos_free(leafarr);
+
 }
 
 
