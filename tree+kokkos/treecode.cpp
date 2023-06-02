@@ -347,17 +347,17 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 
 
 /* This subroutine wraps the psolve multiplication */
-// int *psolve(double *z, double *r) {
-// 	double **matrixA;
-// 	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
-//     psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs);
+int *psolve(double *z, double *r) {
+	double **matrixA;
+	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
+    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs);
 
-// 	for(int i=0;i<2*maxparnode;i++) {
-// 		free(matrixA[i]);
-// 	}	
-// 	free(matrixA);
-//     return NULL;
-// }
+	for(int i=0;i<2*maxparnode;i++) {
+		free(matrixA[i]);
+	}	
+	free(matrixA);
+    return NULL;
+}
 /**********************************************************/
 // int *psolve(double *z, double *r) {
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
@@ -648,8 +648,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		rhs[i] = r[i+ibeg];
       		rhs[i+nrow] = r[i+ibeg+nface];
     	}
-    	int inc = lu_decomp( matrixA, nrow2, ipiv );
-    	lu_solve( matrixA, nrow2, ipiv, rhs );
+    	// int inc = lu_decomp( matrixA, nrow2, ipiv );
+    	// lu_solve( matrixA, nrow2, ipiv, rhs );
 
 
 		// for (i=0;i<2*maxparnode;i++){
