@@ -109,7 +109,8 @@ int main(int argc, char *argv[]) {
 	// Kokkos::fence();
 
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
-
+// int gmres_(n, b, x, restrt, work, ldw, h, ldh, iter, resid, matvec, psolve, 
+//            info)
 	Kokkos::fence();
 	soleng=0.0;
 

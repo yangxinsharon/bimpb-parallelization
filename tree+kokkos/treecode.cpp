@@ -351,6 +351,7 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 
 /* This subroutine wraps the psolve multiplication */
 int *psolve(double *z, double *r) {
+	printf("test1");
     psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr);
     return NULL;
 }
