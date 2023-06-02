@@ -96,9 +96,9 @@ int main(int argc, char *argv[]) {
 	h=(double *) (Kokkos::kokkos_malloc(ldh*(RESTRT+2) * sizeof(double)));
 	
 
-	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
-	ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
-	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
+	// matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
+	// ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
+	// rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
   
 	TreecodeInitialization();
 	Kokkos::fence();
