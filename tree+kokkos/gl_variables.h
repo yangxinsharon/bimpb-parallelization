@@ -59,5 +59,5 @@ double **matrixA;
 int *ipiv;
 double *rhs;
 int *leafarr;
-int Nleaf;
+int Nleaf=0;
 #endif
