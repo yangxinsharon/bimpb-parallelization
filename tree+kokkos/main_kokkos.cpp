@@ -52,6 +52,7 @@ int main(int argc, char *argv[]) {
 	double s[3], pot=0.0, sum=0.0, pot_temp=0.0;	// potential
 	double ptl, soleng, t1, t2;
 	char fname[16], density[16];
+	extern double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]);
 	extern void readin(char fname[16], char density[16]);
 
 	/*GMRES related variables*/
@@ -95,6 +96,9 @@ int main(int argc, char *argv[]) {
 	work=(double *) (Kokkos::kokkos_malloc(ldw*(RESTRT+4) * sizeof(double)));
 	h=(double *) (Kokkos::kokkos_malloc(ldh*(RESTRT+2) * sizeof(double)));
 	
+	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
+	ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
+	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
 
 	// matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
 	// ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
