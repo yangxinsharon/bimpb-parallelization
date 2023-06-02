@@ -145,7 +145,7 @@ int TreecodeInitialization() {
 			tr_q[3*j+i] = tr_q2D[i][j];
 		}
 	}
-
+	printf("test1");
 	return 0;
 }
 
