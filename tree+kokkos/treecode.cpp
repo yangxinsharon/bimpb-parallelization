@@ -360,12 +360,12 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 
 int *psolve(double *z, double *r) {
 	printf("test1");
-    &psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr);
+    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr);
     return NULL;
 }
 
 /**********************************************************/
-int *psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
+void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
 	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr) {
 /* r as original while z as scaled */
 
@@ -380,21 +380,43 @@ int *psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
   	double G10, G20, G1, G2, G3, G4;
   	double pre1, pre2;
-	
+	int arridx = 0;
+
   	pre1 = 0.5*(1.0+eps);
   	pre2 = 0.5*(1.0+1.0/eps);
 
-  	// make_matrix(matrixA, 2*maxparnode, 2*maxparnode);
-  	// make_vector(ipiv, 2*maxparnode);
-  	// make_vector(rhs, 2*maxparnode);
-  	
-  	// matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
-	// ipiv=(int *) calloc(2*maxparnode, sizeof(int));
-	// rhs=(double *) calloc(2*maxparnode, sizeof(double));
-  	printf("maxparnode is %d\n", maxparnode);
+	while ( idx < nface ) {
+	    leaflength(s_tree_root, idx);
+	    nrow  = Nrow;
+	    ibeg  = idx;
+	    iend  = idx + nrow - 1;
+	    // leafarr[0][arridx] = ibeg;
+	    // leafarr[1][arridx] = nrow;
+	    // leafarr[2][arridx] = iend;
+	    // leafarr(0,arridx) = ibeg;
+	    // leafarr(1,arridx) = nrow;
+	    // leafarr(2,arridx) = iend;	
+	   	leafarr[0+3*arridx] = ibeg;
+	    leafarr[1+3*arridx] = nrow;
+	    leafarr[2+3*arridx] = iend;    
+	    // printf("ibeg iend nrow: %d, %d, %d\n", leafarr[0][arridx], leafarr[1][arridx], leafarr[2][arridx] );
+		// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
+		arridx += 1;
+		// Nleafc += 1;
+		idx += nrow;
+	}
 
 
-  	while ( idx < nface ) {
+
+
+  	// while ( idx < nface ) {
+	for (int k=0; k<arridx; k++){
+		ibeg = leafarr[0+3*arridx]
+		nrow = leafarr[1+3*arridx]
+		iend = leafarr[2+3*arridx]
+
+	 
+
     	leaflength(s_tree_root, idx);
 
     	nrow  = Nrow;

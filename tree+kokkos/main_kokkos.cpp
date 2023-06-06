@@ -100,6 +100,7 @@ int main(int argc, char *argv[]) {
 	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
 	ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
 	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
+
 	leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
 	// matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
 	// ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
