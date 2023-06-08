@@ -16,7 +16,7 @@
 #include <cstdio>
 #include <cmath>
 #include <Kokkos_Core.hpp>
-#include "env_kokkos.h"
+// #include "env_kokkos.h"
 
 /* Prototypes */
 int *matvec(double *alpha, double *x, double *beta, double *y);
@@ -166,15 +166,15 @@ void comp_source_wrapper() {
 /* bvct be located at readin.c */
 void comp_source( double* bvct, double *atmchr, double *chrpos, 
 	double *tr_xyz,double *tr_q, int nface, int nchr) {
-	ViewVectorType d_bvct( "d_bvct", 2*nface );
+	// ViewVectorType d_bvct( "d_bvct", 2*nface );
 	// ViewVectorType d_bvct( "d_bvct", 2*nface );
 	// ViewVectorType::HostMirror bvct = Kokkos::create_mirror_view( d_bvct );
 
 	Kokkos::parallel_for("comp_source", dev_range_policy(0,nface), KOKKOS_LAMBDA(int i) {
-    	// bvct[i] = 0.0;
-    	// bvct[i+nface] = 0.0;
-    	d_bvct(i) = 0.0;
-    	d_bvct(i+nface) = 0.0;    	
+    	bvct[i] = 0.0;
+    	bvct[i+nface] = 0.0;
+    	// d_bvct(i) = 0.0;
+    	// d_bvct(i+nface) = 0.0;    	
     	for (int j=0; j<nchr; j++) {
     	    double r_s[3] = {chrpos[3*j]-tr_xyz[3*i], chrpos[3*j+1]-tr_xyz[3*i+1], 
     	    	chrpos[3*j+2]-tr_xyz[3*i+2]};
@@ -186,18 +186,19 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
     	    G0 = G0*irs;
     	    double tp1 = G0*irs;
     	    double G1 = cos_theta*tp1;
-    	    // bvct[i] = bvct[i]+atmchr[j]*G0;
-    	    // bvct[nface+i] = bvct[nface+i]+atmchr[j]*G1;
-    	    d_bvct(i) = d_bvct(i)+atmchr[j]*G0;
-    	    d_bvct(nface+i) = d_bvct(nface+i)+atmchr[j]*G1;
+    	    bvct[i] = bvct[i]+atmchr[j]*G0;
+    	    bvct[nface+i] = bvct[nface+i]+atmchr[j]*G1;
+    	    // d_bvct(i) = d_bvct(i)+atmchr[j]*G0;
+    	    // d_bvct(nface+i) = d_bvct(nface+i)+atmchr[j]*G1;
     	}
-    	bvct[i]=d_bvct(i);
-    	bvct[i+nface]=d_bvct(i+nface);    	
+    	// bvct[i]=d_bvct(i);
+    	// bvct[i+nface]=d_bvct(i+nface);    	
     });
     Kokkos::fence();
-    // Kokkos::deep_copy( bvct, d_bvct );
+
     // for (int i =0; i<nface; i++){
-    	// bvct[i]=d_bvct(i);
-    	// bvct[i+nface]=d_bvct(i+nface);
+    // 	bvct[i]=d_bvct(i);
+    // 	bvct[i+nface]=d_bvct(i+nface);
+    // }
     // }
 }
