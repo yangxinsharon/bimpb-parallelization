@@ -33,7 +33,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	double pre1, pre2;
     pre1=0.50*(1.0+eps); /* const eps=80.0 */
     pre2=0.50*(1.0+1.0/eps);
-    Kokkos::parallel_for("matvecmul", dev_range_policy(0,nface), KOKKOS_LAMBDA(int i) {
+    Kokkos::parallel_for("matvecmul", nface, KOKKOS_LAMBDA(int i) {
     	double tp[3] = {tr_xyz[3*i], tr_xyz[3*i+1], tr_xyz[3*i+2]};
 		double tq[3] = {tr_q[3*i], tr_q[3*i+1], tr_q[3*i+2]};
 
@@ -121,7 +121,7 @@ void comp_soleng_wrapper(double soleng) {
 void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl, 
 	double *tr_xyz, double *tr_q, double *tr_area, int nface, int nchr) {
 
-    Kokkos::parallel_for("comp_pot", dev_range_policy(0,nface), KOKKOS_LAMBDA(int j) {
+    Kokkos::parallel_for("comp_pot", nface, KOKKOS_LAMBDA(int j) {
     	ptl[j] = 0.0;
 		double r[3] = {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
 		double v[3] = {tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};
@@ -166,15 +166,10 @@ void comp_source_wrapper() {
 /* bvct be located at readin.c */
 void comp_source( double* bvct, double *atmchr, double *chrpos, 
 	double *tr_xyz,double *tr_q, int nface, int nchr) {
-	// ViewVectorType d_bvct( "d_bvct", 2*nface );
-	// ViewVectorType d_bvct( "d_bvct", 2*nface );
-	// ViewVectorType::HostMirror bvct = Kokkos::create_mirror_view( d_bvct );
 
 	Kokkos::parallel_for("comp_source", nface, KOKKOS_LAMBDA(int i) {
     	bvct[i] = 0.0;
-    	bvct[i+nface] = 0.0;
-    	// d_bvct(i) = 0.0;
-    	// d_bvct(i+nface) = 0.0;    	
+    	bvct[i+nface] = 0.0;   	
     	for (int j=0; j<nchr; j++) {
     	    double r_s[3] = {chrpos[3*j]-tr_xyz[3*i], chrpos[3*j+1]-tr_xyz[3*i+1], 
     	    	chrpos[3*j+2]-tr_xyz[3*i+2]};
@@ -188,17 +183,7 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
     	    double G1 = cos_theta*tp1;
     	    bvct[i] = bvct[i]+atmchr[j]*G0;
     	    bvct[nface+i] = bvct[nface+i]+atmchr[j]*G1;
-    	    // d_bvct(i) = d_bvct(i)+atmchr[j]*G0;
-    	    // d_bvct(nface+i) = d_bvct(nface+i)+atmchr[j]*G1;
     	}
-    	// bvct[i]=d_bvct(i);
-    	// bvct[i+nface]=d_bvct(i+nface);    	
     });
     Kokkos::fence();
-
-    // for (int i =0; i<nface; i++){
-    // 	bvct[i]=d_bvct(i);
-    // 	bvct[i+nface]=d_bvct(i+nface);
-    // }
-    // }
 }
