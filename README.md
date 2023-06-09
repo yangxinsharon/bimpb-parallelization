@@ -71,22 +71,38 @@ $ module load cuda-11.4.4-gcc-10.3.0-ctldo35  \
 $ srun -G 1 ./bimpb_cuda.exe 1ajj 1  \
 
 
-Kokkos (SuperPOD): \
+Kokkos (SuperPOD): can make but cannot run \
 $ srun -N 1 -G 1 -c 10 --mem=128G --time=12:00:00 --pty $SHELL
 $ module load dev
 $ module load gcc-10.3.0-gcc-9.4.0-d44jwah # GCC 10.3.0
 $ module load cuda-11.4.4-gcc-10.3.0-ctldo35 # CUDA 11.4.4
 $ module load kokkos-3.6.00-gcc-10.3.0-wh67tbt
+$ mkdir build
+$ cd build
 $ cmake .. -DCMAKE_BUILD_TYPE=Release
+$ make
+$ export OMP_PROC_BIND=spread
 
-
+MSMS terminated normally
+Total Time real: 0.28 user: 0.18 sys: 0.00
+../test_proteins/1a63.vert
+nspt=10134, natm=2065, den=1.000000, prob=1.400000
+finish reading vertices file...
+nface=20264, natm=2065, den=1.000000, prob=1.400000
+finish reading face file...
+finish reading position file...
+Segmentation fault (core dumped)
 
 
 ////////// 
-# can make file but has segmentation fault\
+Kokkos (SuperPOD): can make but cannot run \
 $ module load spack gcc-10.3.0-gcc-9.4.0-d44jwah\
 $ . /hpc/mp/spack/share/spack/setup-env.sh\
 $ spack load kokkos/wh67tbt
+
+Thread 1 "bimpb_kokkos.ex" received signal SIGSEGV, Segmentation fault.
+0x00007ffff5db0d9b in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+(gdb) 
 
 #
 Kokkos::OpenMP::initialize WARNING: OMP_PROC_BIND environment variable not set
