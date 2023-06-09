@@ -87,7 +87,7 @@ int main(int argc, char *argv[]) {
 #else
   	typedef Kokkos::Serial     ExecSpace;
   	typedef Kokkos::HostSpace  MemSpace;
-  	std::cout << "Running dot_prod with length " << n << " with Kokkos using Serial backend:\n";
+  	// std::cout << "Running dot_prod with length " << n << " with Kokkos using Serial backend:\n";
 #endif
   	typedef Kokkos::RangePolicy<ExecSpace>    RangePol;
   	typedef Kokkos::View<double*, MemSpace>   VecView;
