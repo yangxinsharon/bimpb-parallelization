@@ -8,7 +8,7 @@
 /* Table of constant values */
 
 static doublereal c_b4 = 1.;
-
+ 
 /* Subroutine */ int drotg_(doublereal *da, doublereal *db, doublereal *c, 
 	doublereal *s)
 {

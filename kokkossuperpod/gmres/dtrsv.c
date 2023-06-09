@@ -10,7 +10,7 @@
 	doublereal *a, integer *lda, doublereal *x, integer *incx)
 {
 
-
+ 
     /* System generated locals */
     integer a_dim1, a_offset, i__1, i__2;
 

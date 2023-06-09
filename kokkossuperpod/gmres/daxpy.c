@@ -3,7 +3,7 @@
    You must link the resulting object file with the libraries:
 	-lf2c -lm   (in that order)
 */
-
+ 
 #include "f2c.h"
 
 /* Subroutine */ int daxpy_(integer *n, doublereal *da, doublereal *dx, 

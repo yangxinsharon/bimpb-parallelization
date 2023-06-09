@@ -3,7 +3,7 @@
    You must link the resulting object file with the libraries:
 	-lf2c -lm   (in that order)
 */
-
+ 
 #include "f2c.h"
 #include "math.h" // yang:sqrt
 doublereal dnrm2_(integer *n, doublereal *x, integer *incx)

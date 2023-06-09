@@ -10,7 +10,7 @@
 	integer *incx)
 {
 
-
+ 
     /* System generated locals */
     integer i__1, i__2;
 
