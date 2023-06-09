@@ -1,4 +1,0 @@
-/users/xiny/GitHubRepository/bimpb-parallelization/kokkos/CMakeFiles/rebuild_cache.dir
-/users/xiny/GitHubRepository/bimpb-parallelization/kokkos/CMakeFiles/edit_cache.dir
-/users/xiny/GitHubRepository/bimpb-parallelization/kokkos/CMakeFiles/gmres.dir
-/users/xiny/GitHubRepository/bimpb-parallelization/kokkos/CMakeFiles/bimpb_kokkos.exe.dir

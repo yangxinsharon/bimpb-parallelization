@@ -1,6 +1,11 @@
 #ifndef GL_VARIABLES
 #define GL_VARIABLES
 
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 /*constant variables */
 
 /*
@@ -52,6 +57,9 @@ double *work, *h;
 double *h_pot;
 double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
 
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif

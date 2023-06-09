@@ -17,7 +17,8 @@ extern double *tr_xyz, *tr_q;				//[3][nface]
 extern double *tr_area, *bvct, *xvct;		//[nface];
 extern double **atmpos;						//[3][natm/nchr];
 extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr]; 
-
+extern double *work, *h;
+extern double *h_pot;
 
 /* function computing the area of a triangle given vertices coodinates */
 double triangle_area(double v[3][3]) {
@@ -43,10 +44,6 @@ void readin(char fname[16], char density[16]) {
 	char fpath[256];
 	char fname_tp[256];
 
-	FILE *fpw; //yang
-	char c1,c2,c3,buff[256]; //yang
-	int iii,jjj,count; //yang
-
     int i,j,k,i1,i2,i3,j1,j2,j3,ii,jj,kk,namelength=4,nfacenew,ichanged;
     double den,prob_rds,a1,a2,a3,b1,b2,b3,a_norm,r0_norm,v0_norm;
 	double r0[3],v0[3],v[3][3],r[3][3];
@@ -55,61 +52,6 @@ void readin(char fname[16], char density[16]) {
     double temp_x,temp_q,tchg,tpos[3],dist_local,area_local;
 	double cos_theta,G0,tp1,G1,r_s[3];
 	double xx[3],yy[3];
-
-
-
-	/*count atom lines*/
-	sprintf(fpath,"../test_proteins/");
-	sprintf(fname_tp, "%s%s.pqr",fpath,fname);
-   	fp=fopen(fname_tp,"r");
-   	count = 0;
-	while(fgets(buff,256,fp)) {
-		if (strstr(buff,"ATOM")!=NULL) {
-			count++;	
-		}
-	}
-	printf("count is:%d\n",count); //yang
-	fclose(fp);
-
-
-	fp=fopen(fname_tp,"r");
-	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
-   	fpw=fopen(fname_tp,"w");
-
-   	nchr = count;
-   	natm = count;
-	if ((atmrad=(double *) (Kokkos::kokkos_malloc(natm*sizeof(double))))==NULL) {
-		printf("error in allcating atmrad");
-	}
-	atmpos=Make2DDoubleArray(3,natm,(char*) "atmpos");
-	if ((atmchr=(double *) (Kokkos::kokkos_malloc(nchr*sizeof(double))))==NULL) {
-		printf("error in allcating atmchr");
-	}
-	if ((chrpos=(double *) (Kokkos::kokkos_malloc(3*nchr*sizeof(double))))==NULL) { 
-		printf("error in allcating chrpos");
-	}
-
-
-	for (i=0;i<count;i++) {
-		fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c1,&iii,&c2,&c3,&jjj,&a1,&a2,&a3,&b1,&b2);
-		sprintf(buff,"%.3f\t\t %.3f\t\t %.3f\t\t %.4f\n",a1,a2,a3,b2);
-		fputs(buff,fpw);
-		chrpos[3*i]=a1;
-		chrpos[3*i+1]=a2;
-		chrpos[3*i+2]=a3;
-		atmchr[i]=b1;
-
-		atmpos[0][i]=a1;
-		atmpos[1][i]=a2;
-		atmpos[2][i]=a3;		
-		atmrad[i]=b2;
-	}
-
-	fclose(fp);
-	fclose(fpw);
-	printf("finish reading pqr and writing xyzr file...\n");
-
-
 
 	/*read in vertices*/
 	sprintf(fpath,"../test_proteins/");
@@ -186,52 +128,49 @@ void readin(char fname[16], char density[16]) {
     fclose(fp);
 	printf("finish reading face file...\n");
 
-	// /*read atom coodinates and radius */
-	// sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
-	// fp=fopen(fname_tp,"r");
+	/*read atom coodinates and radius */
+	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
+	fp=fopen(fname_tp,"r");
 
-	// if ((atmrad=(double *) malloc(natm*sizeof(double)))==NULL) {
-	// // if ((atmrad=(double *) (Kokkos::kokkos_malloc(natm*sizeof(double))))==NULL) {
-	// 	printf("error in allcating atmrad");
-	// }
-	// atmpos=Make2DDoubleArray(3,natm,(char*) "atmpos");
+	if ((atmrad=(double *) malloc(natm*sizeof(double)))==NULL) {
+	// if ((atmrad=(double *) (Kokkos::kokkos_malloc(natm*sizeof(double))))==NULL) {
+		printf("error in allcating atmrad");
+	}
+	atmpos=Make2DDoubleArray(3,natm,(char*) "atmpos");
 
-	// printf("natm is:%d\n",natm); //yang
-	// for (i=0;i<=natm-1;i++){
-	// 	fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
-	// 	atmpos[0][i]=a1;
-	// 	atmpos[1][i]=a2;
-	// 	atmpos[2][i]=a3;
-	// 	atmrad[i]=b1;
-    // }
-	// fclose(fp);
-	// printf("finish reading position file...\n");
+	for (i=0;i<=natm-1;i++){
+		fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
+		atmpos[0][i]=a1;
+		atmpos[1][i]=a2;
+		atmpos[2][i]=a3;
+		atmrad[i]=b1;
+    }
+	fclose(fp);
+	printf("finish reading position file...\n");
 
-	// /*read charge coodinates and charge */
-	// sprintf(fname_tp, "%s%s.pqr",fpath,fname);
-	// fp=fopen(fname_tp,"r");
+	/*read charge coodinates and radius */
+	sprintf(fname_tp, "%s%s.pqr",fpath,fname);
+	fp=fopen(fname_tp,"r");
 
-	// nchr=natm;
-	// printf("nchr is:%d\n",nchr); //yang
-	// // if ((atmchr=(double *) malloc(nchr*sizeof(double)))==NULL){
-	// if ((atmchr=(double *) (Kokkos::kokkos_malloc(nchr*sizeof(double))))==NULL) {
-	// 	printf("error in allcating atmchr");
-	// }
-	// // if ((chrpos=(double *) malloc(3*nchr*sizeof(double)))==NULL){
-	// if ((chrpos=(double *) (Kokkos::kokkos_malloc(3*nchr*sizeof(double))))==NULL) { 
-	// 	printf("error in allcating chrpos");
-	// }
+	nchr=natm;
+	// if ((atmchr=(double *) malloc(nchr*sizeof(double)))==NULL){
+	if ((atmchr=(double *) (Kokkos::kokkos_malloc(nchr*sizeof(double))))==NULL) {
+		printf("error in allcating atmchr");
+	}
+	// if ((chrpos=(double *) malloc(3*nchr*sizeof(double)))==NULL){
+	if ((chrpos=(double *) (Kokkos::kokkos_malloc(3*nchr*sizeof(double))))==NULL) { 
+		printf("error in allcating chrpos");
+	}
 
-	// for (i=0;i<=nchr-1;i++){
-	// 	// fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
-	// 	fscanf(fp,"%s %d %s %s %d %lf %lf %lf %lf %lf",&c1,&iii,&c2,&c3,&jjj,&a1,&a2,&a3,&b1,&b2);
-	// 	chrpos[3*i]=a1;
-	// 	chrpos[3*i+1]=a2;
-	// 	chrpos[3*i+2]=a3;
-	// 	atmchr[i]=b1;
-    // }
-	// fclose(fp);
-	// printf("finish reading charge file...\n");
+	for (i=0;i<=nchr-1;i++){
+		fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
+		chrpos[3*i]=a1;
+		chrpos[3*i+1]=a2;
+		chrpos[3*i+2]=a3;
+		atmchr[i]=b1;
+    }
+	fclose(fp);
+	printf("finish reading charge file...\n");
 
 	/* delele triangles with extreme small areas and closed to each other */
 	nfacenew=nface;

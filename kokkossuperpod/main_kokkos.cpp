@@ -15,7 +15,7 @@
 #include <cmath>
 
 /* kokkos */
-// #include "env_kokkos.h"
+// #include <sys/time.h>
 #include <Kokkos_Core.hpp>
 
 extern int nface, nspt, natm, nchr;			// number of faces, points, atoms, and charges
@@ -29,6 +29,7 @@ extern double **atmpos;							// [3][natm/nchr]
 extern double *atmrad, *atmchr, *chrpos;	// [natm/nchr]
 extern double *work, *h;
 extern double *h_pot;
+// extern double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
 
 const double eps = 80.0;
 
@@ -36,6 +37,9 @@ const double eps = 80.0;
 extern "C"
 {
 #endif
+// int *matvec ();
+// int *psolve ();
+// double eps;
 int gmres_(long int *n, double *b, double *x, long int *restrt, double *work, long int *ldw, 
 		double *h, long int *ldh, long int *iter, double *resid, 
 		int *matvec (double *alpha, double *x, double *beta, double *y), 
@@ -62,6 +66,9 @@ int main(int argc, char *argv[]) {
 	extern void comp_soleng_wrapper(double soleng);	// yang
 	extern int *matvec(double *alpha, double *x, double *beta, double *y); // yang
 	extern int *psolve(double *z, double *r); // yang
+	// extern int *matvec(),*psolve();
+	// extern int gmres_(long int *n, double *b, double *x, long int *restrt, double *work, long int *ldw, 
+	// 	double *h, long int *ldh, long int *iter, double *resid, int *matvec (), int *psolve (), long int *info);
 
    extern void timer_start(char *n); // yang
    extern void timer_end(void); // yang
@@ -69,16 +76,24 @@ int main(int argc, char *argv[]) {
    Kokkos::initialize(argc, argv);
    {
 
+   typedef Kokkos::Serial   HostExecSpace;
+   typedef Kokkos::Cuda     DevExecSpace;
+   typedef Kokkos::CudaSpace    MemSpace;
+   typedef Kokkos::LayoutRight  Layout;
+   typedef Kokkos::RangePolicy<HostExecSpace>  host_range_policy;
+  	typedef Kokkos::RangePolicy<DevExecSpace>   dev_range_policy;
+
+
 	timer_start((char*) "TOTAL_TIME");
 	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
 
 	/* read in structural information */
-   // sprintf(fname, "1ajj");
+   sprintf(fname, "1a63");
    // sprintf(density, "1");
-   sprintf(fname,"%s",argv[1]);
-   sprintf(density,"%s",argv[2]);
+   // sprintf(fname,"%s",argv[1]);
+   sprintf(density,"%s",argv[1]);
 	readin(fname, density);
-	comp_source_wrapper(); //wraps the solvation energy computation;
+	comp_source_wrapper(); //wraps the solvation energy computation
 	Kokkos::fence();
 
 	/* parameters for GMRES */
@@ -89,6 +104,13 @@ int main(int argc, char *argv[]) {
 	iter=100;
 	resid=1e-4;
 
+	// Allocate y, x vectors and Matrix A on device.
+   // typedef Kokkos::View<double*, Layout, MemSpace>   ViewVectorType;
+   // typedef Kokkos::View<double**, Layout, MemSpace>  ViewMatrixType;
+   // ViewVectorType y( "y", N );
+   // ViewVectorType x( "x", M );
+   // ViewMatrixType A( "A", N, M );
+
 	// xvct=(double *) calloc(N, sizeof(double));
 	// work=(double *) calloc (ldw*(RESTRT+4), sizeof(double));
 	// h=(double *) calloc (ldh*(RESTRT+2), sizeof(double));
@@ -97,9 +119,10 @@ int main(int argc, char *argv[]) {
 	work=(double *) (Kokkos::kokkos_malloc(ldw*(RESTRT+4) * sizeof(double)));
 	h=(double *) (Kokkos::kokkos_malloc(ldh*(RESTRT+2) * sizeof(double)));
 
-	// ViewVectorType xvct("xvct",N);
-	// ViewVectorType work("xvct",ldw*(RESTRT+4));
-	// ViewVectorType h("xvct",ldh*(RESTRT+2));
+   // Create host mirrors of device views.
+   // ViewVectorType::HostMirror h_y = Kokkos::create_mirror_view( y );
+   // ViewVectorType::HostMirror h_x = Kokkos::create_mirror_view( x );
+   // ViewMatrixType::HostMirror h_A = Kokkos::create_mirror_view( A );
 
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 
