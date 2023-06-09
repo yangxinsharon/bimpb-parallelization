@@ -88,10 +88,10 @@ int main(int argc, char *argv[]) {
 	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
 
 	/* read in structural information */
-   sprintf(fname, "1a63");
+   // sprintf(fname, "1a63");
    // sprintf(density, "1");
-   // sprintf(fname,"%s",argv[1]);
-   sprintf(density,"%s",argv[1]);
+   sprintf(fname,"%s",argv[1]);
+   sprintf(density,"%s",argv[2]);
 	readin(fname, density);
 	comp_source_wrapper(); //wraps the solvation energy computation
 	Kokkos::fence();
