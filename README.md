@@ -104,6 +104,9 @@ Thread 1 "bimpb_kokkos.ex" received signal SIGSEGV, Segmentation fault.
 0x00007ffff5db0d9b in ?? () from /lib/x86_64-linux-gnu/libc.so.6
 (gdb) 
 
+
+error while loading shared libraries: libcuda.so.1: cannot open shared object file: No such file or directory
+
 #
 Kokkos::OpenMP::initialize WARNING: OMP_PROC_BIND environment variable not set
   In general, for best performance with OpenMP 4.0 or better set OMP_PROC_BIND=spread and OMP_PLACES=threads
