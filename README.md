@@ -66,22 +66,37 @@ $ module load kokkos-3.6.00-gcc-10.3.0-wh67tbt
 $ cmake . -DCMAKE_BUILD_TYPE=Release
 
 
-module load spack gcc-10.3.0-gcc-9.4.0-d44jwah
-  
-  For bash/zsh/sh:
-    . /hpc/mp/spack/share/spack/setup-env.sh
-  
-  For csh/tcsh:
-    source /hpc/mp/spack/share/spack/setup-env.csh
-  
-  For fish:
-    source /hpc/mp/spack/share/spack/setup-env.fish
-  
-  For Windows batch:
-    source /hpc/mp/spack/share/spack/spack_cmd.bat
 
-$ spack load kokkos/75xmg2y
+
+////////// 
+# can make file but has segmentation fault\
+$ module load spack gcc-10.3.0-gcc-9.4.0-d44jwah\
+$ . /hpc/mp/spack/share/spack/setup-env.sh\
 $ spack load kokkos/wh67tbt
+
+#
+Kokkos::OpenMP::initialize WARNING: OMP_PROC_BIND environment variable not set
+  In general, for best performance with OpenMP 4.0 or better set OMP_PROC_BIND=spread and OMP_PLACES=threads
+  For best performance with OpenMP 3.1 set OMP_PROC_BIND=true
+  For unit testing set OMP_PROC_BIND=false
+3 ./bimpb_kokkos.exe 1ajj 1 
+count is:519
+Segmentation fault (core dumped)
+
+
+
+///////////\
+# cannot make files\
+For bash/zsh/sh:\
+$ . /hpc/mp/spack/share/spack/setup-env.sh\
+For csh/tcsh:\
+$ source /hpc/mp/spack/share/spack/setup-env.csh\
+For fish:\
+$ source /hpc/mp/spack/share/spack/setup-env.fish\
+For Windows batch:\
+$ source /hpc/mp/spack/share/spack/spack_cmd.bat\
+$ spack load kokkos/75xmg2y
+
 
 
 
