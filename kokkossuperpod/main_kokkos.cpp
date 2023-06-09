@@ -76,13 +76,21 @@ int main(int argc, char *argv[]) {
    Kokkos::initialize(argc, argv);
    {
 
-   // typedef Kokkos::Serial   HostExecSpace;
-   // typedef Kokkos::Cuda     DevExecSpace;
-   // typedef Kokkos::CudaSpace    MemSpace;
-   // typedef Kokkos::LayoutRight  Layout;
-   // typedef Kokkos::RangePolicy<HostExecSpace>  host_range_policy;
-  	// typedef Kokkos::RangePolicy<DevExecSpace>   dev_range_policy;
-
+#if defined(USE_OPENMP)
+  	typedef Kokkos::OpenMP     ExecSpace;
+  	typedef Kokkos::HostSpace  MemSpace;
+  	std::cout << "Running dot_prod with length " << n << " with Kokkos using OpenMP backend:\n";
+#elif defined(USE_CUDA)
+  	typedef Kokkos::Cuda       ExecSpace;
+  	typedef Kokkos::CudaSpace  MemSpace;
+  	std::cout << "Running dot_prod with length " << n << " with Kokkos using CUDA backend:\n";
+#else
+  	typedef Kokkos::Serial     ExecSpace;
+  	typedef Kokkos::HostSpace  MemSpace;
+  	std::cout << "Running dot_prod with length " << n << " with Kokkos using Serial backend:\n";
+#endif
+  	typedef Kokkos::RangePolicy<ExecSpace>    RangePol;
+  	typedef Kokkos::View<double*, MemSpace>   VecView;
 
 	timer_start((char*) "TOTAL_TIME");
 	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
