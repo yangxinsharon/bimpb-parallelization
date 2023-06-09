@@ -36,15 +36,19 @@ Login to HPC like ManeFrame II. \
 $ salloc -p standard-mem-s -N8 -n256 --x11=first \
 $ module load gcc-9.2 hpcx \
 $ srun -n 8 ./bimpb_mpi.exe \
+
 Serial: \
 $ ./bimpb.exe (1ajj) (1) \
+
 OpenMP: \
 $ export OMP_NUM_THREADS=4 \
 $ ./bimpb_omp.exe \
+
 CUDA:  \
 Login to HPC like ManeFrame II.  \
 $ module load nvhpc-22.2  \
 $ srun -p v100x8 --gres=gpu:1 ./bimpb_cuda.exe  \
+
 Kokkos:  \
 Login to HPC like ManeFrame II.  \
 $ srun -p development -c 4 --mem=16G --gres=gpu:volta:1 --pty $SHELL \
@@ -55,15 +59,25 @@ $ cmake . \
 $ make \
 $ ./bimpb_kokkos.exe
 
+
+
 SMU SuperPOD (must be on VPN):\
-Login to M3 first, and then login to SuperPOD\ 
+Login to M3 first, and then login to SuperPOD \
 $ ssh username@slogin-01.superpod.smu.edu \
+
+CUDA (SuperPOD):  can make and can run\
+$ module load dev
+$ module load cuda-11.4.4-gcc-10.3.0-ctldo35  \
+$ srun -G 1 ./bimpb_cuda.exe 1ajj 1  \
+
+
+Kokkos (SuperPOD): \
 $ srun -N 1 -G 1 -c 10 --mem=128G --time=12:00:00 --pty $SHELL
 $ module load dev
 $ module load gcc-10.3.0-gcc-9.4.0-d44jwah # GCC 10.3.0
 $ module load cuda-11.4.4-gcc-10.3.0-ctldo35 # CUDA 11.4.4
 $ module load kokkos-3.6.00-gcc-10.3.0-wh67tbt
-$ cmake . -DCMAKE_BUILD_TYPE=Release
+$ cmake .. -DCMAKE_BUILD_TYPE=Release
 
 
 
