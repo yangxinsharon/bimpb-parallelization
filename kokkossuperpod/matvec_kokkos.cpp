@@ -33,7 +33,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	double pre1, pre2;
     pre1=0.50*(1.0+eps); /* const eps=80.0 */
     pre2=0.50*(1.0+1.0/eps);
-    print('test1');
+    printf ('test1');
     Kokkos::parallel_for("matvecmul", nface, KOKKOS_LAMBDA(int i) {
     	double tp[3] = {tr_xyz[3*i], tr_xyz[3*i+1], tr_xyz[3*i+2]};
 		double tq[3] = {tr_q[3*i], tr_q[3*i+1], tr_q[3*i+2]};
@@ -151,14 +151,14 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
 /* This subroutine wraps the matrix-vector multiplication */
 int *matvec(double *alpha, double *x, double *beta, double *y) {
-    print('test2');
+    printf ('test2');
     matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta);
     return NULL;
 }
 
 /* This subroutine wraps the solvation energy computation */
 void comp_soleng_wrapper(double soleng) {
-	print('test3');
+	printf ('test3');
     int i;
 	double *chrptl;
 	double units_para = 2.0;
@@ -167,14 +167,14 @@ void comp_soleng_wrapper(double soleng) {
 
 	// if ((chrptl=(double *) malloc(nface*sizeof(double)))==NULL) {
     if ((chrptl=(double *) (Kokkos::kokkos_malloc(nface*sizeof(double))))==NULL) {
-		printf("error in allcating chrptl");
+		printf f("error in allcating chrptl");
 	}
 
 	comp_pot(xvct, atmchr, chrpos, chrptl, tr_xyz, tr_q, tr_area, nface, nchr);
 	soleng=0.0;
 	for (i=0; i<nface; i++) soleng = soleng+chrptl[i];
 	soleng = soleng*units_para;
-	printf("solvation energy = %f kcal/mol\n",soleng);
+	printf f("solvation energy = %f kcal/mol\n",soleng);
 }
 
 
@@ -216,7 +216,7 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
     //   		ptl[j] = ptl[j] + atmchr[i] * (L1*xvct[j]+L2*xvct[nface+j]) * tr_area[j];
 	// 	}
     // }
-    print('test4');
+    printf ('test4');
     Kokkos::parallel_for("comp_pot", nface, KOKKOS_LAMBDA(int j) {
     	ptl[j] = 0.0;
 		double r[3] = {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
@@ -283,7 +283,7 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
     //     }
 
     // }
-    print('test5');
+    printf ('test5');
 	Kokkos::parallel_for("comp_source", nface, KOKKOS_LAMBDA(int i) {
     	bvct[i] = 0.0;
     	bvct[i+nface] = 0.0;
