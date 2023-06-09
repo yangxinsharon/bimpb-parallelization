@@ -132,8 +132,8 @@ void readin(char fname[16], char density[16]) {
 	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
 	fp=fopen(fname_tp,"r");
 
-	if ((atmrad=(double *) malloc(natm*sizeof(double)))==NULL) {
-	// if ((atmrad=(double *) (Kokkos::kokkos_malloc(natm*sizeof(double))))==NULL) {
+	// if ((atmrad=(double *) malloc(natm*sizeof(double)))==NULL) {
+	if ((atmrad=(double *) (Kokkos::kokkos_malloc(natm*sizeof(double))))==NULL) {
 		printf("error in allcating atmrad");
 	}
 	atmpos=Make2DDoubleArray(3,natm,(char*) "atmpos");
