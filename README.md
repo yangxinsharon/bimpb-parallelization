@@ -76,12 +76,16 @@ $ srun -N 1 -G 1 -c 10 --mem=128G --time=12:00:00 --pty $SHELL
 $ module load dev
 $ module load gcc-10.3.0-gcc-9.4.0-d44jwah # GCC 10.3.0
 $ module load cuda-11.4.4-gcc-10.3.0-ctldo35 # CUDA 11.4.4
-$ module load kokkos-3.6.00-gcc-10.3.0-wh67tbt
+$ module load kokkos-3.7.00-gcc-10.3.0-b7ltc3f # can make new and run
+$ module load kokkos-3.6.00-gcc-10.3.0-wh67tbt # cannot run new but can run old
+
+$ kokkos-3.7.00-gcc-10.3.0-b7ltc3f
 $ mkdir build
 $ cd build
 $ cmake .. -DCMAKE_BUILD_TYPE=Release
 $ make
 $ export OMP_PROC_BIND=spread
+
 
 MSMS terminated normally
 Total Time real: 0.28 user: 0.18 sys: 0.00
@@ -103,7 +107,6 @@ $ spack load kokkos/wh67tbt
 Thread 1 "bimpb_kokkos.ex" received signal SIGSEGV, Segmentation fault.
 0x00007ffff5db0d9b in ?? () from /lib/x86_64-linux-gnu/libc.so.6
 (gdb) 
-
 
 error while loading shared libraries: libcuda.so.1: cannot open shared object file: No such file or directory
 
