@@ -363,14 +363,20 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 int *psolve(double *z, double *r) {
 	// printf("test1\n");
 	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
-	ipiv = (int *) calloc(2*maxparnode, sizeof(int));
-	rhs = (double *) calloc(2*maxparnode , sizeof(double));
-	leafarr = (int *) calloc(3*Nleaf, sizeof(int));
+	// ipiv = (int *) calloc(2*maxparnode, sizeof(int));
+	// rhs = (double *) calloc(2*maxparnode , sizeof(double));
+	// leafarr = (int *) calloc(3*Nleaf, sizeof(int));
+	ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
+	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
+	leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
     psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr);
 
-    free(ipiv);
-    free(rhs);
-    free(leafarr);
+    // free(ipiv);
+    // free(rhs);
+    // free(leafarr);
+  	Kokkos::kokkos_free(rhs);
+	Kokkos::kokkos_free(ipiv);
+  	Kokkos::kokkos_free(leafarr);    
 	for(int i=0;i<2*maxparnode;i++) {
 		free(matrixA[i]);
 	}	
