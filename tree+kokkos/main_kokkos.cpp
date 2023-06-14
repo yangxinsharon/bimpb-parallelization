@@ -102,10 +102,10 @@ int main(int argc, char *argv[]) {
 	// rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
 	// leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
 	
-	
-	ipiv = (int *) calloc(2*maxparnode , sizeof(double));
+
+	ipiv = (int *) calloc(2*maxparnode, sizeof(int));
 	rhs = (double *) calloc(2*maxparnode , sizeof(double));
-	leafarr = (int *) calloc(3*Nleaf, sizeof(double));
+	leafarr = (int *) calloc(3*Nleaf, sizeof(int));
 	
 
 	// matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
