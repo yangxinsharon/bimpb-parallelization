@@ -65,7 +65,8 @@ static int *s_order_arr = NULL;
 /* root node of tree */
 static TreeNode *s_tree_root = NULL;
 
-extern int Nleaf = 0;
+extern int Nleaf;
+// Nleaf = 0;
 static int Nleafc = 0;
 
 /* internal functions */
