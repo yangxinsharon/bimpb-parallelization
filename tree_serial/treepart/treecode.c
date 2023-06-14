@@ -382,7 +382,7 @@ int *psolve(double *z, double *r) {
 	printf("matrixA[10][10] is %f\n",matrixA[10][10]);
 	printf("ipiv is %f\n",ipiv[10]);
   	printf("rhs is %f\n", rhs[10]); 	
-	printf("leafarr is %f\n", leafarr[10]);
+	// printf("leafarr is %f\n", leafarr[10]);
 
   	while ( idx < nface ) {
     	leaflength(s_tree_root, idx);
