@@ -71,7 +71,7 @@ $ module load cuda-11.4.4-gcc-10.3.0-ctldo35  \
 $ srun -G 1 ./bimpb_cuda.exe 1ajj 1  \
 
 
-Kokkos (SuperPOD): can make but cannot run \
+Kokkos (SuperPOD): \
 $ srun -N 1 -G 1 -c 10 --mem=128G --time=12:00:00 --pty $SHELL
 $ module load dev
 $ module load gcc-10.3.0-gcc-9.4.0-d44jwah # GCC 10.3.0
@@ -79,14 +79,34 @@ $ module load cuda-11.4.4-gcc-10.3.0-ctldo35 # CUDA 11.4.4
 $ module load kokkos-3.7.00-gcc-10.3.0-b7ltc3f # can make new and run new, but cannot run old
 $ module load kokkos-3.6.00-gcc-10.3.0-wh67tbt # can make new and run old, but cannot run new
 
-$ kokkos-3.7.00-gcc-10.3.0-b7ltc3f
-$ mkdir build
-$ cd build
-$ cmake .. -DCMAKE_BUILD_TYPE=Release
-$ make
-$ export OMP_PROC_BIND=spread
 
 
+////////// 
+Kokkos (SuperPOD): can make new and can run new, cannot run old \
+$ module load spack gcc-10.3.0-gcc-9.4.0-d44jwah\
+$ . /hpc/mp/spack/share/spack/setup-env.sh\
+$ spack load kokkos/b7ltc3f # can make new and run new, cannot run old\
+error:{\
+$ ./bimpb_kokkos_old.exe 1ajj 1 \
+./bimpb_kokkos_old.exe: error while loading shared libraries: libcudart.so.11.0: cannot open shared object file: No such file or directory\
+}\
+
+$ spack load kokkos/wh67tbt # can make new, cannot run both \
+error: { \
+$ ./bimpb_kokkos.exe 1ajj 1 \
+Kokkos::OpenMP::initialize WARNING: OMP_PROC_BIND environment variable  not set \
+  In general, for best performance with OpenMP 4.0 or better set OMP_PROC_BIND=spread and OMP_PLACES=threads \
+  For best performance with OpenMP 3.1 set OMP_PROC_BIND=true \
+  For unit testing set OMP_PROC_BIND=false \
+3 ./bimpb_kokkos.exe 1ajj 1  \
+count is:519 \
+Segmentation fault (core dumped) \
+} \
+
+
+
+<!-- 
+#
 MSMS terminated normally
 Total Time real: 0.28 user: 0.18 sys: 0.00
 ../test_proteins/1a63.vert
@@ -97,13 +117,7 @@ finish reading face file...
 finish reading position file...
 Segmentation fault (core dumped)
 
-
-////////// 
-Kokkos (SuperPOD): can make but cannot run \
-$ module load spack gcc-10.3.0-gcc-9.4.0-d44jwah\
-$ . /hpc/mp/spack/share/spack/setup-env.sh\
-$ spack load kokkos/wh67tbt
-
+#
 Thread 1 "bimpb_kokkos.ex" received signal SIGSEGV, Segmentation fault.
 0x00007ffff5db0d9b in ?? () from /lib/x86_64-linux-gnu/libc.so.6
 (gdb) 
@@ -118,7 +132,6 @@ Kokkos::OpenMP::initialize WARNING: OMP_PROC_BIND environment variable not set
 3 ./bimpb_kokkos.exe 1ajj 1 
 count is:519
 Segmentation fault (core dumped)
-
 
 
 ///////////\
@@ -138,3 +151,4 @@ $ spack load kokkos/75xmg2y
 
 
 
+ -->
