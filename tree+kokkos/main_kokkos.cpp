@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cmath>
-#include "gl_constants.h"
+// #include "gl_constants.h"
 
 /* kokkos */
 #include <Kokkos_Core.hpp>
@@ -168,10 +168,10 @@ int main(int argc, char *argv[]) {
 	}
 	free(tr_q2D);
 
-	for(i=0;i<2*maxparnode;i++) {
-		free(matrixA[i]);
-	}	
-	free(matrixA);
+	// for(i=0;i<2*maxparnode;i++) {
+	// 	free(matrixA[i]);
+	// }	
+	// free(matrixA);
 
 	Kokkos::kokkos_free(tr_xyz);
 	Kokkos::kokkos_free(tr_q);
