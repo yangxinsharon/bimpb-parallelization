@@ -71,9 +71,9 @@ extern int *leafarr;
 
 
 /* internal functions */
-// int *psolve(double *z, double *r);
-// void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-// 	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr);
+int *psolve(double *z, double *r);
+void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
+	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr);
 int Setup(double xyz_limits[6]);
 int Partition(double *a, double *b, double *c, int *indarr,
 	int ibeg, int iend, double val);
