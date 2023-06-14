@@ -360,30 +360,30 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 }
 
 
-// int *psolve(double *z, double *r) {
-// 	// printf("test1\n");
-// 	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
-// 	ipiv = (int *) calloc(2*maxparnode, sizeof(int));
-// 	rhs = (double *) calloc(2*maxparnode , sizeof(double));
-// 	leafarr = (int *) calloc(3*Nleaf, sizeof(int));
-//     psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr);
+int *psolve(double *z, double *r) {
+	// printf("test1\n");
+	// matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
+	// ipiv = (int *) calloc(2*maxparnode, sizeof(int));
+	// rhs = (double *) calloc(2*maxparnode , sizeof(double));
+	// leafarr = (int *) calloc(3*Nleaf, sizeof(int));
+    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr);
 
-//     free(ipiv);
-//     free(rhs);
-//     free(leafarr);
-// 	for(int i=0;i<2*maxparnode;i++) {
-// 		free(matrixA[i]);
-// 	}	
-// 	free(matrixA);
+    // free(ipiv);
+    // free(rhs);
+    // free(leafarr);
+	// for(int i=0;i<2*maxparnode;i++) {
+	// 	free(matrixA[i]);
+	// }	
+	// free(matrixA);
 
-//     return NULL;
-// }
+    return NULL;
+}
 
 /**********************************************************/
-// void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-// 	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr) {
+void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
+	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr) {
 /* r as original while z as scaled */
-int *psolve(double *z, double *r) {
+// int *psolve(double *z, double *r) {
   	int i, j, idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
   	int *ipiv;
   	int inc;
