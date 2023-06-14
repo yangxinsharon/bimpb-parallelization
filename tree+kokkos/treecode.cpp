@@ -15,7 +15,7 @@
 // #include "gl_variables.h"
 // #include "env_kokkos.h"
 #include <Kokkos_Core.hpp>
-#include <pp_timer.h>
+#include "pp_timer.h"
 
 extern int nface, nspt, natm, nchr;
 extern int **extr_v;						//[3][nspt]
