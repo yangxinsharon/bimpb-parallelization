@@ -639,6 +639,7 @@ int *psolve(double *z, double *r) {
   	printf("rhs is %f\n", rhs[10]); 	
 	// printf("leafarr is %f\n", leafarr[10]);
 
+	leafarr = (int *) calloc(3*Nleaf, sizeof(int));
   	while ( idx < nface ) {
     	leaflength(s_tree_root, idx);
 
@@ -646,10 +647,20 @@ int *psolve(double *z, double *r) {
     	nrow2 = nrow*2;
     	ibeg  = idx;
     	iend  = idx + nrow - 1;
-    	Nleafc += 1;
+	   	leafarr[0+3*Nleafc] = ibeg;
+	    leafarr[1+3*Nleafc] = nrow;
+	    leafarr[2+3*Nleafc] = iend;  
+	    Nleafc += 1;
+	    idx += nrow;
+	}
     	// printf("idx ibeg iend is %d, %d, %d\n",idx,ibeg,iend);
 
+	for (int k =0; k<Nleafc; k++){
 
+		ibeg = leafarr[0+3*arridx];
+		nrow = leafarr[1+3*arridx];
+		iend = leafarr[2+3*arridx];
+		
     	for ( i = ibeg; i <= iend; i++ ) {
     		tp[0] = tr_xyz2D[0][i];
 			tp[1] = tr_xyz2D[1][i];

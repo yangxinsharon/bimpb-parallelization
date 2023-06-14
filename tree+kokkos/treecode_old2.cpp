@@ -448,13 +448,13 @@ int *psolve(double *z, double *r) {
 
 	 
 
-    	leaflength(s_tree_root, idx);
+    	// leaflength(s_tree_root, idx);
 
-    	nrow  = Nrow;
-    	nrow2 = nrow*2;
-    	ibeg  = idx;
-    	iend  = idx + nrow - 1;
-    	Nleafc += 1;
+    	// nrow  = Nrow;
+    	// nrow2 = nrow*2;
+    	// ibeg  = idx;
+    	// iend  = idx + nrow - 1;
+    	// Nleafc += 1;
     	// printf("idx ibeg iend is %d, %d, %d\n",idx,ibeg,iend);
 
 
