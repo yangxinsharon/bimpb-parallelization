@@ -15,6 +15,7 @@
 // #include "gl_variables.h"
 // #include "env_kokkos.h"
 #include <Kokkos_Core.hpp>
+#include <pp_timer.h>
 
 extern int nface, nspt, natm, nchr;
 extern int **extr_v;						//[3][nspt]
@@ -411,7 +412,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	// ipiv = (int *) calloc(2*maxparnode, sizeof(int));
 	// rhs = (double *) calloc(2*maxparnode , sizeof(double));
 	// leafarr = (int *) calloc(3*Nleaf, sizeof(int));
-	
+
   	// printf("nface is %d\n", nface);
   	// printf("tr_xyz is %f\n", tr_xyz[10]);
   	// printf("tr_q is %f\n", tr_q[10]);
@@ -448,7 +449,9 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 
   	// while ( idx < nface ) {
-	for (int k=0; k<arridx; k++){
+	// for (int k=0; k<arridx; k++){
+	timer_start((char*) "psolve time");
+	Kokkos::parallel_for("psolvemul", arridx, KOKKOS_LAMBDA(int k) {
 		ibeg = leafarr[0+3*k];
 		nrow = leafarr[1+3*k];
 		iend = leafarr[2+3*k];
@@ -583,7 +586,11 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
     	idx += nrow;
 
-  	}
+  	// }
+    });
+	timer_end();
+
+	Kokkos::fence();
   	printf("Nleafc is %d\n",Nleafc);
   	// free_matrix(matrixA);
   	// free_vector(rhs);
@@ -605,6 +612,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	// return 0;
 
 }
+
 
 
 
