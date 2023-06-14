@@ -660,7 +660,8 @@ int *psolve(double *z, double *r) {
 		ibeg = leafarr[0+3*k];
 		nrow = leafarr[1+3*k];
 		iend = leafarr[2+3*k];
-
+		nrow2 = nrow*2;
+		
     	for ( i = ibeg; i <= iend; i++ ) {
     		tp[0] = tr_xyz2D[0][i];
 			tp[1] = tr_xyz2D[1][i];
