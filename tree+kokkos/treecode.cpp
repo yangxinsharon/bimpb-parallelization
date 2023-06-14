@@ -234,7 +234,7 @@ int TreecodeFinalization()
     RemoveNode(s_tree_root);
     free(s_tree_root);
 
-    free_vector(s_order_arr);
+    // free_vector(s_order_arr);
 /*****************************************/
 
     printf("\nTABIPB tree structure has been deallocated.\n\n");
