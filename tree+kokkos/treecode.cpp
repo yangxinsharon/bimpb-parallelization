@@ -370,7 +370,7 @@ int *psolve(double *z, double *r) {
     free(ipiv);
     free(rhs);
     free(leafarr);
-	for(i=0;i<2*maxparnode;i++) {
+	for(int i=0;i<2*maxparnode;i++) {
 		free(matrixA[i]);
 	}	
 	free(matrixA);
