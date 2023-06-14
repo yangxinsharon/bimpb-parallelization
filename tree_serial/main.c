@@ -73,7 +73,6 @@ int main(int argc, char *argv[]) {
 
 
 	TreecodeInitialization();
-	// comp_source_wrapper(); //wraps the solvation energy computation
 
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 
