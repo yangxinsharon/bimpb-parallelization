@@ -400,8 +400,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
   	pre1 = 0.5*(1.0+eps);
   	pre2 = 0.5*(1.0+1.0/eps);
-  	printf("test2\n");
-  	printf("pre1 is %f\n", pre1);
+  	// printf("test2\n");
+  	// printf("pre1 is %f\n", pre1);
 
 	while ( idx < nface ) {
 	    leaflength(s_tree_root, idx);
