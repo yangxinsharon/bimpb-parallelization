@@ -361,7 +361,7 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 
 
 int *psolve(double *z, double *r) {
-	printf("test1\n");
+	// printf("test1\n");
 	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
 	ipiv = (int *) calloc(2*maxparnode, sizeof(int));
 	rhs = (double *) calloc(2*maxparnode , sizeof(double));
@@ -401,7 +401,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	pre1 = 0.5*(1.0+eps);
   	pre2 = 0.5*(1.0+1.0/eps);
   	// printf("test2\n");
-  	// printf("pre1 is %f\n", pre1);
+  	printf("tr_xyz is %f\n", tr_xyz[10]);
 
 	while ( idx < nface ) {
 	    leaflength(s_tree_root, idx);
@@ -418,7 +418,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	    leafarr[1+3*arridx] = nrow;
 	    leafarr[2+3*arridx] = iend;    
 	    // printf("ibeg iend nrow: %d, %d, %d\n", leafarr[0][arridx], leafarr[1][arridx], leafarr[2][arridx] );
-		printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
+		// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
 		arridx += 1;
 		// Nleafc += 1;
 		idx += nrow;
