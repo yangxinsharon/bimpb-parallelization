@@ -793,7 +793,7 @@ int *psolve(double *z, double *r) {
 
   	free(rhs);
   	free(ipiv);
-
+  	free(leafarr);
   	// for ( i = 0; i < nface; i++) {
   	//   z[i] = r[i]/pre1;
   	//   z[i+nface] = r[i+nface]/pre2;
