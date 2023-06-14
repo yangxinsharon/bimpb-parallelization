@@ -10,11 +10,10 @@
 
 
 #include "utilities.h"
-#include "array.h"
 #include "tree_node_struct.h"
 #include "gl_constants.h"
-#include "env_kokkos.h"
-#include <Kokkos_Core.hpp>
+// #include "env_kokkos.h"
+// #include <Kokkos_Core.hpp>
 
 extern int nface, nspt, natm, nchr;
 extern int **extr_v;						//[3][nspt]
@@ -28,10 +27,6 @@ extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr];
 extern double *work, *h;
 
 extern double **tr_xyz2D, **tr_q2D;
-extern double **matrixA;
-extern int *ipiv;
-extern double *rhs;
-extern int *leafarr;
 
 // extern double pi;
 // extern double one_over_4pi;
@@ -59,15 +54,20 @@ static int s_max_level;
 static double s_target_position[3];
 static double s_target_normal[3];
 
-
 /* global variables for reordering arrays */
 static int *s_order_arr = NULL;
+
 /* root node of tree */
 static TreeNode *s_tree_root = NULL;
 
 extern int Nleaf;
-// Nleaf = 0;
 static int Nleafc = 0;
+
+extern double **matrixA;
+extern int *ipiv;
+extern double *rhs;
+extern int *leafarr;
+
 
 /* internal functions */
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
