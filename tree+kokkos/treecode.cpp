@@ -404,6 +404,7 @@ int *psolve(double *z, double *r) {
 	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
 	ipiv = (int *) calloc(2*maxparnode, sizeof(int));
 	rhs = (double *) calloc(2*maxparnode , sizeof(double));
+	leafarr = (int *) calloc(3*Nleaf, sizeof(int));
   	printf("nface is %d\n", nface);
   	printf("tr_xyz is %f\n", tr_xyz[10]);
   	printf("tr_q is %f\n", tr_q[10]);
