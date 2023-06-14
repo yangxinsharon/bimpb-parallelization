@@ -385,10 +385,10 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 /* r as original while z as scaled */
 // int *psolve(double *z, double *r) {
   	int i, j, idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
-  	int *ipiv;
+  	// int *ipiv;
   	int inc;
-  	double **matrixA; 
-  	double *rhs;
+  	// double **matrixA; 
+  	// double *rhs;
   	double L1, L2, L3, L4, area;
   	double tp[3], tq[3], sp[3], sq[3];
   	double r_s[3], rs, irs, sumrs;
