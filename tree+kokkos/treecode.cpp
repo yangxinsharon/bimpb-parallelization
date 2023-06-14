@@ -411,16 +411,17 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	// ipiv = (int *) calloc(2*maxparnode, sizeof(int));
 	// rhs = (double *) calloc(2*maxparnode , sizeof(double));
 	// leafarr = (int *) calloc(3*Nleaf, sizeof(int));
-  	printf("nface is %d\n", nface);
-  	printf("tr_xyz is %f\n", tr_xyz[10]);
-  	printf("tr_q is %f\n", tr_q[10]);
-  	printf("tr_area is %f\n", tr_area[10]);
-  	printf("z is %f\n", z[10]); 	
-	printf("r is %f\n", r[10]); 
-	printf("matrixA[10][10] is %f\n",matrixA[10][10]);
-	printf("ipiv is %f\n",ipiv[10]);
-  	printf("rhs is %f\n", rhs[10]); 	
-	printf("leafarr is %f\n", leafarr[10]); 
+	
+  	// printf("nface is %d\n", nface);
+  	// printf("tr_xyz is %f\n", tr_xyz[10]);
+  	// printf("tr_q is %f\n", tr_q[10]);
+  	// printf("tr_area is %f\n", tr_area[10]);
+  	// printf("z is %f\n", z[10]); 	
+	// printf("r is %f\n", r[10]); 
+	// printf("matrixA[10][10] is %f\n",matrixA[10][10]);
+	// printf("ipiv is %f\n",ipiv[10]);
+  	// printf("rhs is %f\n", rhs[10]); 	
+	// printf("leafarr is %f\n", leafarr[10]); 
 
 	while ( idx < nface ) {
 	    leaflength(s_tree_root, idx);
