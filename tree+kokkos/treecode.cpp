@@ -361,7 +361,20 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 
 int *psolve(double *z, double *r) {
 	printf("test1");
+	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
+	ipiv = (int *) calloc(2*maxparnode, sizeof(int));
+	rhs = (double *) calloc(2*maxparnode , sizeof(double));
+	leafarr = (int *) calloc(3*Nleaf, sizeof(int));
     psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr);
+
+    free(ipiv);
+    free(rhs);
+    free(leafarr);
+	for(i=0;i<2*maxparnode;i++) {
+		free(matrixA[i]);
+	}	
+	free(matrixA);
+
     return NULL;
 }
 
