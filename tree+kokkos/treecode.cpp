@@ -11,8 +11,8 @@
 
 #include "utilities.h"
 #include "tree_node_struct.h"
-// #include "gl_constants.h"
-// #include "gl_variables.h"
+#include "gl_constants.h"
+#include "gl_variables.h"
 // #include "env_kokkos.h"
 // #include <Kokkos_Core.hpp>
 
