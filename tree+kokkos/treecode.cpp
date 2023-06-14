@@ -657,10 +657,10 @@ int *psolve(double *z, double *r) {
 
 	for (int k =0; k<Nleafc; k++){
 
-		ibeg = leafarr[0+3*arridx];
-		nrow = leafarr[1+3*arridx];
-		iend = leafarr[2+3*arridx];
-		
+		ibeg = leafarr[0+3*k];
+		nrow = leafarr[1+3*k];
+		iend = leafarr[2+3*k];
+
     	for ( i = ibeg; i <= iend; i++ ) {
     		tp[0] = tr_xyz2D[0][i];
 			tp[1] = tr_xyz2D[1][i];
