@@ -374,7 +374,7 @@ int *psolve(double *z, double *r) {
 	ipiv=(int *) calloc(2*maxparnode, sizeof(int));
 	rhs=(double *) calloc(2*maxparnode, sizeof(double));
   	printf("maxparnode is %d\n", maxparnode);
-	printf("tr_xyz is %f\n", tr_xyz[10]);
+	// printf("tr_xyz is %f\n", tr_xyz[10]);
 
   	while ( idx < nface ) {
     	leaflength(s_tree_root, idx);
