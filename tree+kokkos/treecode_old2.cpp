@@ -442,14 +442,13 @@ int *psolve(double *z, double *r) {
 
   	// while ( idx < nface ) {
 	for (int k=0; k<arridx; k++){
-		ibeg = leafarr[0+3*arridx];
-		nrow = leafarr[1+3*arridx];
-		iend = leafarr[2+3*arridx];
-
+		ibeg = leafarr[0+3*k];
+		nrow = leafarr[1+3*k];
+		iend = leafarr[2+3*k];
+		nrow2 = nrow*2;
 	 
 
     	// leaflength(s_tree_root, idx);
-
     	// nrow  = Nrow;
     	// nrow2 = nrow*2;
     	// ibeg  = idx;

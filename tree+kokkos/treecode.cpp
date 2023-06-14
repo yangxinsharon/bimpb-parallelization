@@ -618,6 +618,7 @@ int *psolve(double *z, double *r) {
   	double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
   	double G10, G20, G1, G2, G3, G4;
   	double pre1, pre2;
+  	int arridx = 0;
 	
   	pre1 = 0.5*(1.0+eps);
   	pre2 = 0.5*(1.0+1.0/eps);
@@ -647,21 +648,22 @@ int *psolve(double *z, double *r) {
     	nrow2 = nrow*2;
     	ibeg  = idx;
     	iend  = idx + nrow - 1;
-	   	leafarr[0+3*Nleafc] = ibeg;
-	    leafarr[1+3*Nleafc] = nrow;
-	    leafarr[2+3*Nleafc] = iend;  
+	   	leafarr[0+3*arridx] = ibeg;
+	    leafarr[1+3*arridx] = nrow;
+	    leafarr[2+3*arridx] = iend;  
+	    arridx +=1;
 	    Nleafc += 1;
 	    idx += nrow;
 	}
     	// printf("idx ibeg iend is %d, %d, %d\n",idx,ibeg,iend);
 
-	for (int k =0; k<Nleafc; k++){
+	for (int k =0; k<arridx; k++){
 
 		ibeg = leafarr[0+3*k];
 		nrow = leafarr[1+3*k];
 		iend = leafarr[2+3*k];
 		nrow2 = nrow*2;
-		
+
     	for ( i = ibeg; i <= iend; i++ ) {
     		tp[0] = tr_xyz2D[0][i];
 			tp[1] = tr_xyz2D[1][i];
