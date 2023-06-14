@@ -12,21 +12,22 @@
 #include "utilities.h"
 #include "tree_node_struct.h"
 #include "gl_constants.h"
+#include "gl_variables"
 // #include "env_kokkos.h"
 // #include <Kokkos_Core.hpp>
 
-extern int nface, nspt, natm, nchr;
-extern int **extr_v;						//[3][nspt]
-extern int **extr_f;						//[2][nface]
-extern int **face, **face_copy;				//[3][nface]
-extern double **vert, **snrm;				//[3][nspt];
-extern double *tr_xyz, *tr_q;				//[3][nface]
-extern double *tr_area, *bvct, *xvct;		//[nface];
-extern double **atmpos;						//[3][natm/nchr];
-extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr]; 
-extern double *work, *h;
+// extern int nface, nspt, natm, nchr;
+// extern int **extr_v;						//[3][nspt]
+// extern int **extr_f;						//[2][nface]
+// extern int **face, **face_copy;				//[3][nface]
+// extern double **vert, **snrm;				//[3][nspt];
+// extern double *tr_xyz, *tr_q;				//[3][nface]
+// extern double *tr_area, *bvct, *xvct;		//[nface];
+// extern double **atmpos;						//[3][natm/nchr];
+// extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr]; 
+// extern double *work, *h;
 
-extern double **tr_xyz2D, **tr_q2D;
+// extern double **tr_xyz2D, **tr_q2D;
 
 // extern double pi;
 // extern double one_over_4pi;
@@ -60,19 +61,19 @@ static int *s_order_arr = NULL;
 /* root node of tree */
 static TreeNode *s_tree_root = NULL;
 
-extern int Nleaf;
 static int Nleafc = 0;
 
-extern double **matrixA;
-extern int *ipiv;
-extern double *rhs;
-extern int *leafarr;
+// extern int Nleaf;
+// extern double **matrixA;
+// extern int *ipiv;
+// extern double *rhs;
+// extern int *leafarr;
 
 
 /* internal functions */
+int *psolve(double *z, double *r);
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
 	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr);
-int *psolve(double *z, double *r);
 int Setup(double xyz_limits[6]);
 int Partition(double *a, double *b, double *c, int *indarr,
 	int ibeg, int iend, double val);
@@ -360,7 +361,7 @@ void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 
 
 int *psolve(double *z, double *r) {
-	printf("test1");
+	printf("test1\n");
 	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
 	ipiv = (int *) calloc(2*maxparnode, sizeof(int));
 	rhs = (double *) calloc(2*maxparnode , sizeof(double));
@@ -399,6 +400,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
   	pre1 = 0.5*(1.0+eps);
   	pre2 = 0.5*(1.0+1.0/eps);
+  	printf("test2\n");
+  	printf("pre1 is %f\n", pre1);
 
 	while ( idx < nface ) {
 	    leaflength(s_tree_root, idx);
