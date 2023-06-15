@@ -315,7 +315,7 @@ int *psolve(double *z, double *r) {
 		idx += nrow;
 	}
 	int nrow2 = 2*nrow;
-	print()
+	// print()
 
 	xtemp = (double *) Kokkos::kokkos_malloc(nrow2* sizeof(double));
     psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr, xtemp);
@@ -595,7 +595,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	   		}
 	   		flag = flag + 1;
 	  	}
-	  	if (flag = nrow2){
+	  	if (flag == nrow2-1){
 			inc = 1;
 	  	}
 	  	
@@ -613,7 +613,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	  	// xtemp = (double *) Kokkos::kokkos_malloc(nrow2* sizeof(double));
 	  	int iii, kkk ;
 	  	for (iii = 0; iii < nrow2; iii++) {
-	   		xtemp[i] = rhs[ipiv[iii]];
+	   		xtemp[iii] = rhs[ipiv[iii]];
 
 	   		for (kkk = 0; kkk < iii; kkk++){
 	      		xtemp[iii] -= matrixA[iii][kkk] * xtemp[kkk];
