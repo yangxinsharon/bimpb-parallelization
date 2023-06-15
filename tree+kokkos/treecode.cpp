@@ -329,13 +329,13 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 // int *psolve(double *z, double *r) {
   	int i, j, k;
   	int nrow, nrow2, ibeg = 0, iend = 0;
-  	int inc;
-  	double L1, L2, L3, L4, area;
-  	double tp[3], tq[3], sp[3], sq[3];
-  	double r_s[3], rs, irs, sumrs;
-  	double G0, kappa_rs, exp_kappa_rs, Gk;
-  	double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
-  	double G10, G20, G1, G2, G3, G4;
+  	// int inc;
+  	// double L1, L2, L3, L4, area;
+  	// double tp[3], tq[3], sp[3], sq[3];
+  	// double r_s[3], rs, irs, sumrs;
+  	// double G0, kappa_rs, exp_kappa_rs, Gk;
+  	// double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
+  	// double G10, G20, G1, G2, G3, G4;
 
 	double pre1, pre2;
   	pre1 = 0.5*(1.0+eps);
@@ -353,6 +353,14 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 	 	Kokkos::parallel_for("psolvemul2", dev_range_policy(ibeg,iend+1), KOKKOS_LAMBDA(int i){
     	// for ( i = ibeg; i <= iend; i++ ) {
+		  	int inc;
+		  	double L1, L2, L3, L4, area;
+		  	double tp[3], tq[3], sp[3], sq[3];
+		  	double r_s[3], rs, irs, sumrs;
+		  	double G0, kappa_rs, exp_kappa_rs, Gk;
+		  	double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
+		  	double G10, G20, G1, G2, G3, G4;
+    		
     		// tp[0] = tr_xyz2D[0][i];
 			// tp[1] = tr_xyz2D[1][i];
 			// tp[2] = tr_xyz2D[2][i];
