@@ -30,10 +30,10 @@ double MaxVal(double *variables, int number);
 
 double TriangleArea(double v[3][3]);
 
-KOKKOS_FUNCTION
+// KOKKOS_FUNCTION
 int lu_decomp( double **A, int N, int *ipiv );
 
-KOKKOS_FUNCTION
+// KOKKOS_FUNCTION
 void lu_solve( double **matrixA, int N, int *ipiv, double *rhs );
 
 #endif /* H_UTILITY_ROUTINES_H */

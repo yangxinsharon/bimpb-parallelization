@@ -292,6 +292,30 @@ int *psolve(double *z, double *r) {
 	ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
 	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
 	leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
+
+	int idx, nrow, ibeg, iend, arridx;
+	while ( idx < nface ) {
+	    leaflength(s_tree_root, idx);
+	    nrow  = Nrow;
+	    ibeg  = idx;
+	    iend  = idx + nrow - 1;
+	    // leafarr[0][arridx] = ibeg;
+	    // leafarr[1][arridx] = nrow;
+	    // leafarr[2][arridx] = iend;
+	    // leafarr(0,arridx) = ibeg;
+	    // leafarr(1,arridx) = nrow;
+	    // leafarr(2,arridx) = iend;	
+	   	leafarr[0+3*arridx] = ibeg;
+	    leafarr[1+3*arridx] = nrow;
+	    leafarr[2+3*arridx] = iend;    
+	    // printf("ibeg iend nrow: %d, %d, %d\n", leafarr[0][arridx], leafarr[1][arridx], leafarr[2][arridx] );
+		// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
+		arridx += 1;
+		// Nleafc += 1;
+		idx += nrow;
+	}
+	int nrow2 = 2*nrow;
+
 	xtemp = (double *) Kokkos::kokkos_malloc(nrow2* sizeof(double));
     psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr, xtemp);
 
@@ -349,26 +373,26 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	// printf("rhs is %f\n", rhs[10]); 	
 	// printf("leafarr is %f\n", leafarr[10]); 
 
-	while ( idx < nface ) {
-	    leaflength(s_tree_root, idx);
-	    nrow  = Nrow;
-	    ibeg  = idx;
-	    iend  = idx + nrow - 1;
-	    // leafarr[0][arridx] = ibeg;
-	    // leafarr[1][arridx] = nrow;
-	    // leafarr[2][arridx] = iend;
-	    // leafarr(0,arridx) = ibeg;
-	    // leafarr(1,arridx) = nrow;
-	    // leafarr(2,arridx) = iend;	
-	   	leafarr[0+3*arridx] = ibeg;
-	    leafarr[1+3*arridx] = nrow;
-	    leafarr[2+3*arridx] = iend;    
-	    // printf("ibeg iend nrow: %d, %d, %d\n", leafarr[0][arridx], leafarr[1][arridx], leafarr[2][arridx] );
-		// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
-		arridx += 1;
-		// Nleafc += 1;
-		idx += nrow;
-	}
+	// while ( idx < nface ) {
+	//     leaflength(s_tree_root, idx);
+	//     nrow  = Nrow;
+	//     ibeg  = idx;
+	//     iend  = idx + nrow - 1;
+	//     // leafarr[0][arridx] = ibeg;
+	//     // leafarr[1][arridx] = nrow;
+	//     // leafarr[2][arridx] = iend;
+	//     // leafarr(0,arridx) = ibeg;
+	//     // leafarr(1,arridx) = nrow;
+	//     // leafarr(2,arridx) = iend;	
+	//    	leafarr[0+3*arridx] = ibeg;
+	//     leafarr[1+3*arridx] = nrow;
+	//     leafarr[2+3*arridx] = iend;    
+	//     // printf("ibeg iend nrow: %d, %d, %d\n", leafarr[0][arridx], leafarr[1][arridx], leafarr[2][arridx] );
+	// 	// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
+	// 	arridx += 1;
+	// 	// Nleafc += 1;
+	// 	idx += nrow;
+	// }
 
 
 
