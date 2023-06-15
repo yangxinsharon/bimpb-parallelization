@@ -318,7 +318,7 @@ int *psolve(double *z, double *r) {
 	nrow2 = 2*nrow;
 
 	
-	printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
+	// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
 	
 	xtemp = (double *) Kokkos::kokkos_malloc(nrow2* sizeof(double));
     psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr, xtemp);
