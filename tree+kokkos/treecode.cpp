@@ -69,7 +69,7 @@ extern double **matrixA;
 extern int *ipiv;
 extern double *rhs;
 extern int *leafarr;
-
+extern double *xtemp;
 
 /* internal functions */
 int *psolve(double *z, double *r);
