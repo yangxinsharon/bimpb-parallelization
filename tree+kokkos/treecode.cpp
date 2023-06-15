@@ -496,54 +496,54 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		rhs[i+nrow] = r[i+ibeg+nface];
     	}
 
-    	inc = lu_decomp( matrixA, nrow2, ipiv );
+    	// inc = lu_decomp( matrixA, nrow2, ipiv );
     	// lu_solve( matrixA, nrow2, ipiv, rhs );
 
 /////////inc = lu_decomp( matrixA, nrow2, ipiv );/////////////////
 	// int lu_decomp( double **A, int N, int *ipiv ) {
-		// int ii, jj, kk, imax;
-		// double maxA, *ptr, absA, Tol = 1.0e-14;
-		// int flag = 0; //yang
+		int ii, jj, kk, imax;
+		double maxA, *ptr, absA, Tol = 1.0e-14;
+		int flag = 0; //yang
 
-	  	// for ( ii = 0; ii <= nrow2; ii++ ){
-	   	// 	ipiv[ii] = ii; // record pivoting number
-	  	// }
-	  	// for ( ii = 0; ii < nrow2; ii++ ) {
-	   	// 	maxA = 0.0;
-	   	// 	imax = ii;
-	   	// 	for (kk = ii; kk < nrow2; kk++){
-	   	//   		if ((absA = fabs(matrixA[kk][ii])) > maxA) {
-	   	//    			maxA = absA;
-	   	//     		imax = kk;
-	   	// 		}
-	   	//   	}
-	   	// 	if (maxA < Tol) {
-	   	// 		inc = 0;
-	   	// 		break;
-	   	// 	} //failure, matrix is degenerate	
-	   	// 	if (imax != ii) {
-		//    	  	//pivoting P
-		//    	  	jj = ipiv[ii];
-		//    	  	ipiv[ii] = ipiv[imax];
-		//    	  	ipiv[imax] = jj;	
-		//    	  	//pivoting rows of A
-		//    	  	ptr = matrixA[ii];
-		//    	  	matrixA[ii] = matrixA[imax];
-		//    	  	matrixA[imax] = ptr;	
-		//    	  	//counting pivots starting from N (for determinant)
-		//    	  	ipiv[nrow2]++;
-		//    	}	
-	   	// 	for (jj = ii + 1; jj < nrow2; jj++) {
-	   	//   		matrixA[jj][ii] /= matrixA[ii][ii];	
-	   	//   		for (kk = ii + 1; kk < nrow2; kk++){
-	   	//   	 		matrixA[jj][kk] -= matrixA[jj][ii] * matrixA[ii][kk];
-	   	//   		}
-	   	// 	}
-	   	// 	flag = flag + 1;
-	  	// }
-	  	// if (flag = nrow2){
-		// 	inc = 1;
-	  	// }
+	  	for ( ii = 0; ii <= nrow2; ii++ ){
+	   		ipiv[ii] = ii; // record pivoting number
+	  	}
+	  	for ( ii = 0; ii < nrow2; ii++ ) {
+	   		maxA = 0.0;
+	   		imax = ii;
+	   		for (kk = ii; kk < nrow2; kk++){
+	   	  		if ((absA = fabs(matrixA[kk][ii])) > maxA) {
+	   	   			maxA = absA;
+	   	    		imax = kk;
+	   			}
+	   	  	}
+	   		if (maxA < Tol) {
+	   			inc = 0;
+	   			break;
+	   		} //failure, matrix is degenerate	
+	   		if (imax != ii) {
+		   	  	//pivoting P
+		   	  	jj = ipiv[ii];
+		   	  	ipiv[ii] = ipiv[imax];
+		   	  	ipiv[imax] = jj;	
+		   	  	//pivoting rows of A
+		   	  	ptr = matrixA[ii];
+		   	  	matrixA[ii] = matrixA[imax];
+		   	  	matrixA[imax] = ptr;	
+		   	  	//counting pivots starting from N (for determinant)
+		   	  	ipiv[nrow2]++;
+		   	}	
+	   		for (jj = ii + 1; jj < nrow2; jj++) {
+	   	  		matrixA[jj][ii] /= matrixA[ii][ii];	
+	   	  		for (kk = ii + 1; kk < nrow2; kk++){
+	   	  	 		matrixA[jj][kk] -= matrixA[jj][ii] * matrixA[ii][kk];
+	   	  		}
+	   		}
+	   		flag = flag + 1;
+	  	}
+	  	if (flag == nrow2-1){
+			inc = 1;
+	  	}
 	  	
 	//     return 1;
 	// }
