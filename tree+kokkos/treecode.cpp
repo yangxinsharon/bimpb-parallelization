@@ -295,7 +295,7 @@ int *psolve(double *z, double *r) {
 	leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
     
 	int idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
-	int arridx = 0;
+	arridx = 0;
 	while ( idx < nface ) {
 	    leaflength(s_tree_root, idx);
 	    nrow  = Nrow;
