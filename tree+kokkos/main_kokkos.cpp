@@ -32,6 +32,7 @@ extern int *ipiv;
 extern double *rhs;
 extern double **matrixA;
 extern int *leafarr;
+extern double *xtemp;
 extern int Nleaf;
 
 #ifdef __cplusplus
