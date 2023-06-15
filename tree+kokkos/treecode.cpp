@@ -351,7 +351,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		iend = leafarr[2+3*k];
 		nrow2 = nrow*2;
 
-	 	Kokkos::parallel_for("psolvemul2", (iend+1-ibeg), KOKKOS_LAMBDA(int i){
+	 	Kokkos::parallel_for("psolvemul2", 10, KOKKOS_LAMBDA(int i){
     	// for ( i = ibeg; i <= iend; i++ ) {
 		  	int j,inc;
 		  	int nrow2 = nrow*2;
