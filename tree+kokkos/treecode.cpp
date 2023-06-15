@@ -606,7 +606,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	  	}
 	  	// free_vector(xtemp);
 	  	// free(xtemp);
-	  	kokkos_free(xtemp);
+	  	Kokkos_free(xtemp);
 //////////////////////////////////////////////////////////////
 
 
