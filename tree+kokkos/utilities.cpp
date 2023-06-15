@@ -94,7 +94,7 @@ double TriangleArea(double v[3][3])
 /**********************************************************/
 /* lapack provide lu decomposition, however, something    */
 /* is wrong with cmake */
-KOKKOS_FUNCTION
+// KOKKOS_FUNCTION
 int lu_decomp( double **A, int N, int *ipiv ) {
 
     int i, j, k, imax;
@@ -142,7 +142,7 @@ int lu_decomp( double **A, int N, int *ipiv ) {
 
 
 /**********************************************************/
-KOKKOS_FUNCTION
+// KOKKOS_FUNCTION
 void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
     /* b will contain the solution */
     double *xtemp;

@@ -522,76 +522,90 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		rhs[i+nrow] = r[i+ibeg+nface];
     	}
 
-    	inc = lu_decomp( matrixA, nrow2, ipiv );
-    	lu_solve( matrixA, nrow2, ipiv, rhs );
+    	// inc = lu_decomp( matrixA, nrow2, ipiv );
+    	// lu_solve( matrixA, nrow2, ipiv, rhs );
 
 
 /////////inc = lu_decomp( matrixA, nrow2, ipiv );/////////////////
+	// int lu_decomp( double **A, int N, int *ipiv ) {
+		int ii, jj, kk, imax;
+		double maxA, *ptr, absA, Tol = 1.0e-14;
+		int flag = 0; //yang
 
-		// int i, j, k, imax;
-		// double maxA, *ptr, absA, Tol = 1.0e-14;
-	  	// for ( i = 0; i <= N; i++ ){
-	   	// 	ipiv[i] = i; // record pivoting number
-	  	// }
-	  	// for ( i = 0; i < N; i++ ) {
-	   	// 	maxA = 0.0;
-	   	// 	imax = i;
-	   	// 	for (k = i; k < N; k++){
-	   	//   		if ((absA = fabs(A[k][i])) > maxA) {
-	   	//    			maxA = absA;
-	   	//     		imax = k;
-	   	// 		}
-	   	//   	}
-	   	// 	if (maxA < Tol) return 0; //failure, matrix is degenerate	
-	   	// 	if (imax != i) {
-		//    	  	//pivoting P
-		//    	  	j = ipiv[i];
-		//    	  	ipiv[i] = ipiv[imax];
-		//    	  	ipiv[imax] = j;	
-		//    	  	//pivoting rows of A
-		//    	  	ptr = A[i];
-		//    	  	A[i] = A[imax];
-		//    	  	A[imax] = ptr;	
-		//    	  	//counting pivots starting from N (for determinant)
-		//    	  	ipiv[N]++;
-		//    	}	
-	   	// 	for (j = i + 1; j < N; j++) {
-	   	//   		A[j][i] /= A[i][i];	
-	   	//   		for (k = i + 1; k < N; k++){
-	   	//   	 		A[j][k] -= A[j][i] * A[i][k];
-	   	//   		}
-	   	// 	}
-	  	// }
-/////////////////////////////////////////////////////////////////
+	  	for ( ii = 0; ii <= nrow2; ii++ ){
+	   		ipiv[ii] = ii; // record pivoting number
+	  	}
+	  	for ( ii = 0; ii < nrow2; ii++ ) {
+	   		maxA = 0.0;
+	   		imax = ii;
+	   		for (kk = ii; kk < nrow2; kk++){
+	   	  		if ((absA = fabs(matrixA[kk][ii])) > maxA) {
+	   	   			maxA = absA;
+	   	    		imax = kk;
+	   			}
+	   	  	}
+	   		if (maxA < Tol) {
+	   			inc = 0;
+	   			break;
+	   		} //failure, matrix is degenerate	
+	   		if (imax != ii) {
+		   	  	//pivoting P
+		   	  	jj = ipiv[ii];
+		   	  	ipiv[ii] = ipiv[imax];
+		   	  	ipiv[imax] = jj;	
+		   	  	//pivoting rows of A
+		   	  	ptr = matrixA[ii];
+		   	  	matrixA[ii] = matrixA[imax];
+		   	  	matrixA[imax] = ptr;	
+		   	  	//counting pivots starting from N (for determinant)
+		   	  	ipiv[N]++;
+		   	}	
+	   		for (jj = ii + 1; jj < nrow2; jj++) {
+	   	  		matrixA[jj][ii] /= matrixA[ii][ii];	
+	   	  		for (kk = ii + 1; kk < nrow2; kk++){
+	   	  	 		matrixA[jj][kk] -= matrixA[jj][ii] * matrixA[ii][kk];
+	   	  		}
+	   		}
+	   		flag = flag + 1;
+	  	}
+	  	if (flag = nrow2){
+			inc = 1;
+	  	}
+	  	
+	//     return 1;
+	// }
+///////////////////////////////////////////////////////////////
 
-// ////////////// lu_solve( matrixA, nrow2, ipiv, rhs ); ////////////
-// 	  	double *xtemp;
 
-// 	  	// make_vector(xtemp, N);
-// 	  	xtemp=(double *) calloc(N, sizeof(double));
-// 	  	int i, k ;
-// 	  	for (i = 0; i < N; i++) {
-// 	   		xtemp[i] = rhs[ipiv[i]];
+////////////// lu_solve( matrixA, nrow2, ipiv, rhs ); ////////////
+	// void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
+	  	double *xtemp;
 
-// 	   		for (k = 0; k < i; k++){
-// 	      		xtemp[i] -= matrixA[i][k] * xtemp[k];
-// 	   		}
-// 	  	}
+	  	// make_vector(xtemp, N);
+	  	xtemp=(double *) calloc(nrow2, sizeof(double));
+	  	int iii, kkk ;
+	  	for (iii = 0; iii < nrow2; iii++) {
+	   		xtemp[i] = rhs[ipiv[iii]];
 
-// 	  	for (i = N - 1; i >= 0; i--) {
-// 	    	for (k = i + 1; k < N; k++){
-// 	      		xtemp[i] -= matrixA[i][k] * xtemp[k];
-// 	    	}
+	   		for (kkk = 0; kkk < iii; kkk++){
+	      		xtemp[iii] -= matrixA[iii][kkk] * xtemp[kkk];
+	   		}
+	  	}
 
-// 	    	xtemp[i] = xtemp[i] / matrixA[i][i];
-// 	  	}
+	  	for (iii = nrow2 - 1; iii >= 0; iii--) {
+	    	for (kkk = iii + 1; kkk < nrow2; kkk++){
+	      		xtemp[iii] -= matrixA[iii][kkk] * xtemp[kkk];
+	    	}
 
-// 	  	for (i = 0; i < N; i++) {
-// 	    	rhs[i] = xtemp[i];
-// 	  	}
-// 	  	// free_vector(xtemp);
-// 	  	free(xtemp);
-////////////////////////////////////////////////////////////////
+	    	xtemp[iii] = xtemp[iii] / matrixA[iii][iii];
+	  	}
+
+	  	for (iii = 0; iii < nrow2; iii++) {
+	    	rhs[iii] = xtemp[iii];
+	  	}
+	  	// free_vector(xtemp);
+	  	free(xtemp);
+//////////////////////////////////////////////////////////////
 
 
     	for ( i = 0; i < nrow; i++) {
