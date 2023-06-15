@@ -350,8 +350,9 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		nrow = leafarr[1+3*k];
 		iend = leafarr[2+3*k];
 		nrow2 = nrow*2;
-	 
-    	for ( i = ibeg; i <= iend; i++ ) {
+
+	 	Kokkos::parallel_for("psolvemul2", dev_range_policy(ibeg,iend+1), KOKKOS_LAMBDA(int i){
+    	// for ( i = ibeg; i <= iend; i++ ) {
     		// tp[0] = tr_xyz2D[0][i];
 			// tp[1] = tr_xyz2D[1][i];
 			// tp[2] = tr_xyz2D[2][i];
@@ -434,7 +435,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
         		sq[0] = tr_q[3*j+0];
         		sq[1] = tr_q[3*j+1];
         		sq[2] = tr_q[3*j+2];
-        		
+
 	        	r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
 				sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
 	        	rs = sqrt(sumrs);
@@ -470,8 +471,11 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	        	matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
 	        	matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
       		}
-    	}
+    	// }
 
+      	});
+
+	 	Kokkos::fence();
     	for ( i = 0; i < nrow; i++) {
       		rhs[i] = r[i+ibeg];
       		rhs[i+nrow] = r[i+ibeg+nface];
