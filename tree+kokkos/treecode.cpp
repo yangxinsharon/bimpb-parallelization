@@ -559,7 +559,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	  	// xtemp = (double *) Kokkos::kokkos_malloc(nrow2* sizeof(double));
 	  	int iii, kkk ;
 	  	for (iii = 0; iii < nrow2; iii++) {
-	   		xtemp[i] = rhs[ipiv[iii]];
+	   		xtemp[iii] = rhs[ipiv[iii]];
 
 	   		for (kkk = 0; kkk < iii; kkk++){
 	      		xtemp[iii] -= matrixA[iii][kkk] * xtemp[kkk];
