@@ -74,7 +74,7 @@ extern int arridx;
 /* internal functions */
 int *psolve(double *z, double *r);
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr, int arridx);
+	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr);
 int Setup(double xyz_limits[6]);
 int Partition(double *a, double *b, double *c, int *indarr,
 	int ibeg, int iend, double val);
@@ -338,7 +338,7 @@ int *psolve(double *z, double *r) {
 
 /**********************************************************/
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr, int arridx) {
+	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr) {
 /* r as original while z as scaled */
 // int *psolve(double *z, double *r) {
   	int i, j, idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
@@ -353,7 +353,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
   	double G10, G20, G1, G2, G3, G4;
   	double pre1, pre2;
-	int arridx = 0;
+	// int arridx = 0;
 
   	pre1 = 0.5*(1.0+eps);
   	pre2 = 0.5*(1.0+1.0/eps);
