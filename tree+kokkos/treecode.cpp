@@ -320,7 +320,7 @@ int *psolve(double *z, double *r) {
 	
 	printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
 
-    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr, arridx);
+    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr);
 
     // free(ipiv);
     // free(rhs);
