@@ -396,12 +396,12 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	int inc;
   	// double **matrixA; 
   	// double *rhs;
-  	double L1, L2, L3, L4, area;
-  	double tp[3], tq[3], sp[3], sq[3];
-  	double r_s[3], rs, irs, sumrs;
-  	double G0, kappa_rs, exp_kappa_rs, Gk;
-  	double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
-  	double G10, G20, G1, G2, G3, G4;
+  	// double L1, L2, L3, L4, area;
+  	// double tp[3], tq[3], sp[3], sq[3];
+  	// double r_s[3], rs, irs, sumrs;
+  	// double G0, kappa_rs, exp_kappa_rs, Gk;
+  	// double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
+  	// double G10, G20, G1, G2, G3, G4;
   	double pre1, pre2;
 	int arridx = 0;
 
@@ -450,14 +450,21 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
   	// while ( idx < nface ) {
 	timer_start((char*) "psolve time");
-	for (int k=0; k<arridx; k++){
-	// Kokkos::parallel_for("psolvemul", arridx, KOKKOS_LAMBDA(int k) {
-		ibeg = leafarr[0+3*k];
-		nrow = leafarr[1+3*k];
-		iend = leafarr[2+3*k];
-		nrow2 = nrow*2;
-	 
+	// for (int k=0; k<arridx; k++){
+	Kokkos::parallel_for("psolvemul", arridx, KOKKOS_LAMBDA(int k) {
+		int beg = leafarr[0+3*k];
+		int row = leafarr[1+3*k];
+		int end = leafarr[2+3*k];
+		int row2 = nrow*2;
 
+	   	int i, j, idx=0;
+  		double L1, L2, L3, L4, area;
+  		double tp[3], tq[3], sp[3], sq[3];
+  		double r_s[3], rs, irs, sumrs;
+  		double G0, kappa_rs, exp_kappa_rs, Gk;
+  		double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
+  		double G10, G20, G1, G2, G3, G4;
+  		
     	// leaflength(s_tree_root, idx);
     	// nrow  = Nrow;
     	// nrow2 = nrow*2;
@@ -467,20 +474,32 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
     	// printf("idx ibeg iend is %d, %d, %d\n",idx,ibeg,iend);
 
     	for ( i = ibeg; i <= iend; i++ ) {
-    		tp[0] = tr_xyz2D[0][i];
-			tp[1] = tr_xyz2D[1][i];
-			tp[2] = tr_xyz2D[2][i];
-			tq[0] = tr_q2D[0][i];
-			tq[1] = tr_q2D[1][i];
-			tq[2] = tr_q2D[2][i];
+    		// tp[0] = tr_xyz2D[0][i];
+			// tp[1] = tr_xyz2D[1][i];
+			// tp[2] = tr_xyz2D[2][i];
+			// tq[0] = tr_q2D[0][i];
+			// tq[1] = tr_q2D[1][i];
+			// tq[2] = tr_q2D[2][i];
+    		tp[0] = tr_xyz[3*i+0];
+			tp[1] = tr_xyz[3*i+1];
+			tp[2] = tr_xyz[3*i+2];
+			tq[0] = tr_q[3*i+0];
+			tq[1] = tr_q[3*i+1];
+			tq[2] = tr_q[3*i+2];		
 
       		for ( j = ibeg; j < i; j++ ) {
-        		sp[0] = tr_xyz2D[0][j];
-        		sp[1] = tr_xyz2D[1][j];
-        		sp[2] = tr_xyz2D[2][j];
-        		sq[0] = tr_q2D[0][j];
-        		sq[1] = tr_q2D[1][j];
-        		sq[2] = tr_q2D[2][j];    			
+        		// sp[0] = tr_xyz2D[0][j];
+        		// sp[1] = tr_xyz2D[1][j];
+        		// sp[2] = tr_xyz2D[2][j];
+        		// sq[0] = tr_q2D[0][j];
+        		// sq[1] = tr_q2D[1][j];
+        		// sq[2] = tr_q2D[2][j];  
+				sp[0] = tr_xyz[3*j+0];
+				sp[1] = tr_xyz[3*j+1];
+				sp[2] = tr_xyz[3*j+2];
+				sq[0] = tr_q[3*j+0];
+				sq[1] = tr_q[3*j+1];
+				sq[2] = tr_q[3*j+2];	        		  			
 				
         		r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
         		sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
@@ -524,12 +543,19 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		matrixA[i+nrow-ibeg][i+nrow-ibeg] = pre2;
 
       		for ( j = i+1; j <= iend; j++ ) {
-        		sp[0] = tr_xyz2D[0][j];
-        		sp[1] = tr_xyz2D[1][j];
-        		sp[2] = tr_xyz2D[2][j];
-        		sq[0] = tr_q2D[0][j];
-        		sq[1] = tr_q2D[1][j];
-        		sq[2] = tr_q2D[2][j];      			
+        		// sp[0] = tr_xyz2D[0][j];
+        		// sp[1] = tr_xyz2D[1][j];
+        		// sp[2] = tr_xyz2D[2][j];
+        		// sq[0] = tr_q2D[0][j];
+        		// sq[1] = tr_q2D[1][j];
+        		// sq[2] = tr_q2D[2][j];    
+
+        		sp[0] = tr_xyz[3*j+0];
+        		sp[1] = tr_xyz[3*j+1];
+        		sp[2] = tr_xyz[3*j+2];
+        		sq[0] = tr_q[3*j+0];
+        		sq[1] = tr_q[3*j+1];
+        		sq[2] = tr_q[3*j+2];	
 
 	        	r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
 				sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
