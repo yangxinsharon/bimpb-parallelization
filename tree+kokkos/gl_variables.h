@@ -60,5 +60,4 @@ int *ipiv;
 double *rhs;
 int *leafarr;
 int Nleaf;
-double *xtemp;
 #endif
