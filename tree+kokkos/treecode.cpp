@@ -318,9 +318,10 @@ int *psolve(double *z, double *r) {
 	nrow2 = 2*nrow;
 
 	
-	// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
-	
-	xtemp = (double *) Kokkos::kokkos_malloc(nrow2* sizeof(double));
+	printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
+
+	// xtemp = (double *) Kokkos::kokkos_malloc(nrow2* sizeof(double));
+	xtemp=(double *) calloc(nrow2, sizeof(double));
     psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr, xtemp);
 
     // free(ipiv);
@@ -329,7 +330,8 @@ int *psolve(double *z, double *r) {
   	Kokkos::kokkos_free(rhs);
 	Kokkos::kokkos_free(ipiv);
   	Kokkos::kokkos_free(leafarr);    
-  	Kokkos::kokkos_free(xtemp);
+  	// Kokkos::kokkos_free(xtemp);
+  	free(xtemp);
 	for(int i=0;i<2*maxparnode;i++) {
 		free(matrixA[i]);
 	}	
