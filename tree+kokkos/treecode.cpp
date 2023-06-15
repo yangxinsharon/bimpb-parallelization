@@ -396,7 +396,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	// }
 
 
-
+  	printf("arridx is %d\n",arridx)
 
   	// while ( idx < nface ) {
 	timer_start((char*) "psolve time");
