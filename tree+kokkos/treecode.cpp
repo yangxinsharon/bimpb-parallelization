@@ -282,53 +282,53 @@ void leaflength(TreeNode *p, int idx) {
 }
 
 
-/**********************************************************/
-/* lapack provide lu decomposition, however, something    */
-/* is wrong with cmake ************************************/
-/**********************************************************/
-int lu_decomp( double **A, int N, int *ipiv ) {
+// /**********************************************************/
+// /* lapack provide lu decomposition, however, something    */
+// /* is wrong with cmake ************************************/
+// /**********************************************************/
+// int lu_decomp( double **A, int N, int *ipiv ) {
 
-	int i, j, k, imax;
-	double maxA, *ptr, absA, Tol = 1.0e-14;
+// 	int i, j, k, imax;
+// 	double maxA, *ptr, absA, Tol = 1.0e-14;
 
-  	for ( i = 0; i <= N; i++ ){
-   		ipiv[i] = i; // record pivoting number
-  	}
+//   	for ( i = 0; i <= N; i++ ){
+//    		ipiv[i] = i; // record pivoting number
+//   	}
 
-  	for ( i = 0; i < N; i++ ) {
-   		maxA = 0.0;
-   		imax = i;
-   		for (k = i; k < N; k++){
-   	  		if ((absA = fabs(A[k][i])) > maxA) {
-   	   			maxA = absA;
-   	    		imax = k;
-   			}
-   	  	}
+//   	for ( i = 0; i < N; i++ ) {
+//    		maxA = 0.0;
+//    		imax = i;
+//    		for (k = i; k < N; k++){
+//    	  		if ((absA = fabs(A[k][i])) > maxA) {
+//    	   			maxA = absA;
+//    	    		imax = k;
+//    			}
+//    	  	}
 
-   		if (maxA < Tol) return 0; //failure, matrix is degenerate	
+//    		if (maxA < Tol) return 0; //failure, matrix is degenerate	
    		
-   		if (imax != i) {
-	   	  	//pivoting P
-	   	  	j = ipiv[i];
-	   	  	ipiv[i] = ipiv[imax];
-	   	  	ipiv[imax] = j;	
-	   	  	//pivoting rows of A
-	   	  	ptr = A[i];
-	   	  	A[i] = A[imax];
-	   	  	A[imax] = ptr;	
-	   	  	//counting pivots starting from N (for determinant)
-	   	  	ipiv[N]++;
-	   	}	
-   		for (j = i + 1; j < N; j++) {
-   	  		A[j][i] /= A[i][i];	
-   	  		for (k = i + 1; k < N; k++){
-   	  	 		A[j][k] -= A[j][i] * A[i][k];
-   	  		}
-   		}
-  	}
+//    		if (imax != i) {
+// 	   	  	//pivoting P
+// 	   	  	j = ipiv[i];
+// 	   	  	ipiv[i] = ipiv[imax];
+// 	   	  	ipiv[imax] = j;	
+// 	   	  	//pivoting rows of A
+// 	   	  	ptr = A[i];
+// 	   	  	A[i] = A[imax];
+// 	   	  	A[imax] = ptr;	
+// 	   	  	//counting pivots starting from N (for determinant)
+// 	   	  	ipiv[N]++;
+// 	   	}	
+//    		for (j = i + 1; j < N; j++) {
+//    	  		A[j][i] /= A[i][i];	
+//    	  		for (k = i + 1; k < N; k++){
+//    	  	 		A[j][k] -= A[j][i] * A[i][k];
+//    	  		}
+//    		}
+//   	}
 
-  	return 1;
-}
+//   	return 1;
+// }
 
 // void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 //   	/* b will contain the solution */
@@ -396,12 +396,12 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	int inc;
   	// double **matrixA; 
   	// double *rhs;
-  	// double L1, L2, L3, L4, area;
-  	// double tp[3], tq[3], sp[3], sq[3];
-  	// double r_s[3], rs, irs, sumrs;
-  	// double G0, kappa_rs, exp_kappa_rs, Gk;
-  	// double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
-  	// double G10, G20, G1, G2, G3, G4;
+  	double L1, L2, L3, L4, area;
+  	double tp[3], tq[3], sp[3], sq[3];
+  	double r_s[3], rs, irs, sumrs;
+  	double G0, kappa_rs, exp_kappa_rs, Gk;
+  	double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
+  	double G10, G20, G1, G2, G3, G4;
   	double pre1, pre2;
 	int arridx = 0;
 
