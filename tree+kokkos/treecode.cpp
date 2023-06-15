@@ -326,16 +326,18 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr) {
 /* r as original while z as scaled */
 // int *psolve(double *z, double *r) {
-  	int i, j, k;
-  	int nrow, nrow2, ibeg = 0, iend = 0;
-
+  	int i, j, idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
+  	// int *ipiv;
+  	int inc;
+  	// double **matrixA; 
+  	// double *rhs;
   	double L1, L2, L3, L4, area;
   	double tp[3], tq[3], sp[3], sq[3];
   	double r_s[3], rs, irs, sumrs;
   	double G0, kappa_rs, exp_kappa_rs, Gk;
   	double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
   	double G10, G20, G1, G2, G3, G4;
-  	int inc;
+  	double pre1, pre2;
 
 	double pre1, pre2;
   	pre1 = 0.5*(1.0+eps);
@@ -350,7 +352,15 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		nrow = leafarr[1+3*k];
 		iend = leafarr[2+3*k];
 		nrow2 = nrow*2;
-		
+	 
+
+    	// leaflength(s_tree_root, idx);
+    	// nrow  = Nrow;
+    	// nrow2 = nrow*2;
+    	// ibeg  = idx;
+    	// iend  = idx + nrow - 1;
+    	// Nleafc += 1;
+    	// printf("idx ibeg iend is %d, %d, %d\n",idx,ibeg,iend);
 
     	for ( i = ibeg; i <= iend; i++ ) {
     		tp[0] = tr_xyz2D[0][i];
@@ -554,6 +564,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
     	//printf("%d %d %d %d\n", idx, ibeg, iend, nrow);
 
+    	idx += nrow;
 
   	}
     // });
