@@ -558,7 +558,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		   	  	matrixA[ii] = matrixA[imax];
 		   	  	matrixA[imax] = ptr;	
 		   	  	//counting pivots starting from N (for determinant)
-		   	  	ipiv[N]++;
+		   	  	ipiv[nrow2]++;
 		   	}	
 	   		for (jj = ii + 1; jj < nrow2; jj++) {
 	   	  		matrixA[jj][ii] /= matrixA[ii][ii];	
