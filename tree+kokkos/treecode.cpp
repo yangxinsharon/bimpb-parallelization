@@ -315,15 +315,16 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 // int *psolve(double *z, double *r) {
   	int i, j, idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
   	// int *ipiv;
-  	int inc;
   	// double **matrixA; 
   	// double *rhs;
-  	double L1, L2, L3, L4, area;
-  	double tp[3], tq[3], sp[3], sq[3];
-  	double r_s[3], rs, irs, sumrs;
-  	double G0, kappa_rs, exp_kappa_rs, Gk;
-  	double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
-  	double G10, G20, G1, G2, G3, G4;
+  	int inc;
+
+  	// double L1, L2, L3, L4, area;
+  	// double tp[3], tq[3], sp[3], sq[3];
+  	// double r_s[3], rs, irs, sumrs;
+  	// double G0, kappa_rs, exp_kappa_rs, Gk;
+  	// double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
+  	// double G10, G20, G1, G2, G3, G4;
   	double pre1, pre2;
 	int arridx = 0;
 
@@ -372,20 +373,20 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
   	// while ( idx < nface ) {
 	timer_start((char*) "psolve time");
-	for (int k=0; k<arridx; k++){
-	// Kokkos::parallel_for("psolvemul", arridx, KOKKOS_LAMBDA(int k) {
-		ibeg = leafarr[0+3*k];
-		nrow = leafarr[1+3*k];
-		iend = leafarr[2+3*k];
-		nrow2 = nrow*2;
+	// for (int k=0; k<arridx; k++){
+	Kokkos::parallel_for("psolvemul", arridx, KOKKOS_LAMBDA(int k) {
+		int ibeg = leafarr[0+3*k];
+		int nrow = leafarr[1+3*k];
+		int iend = leafarr[2+3*k];
+		int nrow2 = nrow*2;
 
-	   	// int i, j, idx=0, inc;
-  		// double L1, L2, L3, L4, area;
-  		// double tp[3], tq[3], sp[3], sq[3];
-  		// double r_s[3], rs, irs, sumrs;
-  		// double G0, kappa_rs, exp_kappa_rs, Gk;
-  		// double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
-  		// double G10, G20, G1, G2, G3, G4;
+	   	int i, j, idx=0, inc;
+  		double L1, L2, L3, L4, area;
+  		double tp[3], tq[3], sp[3], sq[3];
+  		double r_s[3], rs, irs, sumrs;
+  		double G0, kappa_rs, exp_kappa_rs, Gk;
+  		double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
+  		double G10, G20, G1, G2, G3, G4;
   		
     	// leaflength(s_tree_root, idx);
     	// nrow  = Nrow;
@@ -602,11 +603,11 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
     	idx += nrow;
 
-  	}
-    // });
+  	// }
+    });
 	timer_end();
 
-	// Kokkos::fence();
+	Kokkos::fence();
   	printf("Nleafc is %d\n",Nleafc);
   	// free_matrix(matrixA);
   	// free_vector(rhs);
