@@ -311,14 +311,14 @@ int *psolve(double *z, double *r) {
 	    leafarr[1+3*arridx] = nrow;
 	    leafarr[2+3*arridx] = iend;    
 	    // printf("ibeg iend nrow: %d, %d, %d\n", leafarr[0][arridx], leafarr[1][arridx], leafarr[2][arridx] );
-		printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
+		// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
 		arridx += 1;
 		// Nleafc += 1;
 		idx += nrow;
 	}
 
 	
-	// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
+	printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
 
     psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr);
 
