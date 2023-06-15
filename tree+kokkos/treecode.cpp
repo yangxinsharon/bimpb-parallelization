@@ -337,7 +337,6 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	double G0, kappa_rs, exp_kappa_rs, Gk;
   	double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
   	double G10, G20, G1, G2, G3, G4;
-  	double pre1, pre2;
 
 	double pre1, pre2;
   	pre1 = 0.5*(1.0+eps);
