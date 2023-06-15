@@ -457,7 +457,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		int end = leafarr[2+3*k];
 		int row2 = nrow*2;
 
-	   	int i, j, idx=0;
+	   	int i, j, idx=0, inc;
   		double L1, L2, L3, L4, area;
   		double tp[3], tq[3], sp[3], sq[3];
   		double r_s[3], rs, irs, sumrs;
@@ -611,8 +611,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
     	idx += nrow;
 
-  	}
-    // });
+  	// }
+    });
 	timer_end();
 
 	Kokkos::fence();
