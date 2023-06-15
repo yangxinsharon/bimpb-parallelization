@@ -582,7 +582,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	  	double *xtemp;
 
 	  	// make_vector(xtemp, N);
-	  	xtemp=(double *) calloc(nrow2, sizeof(double));
+	  	// xtemp=(double *) calloc(nrow2, sizeof(double));
+	  	xtemp = (double *) Kokkos::kokkos_malloc(nrow2* sizeof(double));
 	  	int iii, kkk ;
 	  	for (iii = 0; iii < nrow2; iii++) {
 	   		xtemp[i] = rhs[ipiv[iii]];
@@ -604,7 +605,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	    	rhs[iii] = xtemp[iii];
 	  	}
 	  	// free_vector(xtemp);
-	  	free(xtemp);
+	  	// free(xtemp);
+	  	kokkos_free(xtemp);
 //////////////////////////////////////////////////////////////
 
 
