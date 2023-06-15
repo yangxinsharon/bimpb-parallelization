@@ -74,7 +74,7 @@ extern int arridx;
 /* internal functions */
 int *psolve(double *z, double *r);
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr);
+	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr, int arridx);
 int Setup(double xyz_limits[6]);
 int Partition(double *a, double *b, double *c, int *indarr,
 	int ibeg, int iend, double val);
@@ -320,7 +320,7 @@ int *psolve(double *z, double *r) {
 	
 	printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
 
-    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr);
+    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr, arridx);
 
     // free(ipiv);
     // free(rhs);
@@ -338,7 +338,7 @@ int *psolve(double *z, double *r) {
 
 /**********************************************************/
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr) {
+	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr, int arridx) {
 /* r as original while z as scaled */
 // int *psolve(double *z, double *r) {
   	int i, j, idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
