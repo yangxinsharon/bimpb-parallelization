@@ -74,7 +74,7 @@ extern int *leafarr;
 /* internal functions */
 int *psolve(double *z, double *r);
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr);
+	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr, double *xtemp);
 int Setup(double xyz_limits[6]);
 int Partition(double *a, double *b, double *c, int *indarr,
 	int ibeg, int iend, double val);
@@ -292,14 +292,16 @@ int *psolve(double *z, double *r) {
 	ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
 	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
 	leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
-    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr);
+	xtemp = (double *) Kokkos::kokkos_malloc(nrow2* sizeof(double));
+    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr, xtemp);
 
     // free(ipiv);
     // free(rhs);
     // free(leafarr);
   	Kokkos::kokkos_free(rhs);
 	Kokkos::kokkos_free(ipiv);
-  	Kokkos::kokkos_free(leafarr);    
+  	Kokkos::kokkos_free(leafarr);
+  	Kokkos::kokkos_free(xtemp);    
 	for(int i=0;i<2*maxparnode;i++) {
 		free(matrixA[i]);
 	}	
@@ -310,7 +312,7 @@ int *psolve(double *z, double *r) {
 
 /**********************************************************/
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr) {
+	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr, double *xtemp) {
 /* r as original while z as scaled */
 // int *psolve(double *z, double *r) {
   	int i, j, idx = 0, nrow, nrow2, ibeg = 0, iend = 0;
@@ -579,7 +581,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 ////////////// lu_solve( matrixA, nrow2, ipiv, rhs ); ////////////
 	// void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
-	  	double *xtemp;
+	  	// double *xtemp;
 
 	  	// make_vector(xtemp, N);
 	  	// xtemp=(double *) calloc(nrow2, sizeof(double));
@@ -606,7 +608,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	  	}
 	  	// free_vector(xtemp);
 	  	// free(xtemp);
-	  	Kokkos::kokkos_free(xtemp);
+	  	// Kokkos::kokkos_free(xtemp);
 //////////////////////////////////////////////////////////////
 
 
