@@ -609,7 +609,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 	  	// make_vector(xtemp, N);
 	  	// xtemp=(double *) calloc(nrow2, sizeof(double));
-	  	xtemp = (double *) Kokkos::kokkos_malloc(nrow2* sizeof(double));
+	  	// xtemp = (double *) Kokkos::kokkos_malloc(nrow2* sizeof(double));
 	  	int iii, kkk ;
 	  	for (iii = 0; iii < nrow2; iii++) {
 	   		xtemp[i] = rhs[ipiv[iii]];
