@@ -549,10 +549,10 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 ////////////// lu_solve( matrixA, nrow2, ipiv, rhs ); ////////////
 	// void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
-	  	double *xtemp;
-
-	  	// make_vector(xtemp, N);
-	  	xtemp=(double *) calloc(nrow2, sizeof(double));
+	  	// double *xtemp;
+	  	// xtemp=(double *) calloc(nrow2, sizeof(double));
+	  	
+	  	Kokkos::View<double*, Kokkos::CudaUVMSpace> xtemp("xtemp", nrow2);
 	  	// xtemp = (double *) Kokkos::kokkos_malloc(nrow2* sizeof(double));
 	  	int iii, kkk ;
 	  	for (iii = 0; iii < nrow2; iii++) {
@@ -575,7 +575,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	    	rhs[iii] = xtemp[iii];
 	  	}
 	  	// free_vector(xtemp);
-	  	free(xtemp);
+	  	// free(xtemp);
 	  	// Kokkos::kokkos_free(xtemp);
 //////////////////////////////////////////////////////////////
 
