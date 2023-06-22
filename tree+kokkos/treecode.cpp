@@ -344,12 +344,12 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
   	// while ( idx < nface ) {
 	timer_start((char*) "psolve time");
-	for (int k=0; k<arridx; k++){
-	// Kokkos::parallel_for("psolvemul", arridx, KOKKOS_LAMBDA(int k) {
-		ibeg = leafarr[0+3*k];
-		nrow = leafarr[1+3*k];
-		iend = leafarr[2+3*k];
-		nrow2 = nrow*2;
+	// for (int k=0; k<arridx; k++){
+	Kokkos::parallel_for("psolvemul", arridx, KOKKOS_LAMBDA(int k) {
+		int ibeg = leafarr[0+3*k];
+		int nrow = leafarr[1+3*k];
+		int iend = leafarr[2+3*k];
+		int nrow2 = nrow*2;
 
 	 	// Kokkos::parallel_for("psolvemul2", 10, KOKKOS_LAMBDA(int i){
     	for ( i = ibeg; i <= iend; i++ ) {
@@ -590,10 +590,10 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 
   	}
-    // });
+    });
 	timer_end();
 
-	// Kokkos::fence();
+	Kokkos::fence();
   	printf("Nleafc is %d\n",Nleafc);
   	// free_matrix(matrixA);
   	// free_vector(rhs);
