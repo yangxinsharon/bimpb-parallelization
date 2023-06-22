@@ -551,28 +551,33 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	// void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 	  	// double *xtemp;
 	  	// xtemp=(double *) calloc(nrow2, sizeof(double));
-	  	
-	  	Kokkos::View<double*, Kokkos::CudaUVMSpace> xtemp("xtemp", nrow2);
-	  	// xtemp = (double *) Kokkos::kokkos_malloc(nrow2* sizeof(double));
-	  	int iii, kkk ;
+
+
+// //
+// 	  	Kokkos::View<double*, Kokkos::CudaUVMSpace> xtemp("xtemp", nrow2);
+// 	  	// xtemp = (double *) Kokkos::kokkos_malloc(nrow2* sizeof(double));
+// 	  	int iii, kkk ;
+// 	  	for (iii = 0; iii < nrow2; iii++) {
+// 	   		xtemp[iii] = rhs[ipiv[iii]];
+
+// 	   		for (kkk = 0; kkk < iii; kkk++){
+// 	      		xtemp[iii] -= matrixA[iii][kkk] * xtemp[kkk];
+// 	   		}
+// 	  	}
+
+// 	  	for (iii = nrow2 - 1; iii >= 0; iii--) {
+// 	    	for (kkk = iii + 1; kkk < nrow2; kkk++){
+// 	      		xtemp[iii] -= matrixA[iii][kkk] * xtemp[kkk];
+// 	    	}
+
+// 	    	xtemp[iii] = xtemp[iii] / matrixA[iii][iii];
+// 	  	}
+
+// //
+
 	  	for (iii = 0; iii < nrow2; iii++) {
-	   		xtemp[iii] = rhs[ipiv[iii]];
-
-	   		for (kkk = 0; kkk < iii; kkk++){
-	      		xtemp[iii] -= matrixA[iii][kkk] * xtemp[kkk];
-	   		}
-	  	}
-
-	  	for (iii = nrow2 - 1; iii >= 0; iii--) {
-	    	for (kkk = iii + 1; kkk < nrow2; kkk++){
-	      		xtemp[iii] -= matrixA[iii][kkk] * xtemp[kkk];
-	    	}
-
-	    	xtemp[iii] = xtemp[iii] / matrixA[iii][iii];
-	  	}
-
-	  	for (iii = 0; iii < nrow2; iii++) {
-	    	rhs[iii] = xtemp[iii];
+	    	// rhs[iii] = xtemp[iii];
+	    	rhs[iii] = 1.0;
 	  	}
 	  	// free_vector(xtemp);
 	  	// free(xtemp);
