@@ -487,7 +487,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
       	// });
 
-	 	Kokkos::fence();
+	 	// Kokkos::fence();
     	for ( i = 0; i < nrow; i++) {
       		rhs[i] = r[i+ibeg];
       		rhs[i+nrow] = r[i+ibeg+nface];
