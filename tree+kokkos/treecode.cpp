@@ -351,7 +351,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		int iend = leafarr[2+3*k];
 		int nrow2 = nrow*2;
 
-		int inc;
+		int i,j,inc;
 		double L1, L2, L3, L4, area;
 		double tp[3], tq[3], sp[3], sq[3];
 		double r_s[3], rs, irs, sumrs;
@@ -364,7 +364,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 			// int j,inc;
 			// int nrow2 = nrow*2;
 			// int nrow = leafarr[1+3*k];
-			
+
     		// tp[0] = tr_xyz2D[0][i];
 			// tp[1] = tr_xyz2D[1][i];
 			// tp[2] = tr_xyz2D[2][i];
