@@ -574,7 +574,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 // 	  	}
 
 // //
-
+		int iii, kkk ;
 	  	for (iii = 0; iii < nrow2; iii++) {
 	    	// rhs[iii] = xtemp[iii];
 	    	rhs[iii] = 1.0;
