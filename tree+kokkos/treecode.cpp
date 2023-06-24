@@ -351,7 +351,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	// while ( idx < nface ) {
 	timer_start((char*) "psolve time");
 	// for (int k=0; k<arridx; k++){
-	Kokkos::parallel_for("psolvemul", Kokkos::RangePolicy<DevExecSpace> (0,arridx), KOKKOS_LAMBDA(int k) {
+	Kokkos::parallel_for("psolvemul", Kokkos::RangePolicy<DevExecSpace> (0,1), KOKKOS_LAMBDA(int k) {
 		// printf("test beg %d\n", k); arridx
 		// 
 		int ibeg = leafarr[0+3*k];
