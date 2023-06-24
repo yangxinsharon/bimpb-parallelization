@@ -299,7 +299,8 @@ int *psolve(double *z, double *r) {
     
     xtemp = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
     ptr = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
-
+	
+	Kokkos::View<double**, Kokkos::CudaSpace> matrixA_dev("A",2*maxparnode,2*maxparnode);
 
     // Kokkos::View<double**, Kokkos::CudaSpace> matrixA("A",2*maxparnode,2*maxparnode);
 	int idx = 0, nrow = 0, ibeg = 0, iend = 0;
@@ -346,11 +347,11 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	pre1 = 0.5*(1.0+eps);
   	pre2 = 0.5*(1.0+1.0/eps);
 
-	Kokkos::View<double**, Kokkos::CudaSpace> matrixA_dev("A",2*maxparnode,2*maxparnode);
+	// Kokkos::View<double**, Kokkos::CudaSpace> matrixA_dev("A",2*maxparnode,2*maxparnode);
   	// while ( idx < nface ) {
 	timer_start((char*) "psolve time");
 	// for (int k=0; k<arridx; k++){
-	Kokkos::parallel_for("psolvemul", 1, KOKKOS_LAMBDA(int k) {
+	Kokkos::parallel_for("psolvemul", Kokkos::RangePolicy<DevExecSpace> (0,arridx), KOKKOS_LAMBDA(int k) {
 		// printf("test beg %d\n", k); arridx
 		// 
 		int ibeg = leafarr[0+3*k];
