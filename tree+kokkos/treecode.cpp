@@ -440,12 +440,13 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
         	// 		matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
       		// 	} 
       		// }
-			printf("test 1-2 loop %d\n", i);
-      		matrixA[i-ibeg][i-ibeg] = pre1;
-      		matrixA[i+nrow-ibeg][i+nrow-ibeg] = pre2;
+			// printf("test 1-2 loop %d\n", i);
+      		// matrixA[i-ibeg][i-ibeg] = pre1;
+      		// matrixA[i+nrow-ibeg][i+nrow-ibeg] = pre2;
 
-			printf("test 1-2 loop %d\n", i);
+			// printf("test 1-2 loop %d\n", i);
       		for ( j = i+1; j <= iend; j++ ) {
+      			printf("test 1-2 loop %d\n", i);
         		// sp[0] = tr_xyz2D[0][j];
         		// sp[1] = tr_xyz2D[1][j];
         		// sp[2] = tr_xyz2D[2][j];
