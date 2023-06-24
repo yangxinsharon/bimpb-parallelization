@@ -364,6 +364,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 		// printf("test 1 loop %d\n", k);
 	 	// Kokkos::parallel_for("psolvemul2", 10, KOKKOS_LAMBDA(int i){
+		Kokkos::View<double**, Kokkos::CudaSpace> matrixA("A",2*maxparnode,2*maxparnode);
     	for ( i = ibeg; i <= iend; i++ ) {
     	// for ( i = 0; i <= iend-ibeg; i++ ) {
 
@@ -387,7 +388,6 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 			// printf("test 1-1 loop %d\n", i);
 			int j = ibeg;
 			printf("test 1-1 loop %d\n", i);
-			Kokkos::View<double**, Kokkos::CudaSpace> matrixA("A",2*maxparnode,2*maxparnode);
 			// if (j != i) {
 			// 	// printf("test 1-3 loop %d\n", i); //not printing
       		// 	for ( j = ibeg; j < i; j++ ) {
