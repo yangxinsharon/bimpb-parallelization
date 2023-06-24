@@ -373,8 +373,12 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		double tp[3], tq[3], sp[3], sq[3];
 		double r_s[3];
 
+	  	// double L1, L2, L3, L4, area;
+	  	// double rs, irs, sumrs;
+	  	// double G0, kappa_rs, exp_kappa_rs, Gk;
+	  	// double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
+	  	// double G10, G20, G1, G2, G3, G4;
 		// printf("test 1 loop %d\n", k);
-	 	// Kokkos::parallel_for("psolvemul2", 10, KOKKOS_LAMBDA(int i){
     	for ( i = ibeg; i <= iend; i++ ) {
     		tp[0] = tr_xyz[3*i+0];
 			tp[1] = tr_xyz[3*i+1];
@@ -383,17 +387,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 			tq[1] = tr_q[3*i+1];
 			tq[2] = tr_q[3*i+2];
 
-			// printf("test 1-1 loop %d\n", i);
-			int j = ibeg;
-			// printf("test 1-1 loop %d\n", i);
-      		for ( j = ibeg; j < i; j++ ) {
-      			// printf("test 1-3 loop %d\n", j); //not printing
-        		// sp[0] = tr_xyz2D[0][j];
-        		// sp[1] = tr_xyz2D[1][j];
-        		// sp[2] = tr_xyz2D[2][j];
-        		// sq[0] = tr_q2D[0][j];
-        		// sq[1] = tr_q2D[1][j];
-        		// sq[2] = tr_q2D[2][j];    			
+      		for ( j = ibeg; j < i; j++ ) {	
 				sp[0] = tr_xyz[3*j+0];
 				sp[1] = tr_xyz[3*j+1];
 				sp[2] = tr_xyz[3*j+2];
@@ -402,36 +396,33 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 				sq[2] = tr_q[3*j+2];
 
         		r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
-        		double sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
+        		
 
-        		double rs = sqrt(sumrs);
-        		double irs = 1.0/rs;
-        		double G0 = one_over_4pi * irs;
-        		double kappa_rs = kappa * rs; //
-        		double exp_kappa_rs = exp(-kappa_rs);
-        		double Gk = exp_kappa_rs * G0;
+        		sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
+        		rs = sqrt(sumrs);
+        		irs = 1.0/rs;
+        		G0 = one_over_4pi * irs;
+        		kappa_rs = kappa * rs; //
+        		exp_kappa_rs = exp(-kappa_rs);
+        		Gk = exp_kappa_rs * G0;
 	
-        		double cos_theta  = (sq[0]*r_s[0] + sq[1]*r_s[1] + sq[2]*r_s[2]) * irs;
-        		double cos_theta0 = (tq[0]*r_s[0] + tq[1]*r_s[1] + tq[2]*r_s[2]) * irs;
-        		double tp1 = G0* irs;
-        		double tp2 = (1.0 + kappa_rs) * exp_kappa_rs;
+        		cos_theta  = (sq[0]*r_s[0] + sq[1]*r_s[1] + sq[2]*r_s[2]) * irs;
+        		cos_theta0 = (tq[0]*r_s[0] + tq[1]*r_s[1] + tq[2]*r_s[2]) * irs;
+        		tp1 = G0* irs;
+        		tp2 = (1.0 + kappa_rs) * exp_kappa_rs;	
+        		G10 = cos_theta0 * tp1;
+        		G20 = tp2 * G10;		
+        		G1 = cos_theta * tp1;
+        		G2 = tp2 * G1;
 		
-        		double G10 = cos_theta0 * tp1;
-        		double G20 = tp2 * G10;
-		
-        		double G1 = cos_theta * tp1;
-        		double G2 = tp2 * G1;
-		
-        		double dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
-        		double G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
-        		double G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
-		
-        		double area = tr_area[j]; 
-		
-        		double L1 = G1 - eps*G2;
-        		double L2 = G0 - Gk;
-        		double L3 = G4 - G3;
-        		double L4 = G10 - G20/eps;
+        		dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
+        		G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
+        		G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;	
+        		area = tr_area[j]; 
+        		L1 = G1 - eps*G2;
+        		L2 = G0 - Gk;
+        		L3 = G4 - G3;
+        		L4 = G10 - G20/eps;
 
         		// matrixA[i-ibeg][j-ibeg] = -L1*area;
         		// matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
@@ -448,14 +439,6 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 			// printf("test 1-2 loop %d\n", i);
       		for ( j = i+1; j <= iend; j++ ) {
-      			// printf("test 1-2 loop %d\n", i);// can print
-
-        		// sp[0] = tr_xyz2D[0][j];
-        		// sp[1] = tr_xyz2D[1][j];
-        		// sp[2] = tr_xyz2D[2][j];
-        		// sq[0] = tr_q2D[0][j];
-        		// sq[1] = tr_q2D[1][j];
-        		// sq[2] = tr_q2D[2][j];      			
 
         		sp[0] = tr_xyz[3*j+0];
         		sp[1] = tr_xyz[3*j+1];
@@ -512,7 +495,6 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		rhs[i+nrow] = r[i+ibeg+nface];
     	}
 
-    	// Kokkos::fence();
     	// inc = lu_decomp( matrixA, nrow2, ipiv );
     	// lu_solve( matrixA, nrow2, ipiv, rhs );
 
