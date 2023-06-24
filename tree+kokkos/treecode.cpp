@@ -361,7 +361,9 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 		// printf("test 1 loop %d\n", k);
 	 	// Kokkos::parallel_for("psolvemul2", 10, KOKKOS_LAMBDA(int i){
-    	for ( i = ibeg; i <= iend; i++ ) {
+    	// for ( i = ibeg; i <= iend; i++ ) {
+    	for ( i = 0; i <= iend-ibeg; i++ ) {
+
 			// int j,inc;
 			// int nrow2 = nrow*2;
 			// int nrow = leafarr[1+3*k];
@@ -382,7 +384,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 			printf("test 1-1 loop %d\n", i);
 			int j = ibeg;
 			if (j != i) {
-				printf("test 1-3 loop %d\n", i);
+				// printf("test 1-3 loop %d\n", i); //not printing
       			for ( j = ibeg; j < i; j++ ) {
         		// sp[0] = tr_xyz2D[0][j];
         		// sp[1] = tr_xyz2D[1][j];
@@ -433,7 +435,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
         		matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
         		matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
         		matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
-      		}
+      		} 
       		}
 
       		matrixA[i-ibeg][i-ibeg] = pre1;
