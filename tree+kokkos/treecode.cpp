@@ -362,7 +362,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		int nrow = leafarr[1+3*k];
 		int iend = leafarr[2+3*k];
 		int nrow2 = nrow*2;
-		printf("ibeg iend nrow k %d %d %d %d \n", ibeg, iend, nrow, k);
+		// printf("ibeg iend nrow k %d %d %d %d \n", ibeg, iend, nrow, k);
 		int i,inc;
 		double tp[3], tq[3], sp[3], sq[3];
 		double r_s[3];
