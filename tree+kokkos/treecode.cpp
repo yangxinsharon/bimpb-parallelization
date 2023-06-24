@@ -355,8 +355,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
   	// while ( idx < nface ) {
 	timer_start((char*) "psolve time");
-	Kokkos::View<double**, Kokkos::HoseSpace> matrixA_dev("matrixA_dev",2*maxparnode,2*maxparnode);
-  	Kokkos::View<double**, Kokkos::HostSpace>::HostMirror matrixA_h = Kokkos::create_mirror_view( matrixA_dev );
+	Kokkos::View<double**, Kokkos::HostSpace> matrixA_dev("matrixA_dev",2*maxparnode,2*maxparnode);
+  	// Kokkos::View<double**, Kokkos::HostSpace>::HostMirror matrixA_h = Kokkos::create_mirror_view( matrixA_dev );
 
   	for (int i =0; i<2*maxparnode; i++){
   		for (int j =0; j<2*maxparnode; j++){
@@ -364,7 +364,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   		}
   	}
 
-	Kokkos::deep_copy( matrixA_dev, matrixA_h );
+	// Kokkos::deep_copy( matrixA_dev, matrixA_h );
 
 	for (int k=0; k<arridx; k++){
 	// Kokkos::parallel_for("psolvemul", arridx, KOKKOS_LAMBDA(int k) {
@@ -634,7 +634,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 	// Kokkos::fence();
   	printf("Nleafc is %d\n",Nleafc);
-	Kokkos::deep_copy( matrixA_h, matrixA_dev );
+	// Kokkos::deep_copy( matrixA_h, matrixA_dev );
   	// free_matrix(matrixA);
   	// free_vector(rhs);
   	// free_vector(ipiv);
