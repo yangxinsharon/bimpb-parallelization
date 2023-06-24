@@ -348,7 +348,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 
 	timer_start((char*) "psolve time");
-	Kokkos::View<double**, Kokkos::CudaSpace> matrixA_dev("A",2*maxparnode,2*maxparnode);
+	Kokkos::View<double**,  Kokkos::LayoutRight, Kokkos::CudaSpace> matrixA_dev("A",2*maxparnode,2*maxparnode);
   	// Kokkos::View<double**, Kokkos::CudaSpace>::HostMirror matrixA_h = Kokkos::create_mirror_view( matrixA_dev );
 
   	// Kokkos::parallel_for (Kokkos::RangePolicy<HostExecSpace>(0,2*maxparnode), KOKKOS_LAMBDA(int i) {
@@ -363,7 +363,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	}
 
 	// Kokkos::deep_copy( matrixA_dev, matrixA_h );
-	Kokkos::parallel_for("psolvemul", arridx, KOKKOS_LAMBDA(int k) {
+	Kokkos::parallel_for("psolvemul", Kokkos::RangePolicy<Kokkos::Cuda>(0,arridx), KOKKOS_LAMBDA(int k) {
 		int ibeg = leafarr[0+3*k];
 		int nrow = leafarr[1+3*k];
 		int iend = leafarr[2+3*k];
