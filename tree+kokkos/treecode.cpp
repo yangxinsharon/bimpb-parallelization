@@ -369,7 +369,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		int iend = leafarr[2+3*k];
 		int nrow2 = nrow*2;
 		// printf("ibeg iend nrow k %d %d %d %d \n", ibeg, iend, nrow, k);
-		int i,inc;
+		int i,j, inc;
 		double tp[3], tq[3], sp[3], sq[3];
 		double r_s[3];
 
@@ -398,31 +398,31 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
         		r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
         		
 
-        		sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
-        		rs = sqrt(sumrs);
-        		irs = 1.0/rs;
-        		G0 = one_over_4pi * irs;
-        		kappa_rs = kappa * rs; //
-        		exp_kappa_rs = exp(-kappa_rs);
-        		Gk = exp_kappa_rs * G0;
-	
-        		cos_theta  = (sq[0]*r_s[0] + sq[1]*r_s[1] + sq[2]*r_s[2]) * irs;
-        		cos_theta0 = (tq[0]*r_s[0] + tq[1]*r_s[1] + tq[2]*r_s[2]) * irs;
-        		tp1 = G0* irs;
-        		tp2 = (1.0 + kappa_rs) * exp_kappa_rs;	
-        		G10 = cos_theta0 * tp1;
-        		G20 = tp2 * G10;		
-        		G1 = cos_theta * tp1;
-        		G2 = tp2 * G1;
-		
-        		dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
-        		G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
-        		G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;	
-        		area = tr_area[j]; 
-        		L1 = G1 - eps*G2;
-        		L2 = G0 - Gk;
-        		L3 = G4 - G3;
-        		L4 = G10 - G20/eps;
+        		double sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
+        		double rs = sqrt(sumrs);
+        		double irs = 1.0/rs;
+        		double G0 = one_over_4pi * irs;
+        		double kappa_rs = kappa * rs; //
+        		double exp_kappa_rs = exp(-kappa_rs);
+        		double Gk = exp_kappa_rs * G0;
+				
+        		double cos_theta  = (sq[0]*r_s[0] + sq[1]*r_s[1] + sq[2]*r_s[2]) * irs;
+        		double cos_theta0 = (tq[0]*r_s[0] + tq[1]*r_s[1] + tq[2]*r_s[2]) * irs;
+        		double tp1 = G0* irs;
+        		double tp2 = (1.0 + kappa_rs) * exp_kappa_rs;	
+        		double G10 = cos_theta0 * tp1;
+        		double G20 = tp2 * G10;		
+        		double G1 = cos_theta * tp1;
+        		double G2 = tp2 * G1;
+
+        		double dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
+        		double G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
+        		double G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;	
+        		double area = tr_area[j]; 
+        		double L1 = G1 - eps*G2;
+        		double L2 = G0 - Gk;
+        		double L3 = G4 - G3;
+        		double L4 = G10 - G20/eps;
 
         		// matrixA[i-ibeg][j-ibeg] = -L1*area;
         		// matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
