@@ -329,7 +329,7 @@ int *psolve(double *z, double *r) {
 
 /**********************************************************/
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr, int arridx， double *xtemp) {
+	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr, int arridx, double *xtemp) {
 /* r as original while z as scaled */
 // int *psolve(double *z, double *r) {
 
