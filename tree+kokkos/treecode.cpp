@@ -315,7 +315,8 @@ int *psolve(double *z, double *r) {
 		idx += nrow;
 	}
 
-    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr);
+    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, 
+    	matrixA, ipiv, rhs, leafarr, arridx, xtemp, ptr);
 
   	Kokkos::kokkos_free(rhs);
 	Kokkos::kokkos_free(ipiv);
@@ -525,7 +526,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		   	  	// matrixA[ii] = matrixA[imax];
 		   	  	// matrixA[imax] = ptr;			   	  
 		   	  	for (jj = 0; jj < 2*maxparnode; jj++){
-		   	  		prt[jj] = matrixA[ii][jj];
+		   	  		ptr[jj] = matrixA[ii][jj];
 			   	  	matrixA[ii][jj] = matrixA[imax][jj];
 			   	  	matrixA[imax][jj] = ptr[jj];	
 		   	  	}
