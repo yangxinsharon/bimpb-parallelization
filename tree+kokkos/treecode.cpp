@@ -359,8 +359,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
     //   		matrixA_h( i,j ) = 1;
     // 	}
   	// });
-  	for (int i =0; i<2*maxparnode, i++){
-  		for (int j =0; j<2*maxparnode, j++){
+  	for (int i =0; i<2*maxparnode; i++){
+  		for (int j =0; j<2*maxparnode; j++){
   			matrixA_h( i,j ) = 0;
   		}
   	}
