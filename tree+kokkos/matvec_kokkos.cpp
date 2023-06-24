@@ -40,7 +40,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 		double peng[2] = {0.0, 0.0};
 		int j;
 		for (j=0; j<nface; j++) {
-			printf("test 1-1 loop %d\n", j);
+			// printf("test 1-1 loop %d\n", j);
         	if (j != i) {
 				double sp[3] = {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
 				double sq[3] = {tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};

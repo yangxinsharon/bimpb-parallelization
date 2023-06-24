@@ -13,7 +13,7 @@
 #include "tree_node_struct.h"
 #include "gl_constants.h"
 // #include "gl_variables.h"
-// #include "env_kokkos.h"
+#include "env_kokkos.h"
 #include <Kokkos_Core.hpp>
 #include "pp_timer.h"
 
@@ -70,11 +70,14 @@ extern int *ipiv;
 extern double *rhs;
 extern int *leafarr;
 extern int arridx;
+extern double *xtemp;
+extern double *ptr;
 
 /* internal functions */
 int *psolve(double *z, double *r);
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr);
+	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr,
+	int arridx, double *xtemp, double *ptr);
 int Setup(double xyz_limits[6]);
 int Partition(double *a, double *b, double *c, int *indarr,
 	int ibeg, int iend, double val);
@@ -294,6 +297,9 @@ int *psolve(double *z, double *r) {
 	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
 	leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
     
+    xtemp = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
+    ptr = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
+
 	int idx = 0, nrow = 0, ibeg = 0, iend = 0;
 	arridx = 0; // extern variable
 	while ( idx < nface ) {
@@ -309,7 +315,8 @@ int *psolve(double *z, double *r) {
 		idx += nrow;
 	}
 
-    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr);
+    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, 
+    	matrixA, ipiv, rhs, leafarr, arridx, xtemp, ptr);
 
   	Kokkos::kokkos_free(rhs);
 	Kokkos::kokkos_free(ipiv);
@@ -319,23 +326,19 @@ int *psolve(double *z, double *r) {
 	}	
 	free(matrixA);
 
+	Kokkos::kokkos_free(xtemp);
+	Kokkos::kokkos_free(ptr);
+
     return NULL;
 }
 
 /**********************************************************/
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-	double *z, double *r, double **matrixA, int *ipiv, double *rhs, int *leafarr) {
+	double *z, double *r, double **matrixA, int *ipiv, 
+	double *rhs, int *leafarr, int arridx, double *xtemp, double *ptr) {
 /* r as original while z as scaled */
 // int *psolve(double *z, double *r) {
-  	int i, j, k;
-  	int nrow, nrow2, ibeg = 0, iend = 0;
-  	int inc;
-  	double L1, L2, L3, L4, area;
-  	double tp[3], tq[3], sp[3], sq[3];
-  	double r_s[3], rs, irs, sumrs;
-  	double G0, kappa_rs, exp_kappa_rs, Gk;
-  	double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
-  	double G10, G20, G1, G2, G3, G4;
+
 
 	double pre1, pre2;
   	pre1 = 0.5*(1.0+eps);
@@ -344,14 +347,25 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
   	// while ( idx < nface ) {
 	timer_start((char*) "psolve time");
-	for (int k=0; k<arridx; k++){
-	// Kokkos::parallel_for("psolvemul", arridx, KOKKOS_LAMBDA(int k) {
-		ibeg = leafarr[0+3*k];
-		nrow = leafarr[1+3*k];
-		iend = leafarr[2+3*k];
-		nrow2 = nrow*2;
-	 
+	// for (int k=0; k<arridx; k++){
+	Kokkos::parallel_for("psolvemul", 1, KOKKOS_LAMBDA(int k) {
+		// printf("test beg %d\n", k);
+		int ibeg = leafarr[0+3*k];
+		int nrow = leafarr[1+3*k];
+		int iend = leafarr[2+3*k];
+		int nrow2 = nrow*2;
+
+		int i,j,inc;
+		double tp[3], tq[3], sp[3], sq[3];
+		double r_s[3];
+
+		// printf("test 1 loop %d\n", k);
+	 	// Kokkos::parallel_for("psolvemul2", 10, KOKKOS_LAMBDA(int i){
     	for ( i = ibeg; i <= iend; i++ ) {
+			// int j,inc;
+			// int nrow2 = nrow*2;
+			// int nrow = leafarr[1+3*k];
+    		printf("ibeg iend %d %d \n", ibeg, iend);
     		// tp[0] = tr_xyz2D[0][i];
 			// tp[1] = tr_xyz2D[1][i];
 			// tp[2] = tr_xyz2D[2][i];
@@ -364,8 +378,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 			tq[0] = tr_q[3*i+0];
 			tq[1] = tr_q[3*i+1];
 			tq[2] = tr_q[3*i+2];
+
 			printf("test 1-1 loop %d\n", i);
-			
       		for ( j = ibeg; j < i; j++ ) {
         		// sp[0] = tr_xyz2D[0][j];
         		// sp[1] = tr_xyz2D[1][j];
@@ -381,36 +395,36 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 				sq[2] = tr_q[3*j+2];
 
         		r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
-        		sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
+        		double sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
 
-        		rs = sqrt(sumrs);
-        		irs = 1.0/rs;
-        		G0 = one_over_4pi * irs;
-        		kappa_rs = kappa * rs; //
-        		exp_kappa_rs = exp(-kappa_rs);
-        		Gk = exp_kappa_rs * G0;
+        		double rs = sqrt(sumrs);
+        		double irs = 1.0/rs;
+        		double G0 = one_over_4pi * irs;
+        		double kappa_rs = kappa * rs; //
+        		double exp_kappa_rs = exp(-kappa_rs);
+        		double Gk = exp_kappa_rs * G0;
 		
-        		cos_theta  = (sq[0]*r_s[0] + sq[1]*r_s[1] + sq[2]*r_s[2]) * irs;
-        		cos_theta0 = (tq[0]*r_s[0] + tq[1]*r_s[1] + tq[2]*r_s[2]) * irs;
-        		tp1 = G0* irs;
-        		tp2 = (1.0 + kappa_rs) * exp_kappa_rs;
+        		double cos_theta  = (sq[0]*r_s[0] + sq[1]*r_s[1] + sq[2]*r_s[2]) * irs;
+        		double cos_theta0 = (tq[0]*r_s[0] + tq[1]*r_s[1] + tq[2]*r_s[2]) * irs;
+        		double tp1 = G0* irs;
+        		double tp2 = (1.0 + kappa_rs) * exp_kappa_rs;
 		
-        		G10 = cos_theta0 * tp1;
-        		G20 = tp2 * G10;
+        		double G10 = cos_theta0 * tp1;
+        		double G20 = tp2 * G10;
 		
-        		G1 = cos_theta * tp1;
-        		G2 = tp2 * G1;
+        		double G1 = cos_theta * tp1;
+        		double G2 = tp2 * G1;
 		
-        		dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
-        		G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
-        		G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
+        		double dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
+        		double G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
+        		double G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
 		
-        		area = tr_area[j]; 
+        		double area = tr_area[j]; 
 		
-        		L1 = G1 - eps*G2;
-        		L2 = G0 - Gk;
-        		L3 = G4 - G3;
-        		L4 = G10 - G20/eps;
+        		double L1 = G1 - eps*G2;
+        		double L2 = G0 - Gk;
+        		double L3 = G4 - G3;
+        		double L4 = G10 - G20/eps;
 
         		matrixA[i-ibeg][j-ibeg] = -L1*area;
         		matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
@@ -435,36 +449,36 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
         		sq[0] = tr_q[3*j+0];
         		sq[1] = tr_q[3*j+1];
         		sq[2] = tr_q[3*j+2];
-        		
+
 	        	r_s[0] = sp[0]-tp[0]; r_s[1] = sp[1]-tp[1]; r_s[2] = sp[2]-tp[2];
-				sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
-	        	rs = sqrt(sumrs);
-	        	irs = 1.0/rs;
-	        	G0 = one_over_4pi * irs;
-	        	kappa_rs = kappa * rs;
-	        	exp_kappa_rs = exp(-kappa_rs);
-	        	Gk = exp_kappa_rs * G0;
+				double sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
+	        	double rs = sqrt(sumrs);
+	        	double irs = 1.0/rs;
+	        	double G0 = one_over_4pi * irs;
+	        	double kappa_rs = kappa * rs;
+	        	double exp_kappa_rs = exp(-kappa_rs);
+	        	double Gk = exp_kappa_rs * G0;
 	        	
-	        	cos_theta  = (sq[0]*r_s[0] + sq[1]*r_s[1] + sq[2]*r_s[2]) * irs;
-	        	cos_theta0 = (tq[0]*r_s[0] + tq[1]*r_s[1] + tq[2]*r_s[2]) * irs;
-	        	tp1 = G0* irs;
-	        	tp2 = (1.0 + kappa_rs) * exp_kappa_rs;
+	        	double cos_theta  = (sq[0]*r_s[0] + sq[1]*r_s[1] + sq[2]*r_s[2]) * irs;
+	        	double cos_theta0 = (tq[0]*r_s[0] + tq[1]*r_s[1] + tq[2]*r_s[2]) * irs;
+	        	double tp1 = G0* irs;
+	        	double tp2 = (1.0 + kappa_rs) * exp_kappa_rs;
 		
-	        	G10 = cos_theta0 * tp1;
-	        	G20 = tp2 * G10;
+	        	double G10 = cos_theta0 * tp1;
+	        	double G20 = tp2 * G10;
 			
-	        	G1 = cos_theta * tp1;
-	        	G2 = tp2 * G1;
+	        	double G1 = cos_theta * tp1;
+	        	double G2 = tp2 * G1;
 			
-	        	dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
-	        	G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
-	        	G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
-	        	area = tr_area[j];
+	        	double dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
+	        	double G3 = (dot_tqsq - 3.0*cos_theta0*cos_theta) * irs*tp1;
+	        	double G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
+	        	double area = tr_area[j];
 		
-	        	L1 = G1 - eps*G2;
-	        	L2 = G0 - Gk;
-	        	L3 = G4 - G3;
-	        	L4 = G10 - G20/eps;
+	        	double L1 = G1 - eps*G2;
+	        	double L2 = G0 - Gk;
+	        	double L3 = G4 - G3;
+	        	double L4 = G10 - G20/eps;
 		
 	        	matrixA[i-ibeg][j-ibeg] = -L1*area;
 	        	matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
@@ -473,20 +487,24 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		}
     	}
 
+    	// printf("test 2nd loop %d\n", k);
     	for ( i = 0; i < nrow; i++) {
       		rhs[i] = r[i+ibeg];
       		rhs[i+nrow] = r[i+ibeg+nface];
     	}
 
+    	// Kokkos::fence();
     	// inc = lu_decomp( matrixA, nrow2, ipiv );
     	// lu_solve( matrixA, nrow2, ipiv, rhs );
 
 /////////inc = lu_decomp( matrixA, nrow2, ipiv );/////////////////
 	// int lu_decomp( double **A, int N, int *ipiv ) {
 		int ii, jj, kk, imax;
-		double maxA, *ptr, absA, Tol = 1.0e-14;
+		double maxA, absA, Tol = 1.0e-14;
 		int flag = 0; //yang
-
+		// double *ptr;
+		// double ptr;
+		// printf("test 3rd loop %d\n", k);
 	  	for ( ii = 0; ii <= nrow2; ii++ ){
 	   		ipiv[ii] = ii; // record pivoting number
 	  	}
@@ -509,9 +527,16 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		   	  	ipiv[ii] = ipiv[imax];
 		   	  	ipiv[imax] = jj;	
 		   	  	//pivoting rows of A
-		   	  	ptr = matrixA[ii];
-		   	  	matrixA[ii] = matrixA[imax];
-		   	  	matrixA[imax] = ptr;	
+		   	  	// ptr = matrixA[ii];
+		   	  	// matrixA[ii] = matrixA[imax];
+		   	  	// matrixA[imax] = ptr;			   	  
+		   	  	for (jj = 0; jj < 2*maxparnode; jj++){
+		   	  		ptr[jj] = matrixA[ii][jj];
+			   	  	matrixA[ii][jj] = matrixA[imax][jj];
+			   	  	matrixA[imax][jj] = ptr[jj];	
+		   	  	}
+
+
 		   	  	//counting pivots starting from N (for determinant)
 		   	  	ipiv[nrow2]++;
 		   	}	
@@ -526,7 +551,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	  	if (flag == nrow2-1){
 			inc = 1;
 	  	}
-	  	
+
+	  	// Kokkos::fence();
 	//     return 1;
 	// }
 ///////////////////////////////////////////////////////////////
@@ -534,10 +560,12 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 ////////////// lu_solve( matrixA, nrow2, ipiv, rhs ); ////////////
 	// void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
-	  	double *xtemp;
+	  	// double *xtemp;
+	  	// xtemp=(double *) calloc(nrow2, sizeof(double));
 
-	  	// make_vector(xtemp, N);
-	  	xtemp=(double *) calloc(nrow2, sizeof(double));
+
+//
+	  	// Kokkos::View<double*, Kokkos::CudaUVMSpace> xtemp("xtemp", nrow2);
 	  	// xtemp = (double *) Kokkos::kokkos_malloc(nrow2* sizeof(double));
 	  	int iii, kkk ;
 	  	for (iii = 0; iii < nrow2; iii++) {
@@ -556,49 +584,29 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	    	xtemp[iii] = xtemp[iii] / matrixA[iii][iii];
 	  	}
 
+//
+		// int iii, kkk ;
 	  	for (iii = 0; iii < nrow2; iii++) {
 	    	rhs[iii] = xtemp[iii];
+	    	// rhs[iii] = 1.0;
 	  	}
-	  	// free_vector(xtemp);
-	  	free(xtemp);
-	  	// Kokkos::kokkos_free(xtemp);
+
 //////////////////////////////////////////////////////////////
 
-
+	  	// Kokkos::fence();
 
     	for ( i = 0; i < nrow; i++) {
       		z[i+ibeg] = rhs[i];
       		z[i+ibeg+nface] = rhs[i+nrow];
     	}
+		printf("test end %d\n", k);
 
-    	//printf("%d %d %d %d\n", idx, ibeg, iend, nrow);
-
-
-
-  	}
-    // });
+    });
 	timer_end();
 
-	// Kokkos::fence();
+	Kokkos::fence();
   	printf("Nleafc is %d\n",Nleafc);
-  	// free_matrix(matrixA);
-  	// free_vector(rhs);
-  	// free_vector(ipiv);
 
-    // for(i=0;i<2*maxparnode;i++) {
-	// 	free(matrixA[i]);
-	// }	
-	// free(matrixA);
-
-  	// free(rhs);
-  	// free(ipiv);
-	// free(leafarr);
-  	// for ( i = 0; i < nface; i++) {
-  	//   z[i] = r[i]/pre1;
-  	//   z[i+nface] = r[i+nface]/pre2;
-  	// }
-
-  	// return 0;
 
 }
 
