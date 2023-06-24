@@ -592,16 +592,16 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	   		xtemp[iii] = rhs[ipiv[iii]];
 
 	   		for (kkk = 0; kkk < iii; kkk++){
-	      		xtemp[iii] -= matrixA[iii][kkk] * xtemp[kkk];
+	      		xtemp[iii] -= matrixA(iii,kkk) * xtemp[kkk];
 	   		}
 	  	}
 
 	  	for (iii = nrow2 - 1; iii >= 0; iii--) {
 	    	for (kkk = iii + 1; kkk < nrow2; kkk++){
-	      		xtemp[iii] -= matrixA[iii][kkk] * xtemp[kkk];
+	      		xtemp[iii] -= matrixA(iii,kkk) * xtemp[kkk];
 	    	}
 
-	    	xtemp[iii] = xtemp[iii] / matrixA[iii][iii];
+	    	xtemp[iii] = xtemp[iii] / matrixA(iii,iii);
 	  	}
 
 //
