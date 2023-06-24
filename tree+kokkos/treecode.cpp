@@ -356,7 +356,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
   	Kokkos::parallel_for (Kokkos::RangePolicy<HostExecSpace>(0,2*maxparnode), KOKKOS_LAMBDA(int i) {
     	for ( int j = 0; j < 2*maxparnode; ++j ) {
-      		matrixA_h( i,j ) = 0;
+      		matrixA_h( i,j ) = 1;
     	}
   	});
 
