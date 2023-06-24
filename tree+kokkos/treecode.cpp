@@ -532,7 +532,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	   		maxA = 0.0;
 	   		imax = ii;
 	   		for (kk = ii; kk < nrow2; kk++){
-	   	  		if ((absA = fabs(matrixA[kk][ii])) > maxA) {
+	   	  		if ((absA = fabs(matrixA(kk,ii))) > maxA) {
 	   	   			maxA = absA;
 	   	    		imax = kk;
 	   			}
@@ -551,9 +551,9 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		   	  	// matrixA[ii] = matrixA[imax];
 		   	  	// matrixA[imax] = ptr;			   	  
 		   	  	for (jj = 0; jj < 2*maxparnode; jj++){
-		   	  		ptr[jj] = matrixA[ii][jj];
-			   	  	matrixA[ii][jj] = matrixA[imax][jj];
-			   	  	matrixA[imax][jj] = ptr[jj];	
+		   	  		ptr[jj] = matrixA(ii,jj);
+			   	  	matrixA(ii,jj) = matrixA(imax,jj);
+			   	  	matrixA(imax,jj) = ptr[jj];	
 		   	  	}
 
 
@@ -561,9 +561,9 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		   	  	ipiv[nrow2]++;
 		   	}	
 	   		for (jj = ii + 1; jj < nrow2; jj++) {
-	   	  		matrixA[jj][ii] /= matrixA[ii][ii];	
+	   	  		matrixA(jj,ii) /= matrixA(ii,ii);	
 	   	  		for (kk = ii + 1; kk < nrow2; kk++){
-	   	  	 		matrixA[jj][kk] -= matrixA[jj][ii] * matrixA[ii][kk];
+	   	  	 		matrixA(jj,kk) -= matrixA(jj,ii) * matrixA(ii,kk);
 	   	  		}
 	   		}
 	   		flag = flag + 1;
