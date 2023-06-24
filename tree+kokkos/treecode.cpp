@@ -489,7 +489,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		rhs[i] = r[i+ibeg];
       		rhs[i+nrow] = r[i+ibeg+nface];
     	}
-    	Kokkos::fence();
+    	// Kokkos::fence();
     	// inc = lu_decomp( matrixA, nrow2, ipiv );
     	// lu_solve( matrixA, nrow2, ipiv, rhs );
 
@@ -546,7 +546,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	  	if (flag == nrow2-1){
 			inc = 1;
 	  	}
-	  	Kokkos::fence();
+	  	// Kokkos::fence();
 	//     return 1;
 	// }
 ///////////////////////////////////////////////////////////////
@@ -587,13 +587,13 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 //////////////////////////////////////////////////////////////
 
-	  	Kokkos::fence();
+	  	// Kokkos::fence();
 
     	for ( i = 0; i < nrow; i++) {
       		z[i+ibeg] = rhs[i];
       		z[i+ibeg+nface] = rhs[i+nrow];
     	}
-
+		printf("test end %d\n", k);
 
     });
 	timer_end();
