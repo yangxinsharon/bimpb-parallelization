@@ -381,8 +381,9 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 			tq[1] = tr_q[3*i+1];
 			tq[2] = tr_q[3*i+2];
 
-			printf("test 1-1 loop %d\n", i);
+			// printf("test 1-1 loop %d\n", i);
 			int j = ibeg;
+			printf("test 1-1 loop %d\n", i);
 			if (j != i) {
 				// printf("test 1-3 loop %d\n", i); //not printing
       			for ( j = ibeg; j < i; j++ ) {
