@@ -300,6 +300,8 @@ int *psolve(double *z, double *r) {
     xtemp = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
     ptr = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
 
+
+    // Kokkos::View<double**, Kokkos::CudaSpace> matrixA("A",2*maxparnode,2*maxparnode);
 	int idx = 0, nrow = 0, ibeg = 0, iend = 0;
 	arridx = 0; // extern variable
 	while ( idx < nface ) {
@@ -350,6 +352,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	// for (int k=0; k<arridx; k++){
 	Kokkos::parallel_for("psolvemul", 1, KOKKOS_LAMBDA(int k) {
 		// printf("test beg %d\n", k); arridx
+		Kokkos::View<double**, Kokkos::CudaSpace> matrixA("A",2*maxparnode,2*maxparnode);
 		int ibeg = leafarr[0+3*k];
 		int nrow = leafarr[1+3*k];
 		int iend = leafarr[2+3*k];
