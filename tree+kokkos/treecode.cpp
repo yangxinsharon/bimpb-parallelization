@@ -300,7 +300,7 @@ int *psolve(double *z, double *r) {
     xtemp = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
     ptr = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
 	
-	Kokkos::View<double**, Kokkos::CudaSpace> matrixA_dev("A",2*maxparnode,2*maxparnode);
+	// Kokkos::View<double**, Kokkos::CudaSpace> matrixA_dev("A",2*maxparnode,2*maxparnode);
 
     // Kokkos::View<double**, Kokkos::CudaSpace> matrixA("A",2*maxparnode,2*maxparnode);
 	int idx = 0, nrow = 0, ibeg = 0, iend = 0;
@@ -351,6 +351,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	// while ( idx < nface ) {
 	timer_start((char*) "psolve time");
 	// for (int k=0; k<arridx; k++){
+	Kokkos::View<double**, Kokkos::CudaSpace> matrixA_dev("A",2*maxparnode,2*maxparnode);
 	Kokkos::parallel_for("psolvemul", Kokkos::RangePolicy<DevExecSpace> (0,1), KOKKOS_LAMBDA(int k) {
 		// printf("test beg %d\n", k); arridx
 		// 
@@ -425,15 +426,19 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
         			double L3 = G4 - G3;
         			double L4 = G10 - G20/eps;
 	
-        			matrixA[i-ibeg][j-ibeg] = -L1*area;
-        			matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
-        			matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
-        			matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
+        			// matrixA[i-ibeg][j-ibeg] = -L1*area;
+        			// matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
+        			// matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
+        			// matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
+        			matrixA_dev(i-ibeg,j-ibeg) = -L1*area;
+        			matrixA_dev(i-ibeg,j+nrow-ibeg) = -L2*area;
+        			matrixA_dev(i+nrow-ibeg,j-ibeg) = -L3*area;
+        			matrixA_dev(i+nrow-ibeg,j+nrow-ibeg) = -L4*area;
       			} 
       		}
 			printf("test 1-2 loop %d\n", i);
-      		matrixA[i-ibeg][i-ibeg] = pre1;
-      		matrixA[i+nrow-ibeg][i+nrow-ibeg] = pre2;
+      		matrixA_dev(i-ibeg,i-ibeg) = pre1;
+      		matrixA_dev(i+nrow-ibeg,i+nrow-ibeg) = pre2;
 
 			printf("test 1-2 loop %d\n", i);
       		for ( j = i+1; j <= iend; j++ ) {
