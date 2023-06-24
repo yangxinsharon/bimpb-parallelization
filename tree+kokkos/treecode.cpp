@@ -379,11 +379,11 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 			// printf("test 1-1 loop %d\n", i);
 			int j = ibeg;
-			printf("test 1-1 loop %d\n", i);
+			// printf("test 1-1 loop %d\n", i);
 			if (j != i) {
 				// printf("test 1-3 loop %d\n", i); //not printing
       			for ( j = ibeg; j < i; j++ ) {
-      				printf("test 1-3 loop %d\n", j); //not printing
+      				// printf("test 1-3 loop %d\n", j); //not printing
         			// sp[0] = tr_xyz2D[0][j];
         			// sp[1] = tr_xyz2D[1][j];
         			// sp[2] = tr_xyz2D[2][j];
@@ -439,11 +439,11 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
         			matrixA_dev(i+nrow-ibeg,j+nrow-ibeg) = -L4*area;
       			} 
       		}
-			printf("test 1-2 loop %d\n", i);
+			// printf("test 1-2 loop %d\n", i);
       		matrixA_dev(i-ibeg,i-ibeg) = pre1;
       		matrixA_dev(i+nrow-ibeg,i+nrow-ibeg) = pre2;
 
-			printf("test 1-2 loop %d\n", i);
+			// printf("test 1-2 loop %d\n", i);
       		for ( j = i+1; j <= iend; j++ ) {
       			// printf("test 1-2 loop %d\n", i);// can print
 
@@ -490,7 +490,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	        	double L2 = G0 - Gk;
 	        	double L3 = G4 - G3;
 	        	double L4 = G10 - G20/eps;
-				printf("test 1-2a loop %d\n", i); //can print
+				// printf("test 1-2a loop %d\n", i); //can print
 	        	// matrixA[i-ibeg][j-ibeg] = -L1*area;
 	        	// matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
 	        	// matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
@@ -499,11 +499,11 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	        	matrixA_dev(i-ibeg,j+nrow-ibeg) = -L2*area;
 	        	matrixA_dev(i+nrow-ibeg,j-ibeg) = -L3*area;
 	        	matrixA_dev(i+nrow-ibeg,j+nrow-ibeg) = -L4*area;	        	
-	        	printf("test 1-2b loop %d\n", i); //can print
+	        	// printf("test 1-2b loop %d\n", i); //can print
       		}
     	}
 
-    	printf("test 2nd loop %d\n", k);
+    	// printf("test 2nd loop %d\n", k);
     	for ( i = 0; i < nrow; i++) {
       		rhs[i] = r[i+ibeg];
       		rhs[i+nrow] = r[i+ibeg+nface];
@@ -520,7 +520,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		int flag = 0; //yang
 		// double *ptr;
 		// double ptr;
-		// printf("test 3rd loop %d\n", k);
+		printf("test 3rd loop %d\n", k);
 	  	for ( ii = 0; ii <= nrow2; ii++ ){
 	   		ipiv[ii] = ii; // record pivoting number
 	  	}
