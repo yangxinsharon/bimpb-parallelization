@@ -365,7 +365,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 			// int j,inc;
 			// int nrow2 = nrow*2;
 			// int nrow = leafarr[1+3*k];
-    		printf("ibeg iend %d %d \n", ibeg, iend);
+    		printf("ibeg iend i %d %d %d \n", ibeg, iend, i);
     		// tp[0] = tr_xyz2D[0][i];
 			// tp[1] = tr_xyz2D[1][i];
 			// tp[2] = tr_xyz2D[2][i];
@@ -439,6 +439,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		matrixA[i-ibeg][i-ibeg] = pre1;
       		matrixA[i+nrow-ibeg][i+nrow-ibeg] = pre2;
 
+			printf("test 1-2 loop %d\n", i);
       		for ( j = i+1; j <= iend; j++ ) {
         		// sp[0] = tr_xyz2D[0][j];
         		// sp[1] = tr_xyz2D[1][j];
