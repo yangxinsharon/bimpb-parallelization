@@ -379,7 +379,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 			tq[1] = tr_q[3*i+1];
 			tq[2] = tr_q[3*i+2];
 
-			// printf("test 1-1 loop %d\n", i);
+			printf("test 1-1 loop %d\n", i);
       		for ( j = ibeg; j < i; j++ ) {
         		// sp[0] = tr_xyz2D[0][j];
         		// sp[1] = tr_xyz2D[1][j];
@@ -487,7 +487,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		}
     	}
 
-    	printf("test 2nd loop %d\n", k);
+    	// printf("test 2nd loop %d\n", k);
     	for ( i = 0; i < nrow; i++) {
       		rhs[i] = r[i+ibeg];
       		rhs[i+nrow] = r[i+ibeg+nface];
