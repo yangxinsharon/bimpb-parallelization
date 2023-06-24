@@ -355,7 +355,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	Kokkos::View<double**, Kokkos::CudaSpace>::HostMirror matrixA_h = Kokkos::create_mirror_view( matrixA_dev );
 
 	Kokkos::deep_copy( matrixA_dev, matrixA_h );
-	Kokkos::parallel_for("psolvemul", Kokkos::RangePolicy<DevExecSpace> (0,1), KOKKOS_LAMBDA(int k) {
+	Kokkos::parallel_for("psolvemul", Kokkos::RangePolicy<DevExecSpace> (0,arridx), KOKKOS_LAMBDA(int k) {
 		// printf("test beg %d\n", k); arridx
 		// 
 		int ibeg = leafarr[0+3*k];
