@@ -59,4 +59,5 @@ double **matrixA;
 int *ipiv, *leafarr;
 double *rhs;
 int Nleaf, arridx;
+double *xtemp;
 #endif
