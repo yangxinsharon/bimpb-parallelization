@@ -520,7 +520,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		int flag = 0; //yang
 		// double *ptr;
 		// double ptr;
-		printf("test 3rd loop %d\n", k);
+		// printf("test 3rd loop %d\n", k);
 	  	for ( ii = 0; ii <= nrow2; ii++ ){
 	   		ipiv[ii] = ii; // record pivoting number
 	  	}
@@ -615,7 +615,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		z[i+ibeg] = rhs[i];
       		z[i+ibeg+nface] = rhs[i+nrow];
     	}
-		printf("test end %d\n", k);
+		// printf("test end %d\n", k);
 
     });
 	timer_end();
