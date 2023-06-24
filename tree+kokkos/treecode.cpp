@@ -446,7 +446,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 			// printf("test 1-2 loop %d\n", i);
       		for ( j = i+1; j <= iend; j++ ) {
-      			printf("test 1-2 loop %d\n", i);
+      			// printf("test 1-2 loop %d\n", i); can print
+
         		// sp[0] = tr_xyz2D[0][j];
         		// sp[1] = tr_xyz2D[1][j];
         		// sp[2] = tr_xyz2D[2][j];
@@ -490,11 +491,12 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	        	double L2 = G0 - Gk;
 	        	double L3 = G4 - G3;
 	        	double L4 = G10 - G20/eps;
-		
+				printf("test 1-2a loop %d\n", i); can print
 	        	matrixA[i-ibeg][j-ibeg] = -L1*area;
 	        	matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
 	        	matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
 	        	matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
+	        	printf("test 1-2b loop %d\n", i); can print
       		}
     	}
 
