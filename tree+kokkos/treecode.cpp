@@ -614,15 +614,16 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		z[i+ibeg+nface] = rhs[i+nrow];
     	}
 
-    	// printf("%f %f \n",matrixA_dev(0,0), matrixA_dev(2*maxparnode,2*maxparnode));
+    	printf("%f %f \n",matrixA_dev(0,0), matrixA_dev(2*maxparnode,2*maxparnode));
 
 
 
   	// }
     });
-	timer_end();
+	
 
-	// Kokkos::fence();
+	Kokkos::fence();
+	timer_end();
   	printf("Nleafc is %d\n",Nleafc);
 
 }
