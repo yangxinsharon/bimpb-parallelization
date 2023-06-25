@@ -77,7 +77,7 @@ extern double *matrixA1D;
 /* internal functions */
 int *psolve(double *z, double *r);
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-	double *z, double *r, double *matrixA, int *ipiv, double *rhs, int *leafarr,
+	double *z, double *r, double *matrixA1D, int *ipiv, double *rhs, int *leafarr,
 	int arridx, double *xtemp, double *ptr);
 int Setup(double xyz_limits[6]);
 int Partition(double *a, double *b, double *c, int *indarr,
@@ -338,7 +338,7 @@ int *psolve(double *z, double *r) {
 
 /**********************************************************/
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-	double *z, double *r, double *matrixA, int *ipiv,
+	double *z, double *r, double *matrixA1D, int *ipiv,
 	double *rhs, int *leafarr, int arridx, double *xtemp, double *ptr) {
 /* r as original while z as scaled */
 // int *psolve(double *z, double *r) {
