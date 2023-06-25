@@ -367,7 +367,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	// }
 	// Kokkos::fence();
 
-	Kokkos::deep_copy( matrixA_dev, matrixA_h );
+	// Kokkos::deep_copy( matrixA_dev, matrixA_h );
 	// for (int k=0; k<arridx; k++){
 	Kokkos::parallel_for("psolvemul", dev_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
 	  	// printf("matrixA_dev(0,0) is %f\n", matrixA_dev(0,0));
