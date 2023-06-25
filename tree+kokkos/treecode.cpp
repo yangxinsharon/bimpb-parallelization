@@ -566,7 +566,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 		   	  	for (jj = 0; jj < 2*maxparnode; jj++){
 		   	  		ptr[jj] = matrixA1D[ii*2*maxparnode+jj];
-			   	  	matrixA1D[ii*2*maxparnode+jj] = matrixA1D(imax*2*maxparnode+jj);
+			   	  	matrixA1D[ii*2*maxparnode+jj] = matrixA1D[imax*2*maxparnode+jj];
 			   	  	matrixA1D[imax*2*maxparnode+jj] = ptr[jj];	
 		   	  	}
 		   	  	//counting pivots starting from N (for determinant)
