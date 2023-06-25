@@ -93,7 +93,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 /* This subroutine wraps the matrix-vector multiplication */
 int *matvec(double *alpha, double *x, double *beta, double *y) {
     matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta);
-    printf("test1");
+    // printf("test1 \n");
     return NULL;
 }
 
