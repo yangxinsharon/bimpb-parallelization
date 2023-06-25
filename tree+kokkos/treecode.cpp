@@ -365,12 +365,20 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	}
 
 
-	for (int k=0; k<arridx; k++){
-	// Kokkos::parallel_for("psolvemul", arridx, KOKKOS_LAMBDA(int k) {
-		ibeg = leafarr[0+3*k];
-		nrow = leafarr[1+3*k];
-		iend = leafarr[2+3*k];
-		nrow2 = nrow*2;
+	// for (int k=0; k<arridx; k++){
+	Kokkos::parallel_for("psolvemul", host_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
+	  	int i,j,inc;
+  		double L1, L2, L3, L4, area;
+  		double tp[3], tq[3], sp[3], sq[3];
+  		double r_s[3], rs, irs, sumrs;
+  		double G0, kappa_rs, exp_kappa_rs, Gk;
+  		double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
+  		double G10, G20, G1, G2, G3, G4;
+
+		int ibeg = leafarr[0+3*k];
+		int nrow = leafarr[1+3*k];
+		int iend = leafarr[2+3*k];
+		int nrow2 = nrow*2;
 	 
     	for ( i = ibeg; i <= iend; i++ ) {
    
