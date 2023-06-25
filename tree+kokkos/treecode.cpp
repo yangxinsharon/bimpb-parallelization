@@ -613,8 +613,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 
 
-  	}
-    // });
+  	// }
+    });
 	timer_end();
 
 	// Kokkos::fence();
