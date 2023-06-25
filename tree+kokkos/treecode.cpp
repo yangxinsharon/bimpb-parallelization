@@ -111,9 +111,6 @@ int TreecodeInitialization() {
 
     level = 0;
 
-    // make_matrix(temp_normal, 3, s_numpars);
-    // make_vector(temp_area, nface);
-    // make_vector(temp_source, 2 * nface);
     temp_normal = Make2DDoubleArray(3,nface,"temp_normal");
     temp_area=(double *) calloc(nface, sizeof(double));
     temp_source=(double *) calloc(2*nface, sizeof(double));
@@ -143,9 +140,6 @@ int TreecodeInitialization() {
         bvct[i + nface] = temp_source[s_order_arr[i] + nface];
     }
 
-    // free_matrix(temp_normal);
-    // free_vector(temp_area);
-    // free_vector(temp_source);
 	for(i=0;i<3;i++) {
 		free(temp_normal[i]);
 	}	
@@ -153,8 +147,6 @@ int TreecodeInitialization() {
 	free(temp_area);
 	free(temp_source);
 
-    // make_3array(s_target_charge, nface, 2, 16);
-    // make_3array(s_source_charge, nface, 2, 16);
 
     // transform tr_xyz2D and tr_q2D to 1 dimension
 	for (j=0; j<nface; j++){
@@ -178,11 +170,6 @@ int TreecodeFinalization()
 
 /***********reorder particles*************/
 
-    // make_matrix(temp_position, 3, nface);
-    // make_matrix(temp_normal, 3, nface);
-    // make_vector(temp_area, nface);
-    // make_vector(temp_source, 2 * nface);
-    // make_vector(temp_xvct, 2 * nface);
     temp_position=Make2DDoubleArray(3,nface,"temp_position");
     temp_normal=Make2DDoubleArray(3,nface,"temp_normal");
     temp_area=(double *) calloc(nface, sizeof(double));
@@ -213,11 +200,6 @@ int TreecodeFinalization()
         xvct[s_order_arr[i] + nface] = temp_xvct[i + nface];
     }
 
-    // free_matrix(temp_position);
-    // free_matrix(temp_normal);
-    // free_vector(temp_area);
-    // free_vector(temp_source);
-    // free_vector(temp_xvct);
     for(i=0;i<3;i++) {
 		free(temp_position[i]);
 	}	
@@ -233,13 +215,10 @@ int TreecodeFinalization()
 
 
 /***********clean tree structure**********/
-    // free_3array(s_target_charge);
-    // free_3array(s_source_charge);
 
     RemoveNode(s_tree_root);
     free(s_tree_root);
 
-    // free_vector(s_order_arr);
 /*****************************************/
 
     printf("\nTABIPB tree structure has been deallocated.\n\n");
@@ -288,11 +267,8 @@ void leaflength(TreeNode *p, int idx) {
 
 
 int *psolve(double *z, double *r) {
-	// printf("test1\n");
 	matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
-	// ipiv = (int *) calloc(2*maxparnode, sizeof(int));
-	// rhs = (double *) calloc(2*maxparnode , sizeof(double));
-	// leafarr = (int *) calloc(3*Nleaf, sizeof(int));
+
 	ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
 	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
 	leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
@@ -300,9 +276,6 @@ int *psolve(double *z, double *r) {
     xtemp = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
     ptr = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
 	
-	// Kokkos::View<double**, Kokkos::CudaSpace> matrixA_dev("A",2*maxparnode,2*maxparnode);
-
-    // Kokkos::View<double**, Kokkos::CudaSpace> matrixA("A",2*maxparnode,2*maxparnode);
 	int idx = 0, nrow = 0, ibeg = 0, iend = 0;
 	arridx = 0; // extern variable
 	while ( idx < nface ) {
@@ -348,19 +321,23 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 
 	timer_start((char*) "psolve time");
-	Kokkos::View<double**,  Kokkos::LayoutRight, Kokkos::CudaSpace> matrixA_dev("matrixA_dev",2*maxparnode,2*maxparnode);
-  	Kokkos::View<double**,Kokkos::LayoutRight,  Kokkos::CudaSpace>::HostMirror matrixA_h = Kokkos::create_mirror_view( matrixA_dev );
+	// Kokkos::View<double**,  Kokkos::LayoutRight, Kokkos::CudaSpace> matrixA_dev("matrixA_dev",2*maxparnode,2*maxparnode);
+  	// Kokkos::View<double**, Kokkos::LayoutRight,  Kokkos::CudaSpace>::HostMirror matrixA_h = Kokkos::create_mirror_view( matrixA_dev );
+
+	ViewMatrixDouble matrixA_dev("matrixA_dev",2*maxparnode,2*maxparnode);;
+	ViewMatrixDouble::HostMirror matrixA_h = Kokkos::create_mirror_view( matrixA_dev );
 
   	// Kokkos::parallel_for (Kokkos::RangePolicy<HostExecSpace>(0,2*maxparnode), KOKKOS_LAMBDA(int i) {
-    // 	for ( int j = 0; j < 2*maxparnode; ++j ) {
-    //   		matrixA_h( i,j ) = 1;
-    // 	}
-  	// });
-  	for (int i =0; i<2*maxparnode; i++){
-  		for (int j =0; j<2*maxparnode; j++){
-  			matrixA_h( i,j ) = 0;
-  		}
-  	}
+    Kokkos::parallel_for ( host_range_policy(0,2*maxparnode), KOKKOS_LAMBDA(int i) {
+    	for ( int j = 0; j < 2*maxparnode; j++ ) {
+      		matrixA_h( i,j ) = 0;
+    	}
+  	});
+  	// for (int i =0; i<2*maxparnode; i++){
+  	// 	for (int j =0; j<2*maxparnode; j++){
+  	// 		matrixA_h( i,j ) = 0;
+  	// 	}
+  	// }
 
 	Kokkos::deep_copy( matrixA_dev, matrixA_h );
 	Kokkos::parallel_for("psolvemul", Kokkos::RangePolicy<Kokkos::Cuda>(0,arridx), KOKKOS_LAMBDA(int k) {
@@ -601,7 +578,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		z[i+ibeg+nface] = rhs[i+nrow];
     	}
 		// printf("test end %d\n", k);
-    	printf("%f %f \n",matrixA_dev(0,0), matrixA_dev(2*maxparnode,2*maxparnode));		
+    	// printf("%f %f \n",matrixA_dev(0,0), matrixA_dev(2*maxparnode,2*maxparnode));		
 
     });
 	timer_end();
