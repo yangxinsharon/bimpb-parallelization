@@ -582,7 +582,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
     	// printf("%f %f \n",matrixA_dev(0,0), matrixA_dev(2*maxparnode,2*maxparnode));		
 
     });
-	// timer_end();
+	timer_end();
 
 	Kokkos::fence();
 	// Kokkos::deep_copy( matrixA_h, matrixA_dev );

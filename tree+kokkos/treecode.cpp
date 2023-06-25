@@ -338,38 +338,38 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	double *rhs, int *leafarr, int arridx, double *xtemp, double *ptr) {
 /* r as original while z as scaled */
 // int *psolve(double *z, double *r) {
-  	int i, j, k;
-  	int nrow, nrow2, ibeg = 0, iend = 0;
-  	int inc;
-  	double L1, L2, L3, L4, area;
-  	double tp[3], tq[3], sp[3], sq[3];
-  	double r_s[3], rs, irs, sumrs;
-  	double G0, kappa_rs, exp_kappa_rs, Gk;
-  	double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
-  	double G10, G20, G1, G2, G3, G4;
+  	// int i, j, k;
+  	// int nrow, nrow2, ibeg = 0, iend = 0;
+  	// int inc;
+  	// double L1, L2, L3, L4, area;
+  	// double tp[3], tq[3], sp[3], sq[3];
+  	// double r_s[3], rs, irs, sumrs;
+  	// double G0, kappa_rs, exp_kappa_rs, Gk;
+  	// double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
+  	// double G10, G20, G1, G2, G3, G4;
 
 	double pre1, pre2;
   	pre1 = 0.5*(1.0+eps);
   	pre2 = 0.5*(1.0+1.0/eps);
 
 
-  	// while ( idx < nface ) {
 	timer_start((char*) "psolve time");
-	// Kokkos::View<double**, Kokkos::HostSpace> matrixA_dev("matrixA_dev",2*maxparnode,2*maxparnode);
+	Kokkos::View<double**, Kokkos::HostSpace> matrixA_dev("matrixA_dev",2*maxparnode,2*maxparnode);
 
 
-	ViewMatrixDouble matrixA_dev("matrixA_dev",2*maxparnode,2*maxparnode);
-	ViewMatrixDouble::HostMirror matrixA_h = Kokkos::create_mirror_view( matrixA_dev );
+	// ViewMatrixDouble matrixA_dev("matrixA_dev",2*maxparnode,2*maxparnode);
+	// ViewMatrixDouble::HostMirror matrixA_h = Kokkos::create_mirror_view( matrixA_dev );
+  	
   	for (int i =0; i<2*maxparnode; i++){
   		for (int j =0; j<2*maxparnode; j++){
-  			matrixA_h( i,j ) = 0;
+  			matrixA_dev( i,j ) = 0;
   		}
   	}
 	Kokkos::fence();
 
-	Kokkos::deep_copy( matrixA_dev, matrixA_h );
+	// Kokkos::deep_copy( matrixA_dev, matrixA_h );
 	// for (int k=0; k<arridx; k++){
-	Kokkos::parallel_for("psolvemul", dev_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
+	Kokkos::parallel_for("psolvemul", host_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
 	  	// printf("matrixA_dev(0,0) is %f\n", matrixA_dev(0,0));
 	  	int i,j,inc;
   		double L1, L2, L3, L4, area;
