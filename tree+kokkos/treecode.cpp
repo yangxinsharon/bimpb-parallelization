@@ -588,7 +588,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	   		for (kkk = 0; kkk < iii; kkk++){
 	      		// xtemp[iii] -= matrixA[iii][kkk] * xtemp[kkk];
 	      		xtemp[iii] -= matrixA_dev(iii,kkk) * xtemp[kkk];	   
-	      		printf("%d %d %f \n",iii,kkk,matrixA_dev(iii,kkk));   		
+	      		// printf("%d %d %f \n",iii,kkk,matrixA_dev(iii,kkk));   		
 	   		}
 	  	}
 
