@@ -11,6 +11,6 @@ typedef Kokkos::RangePolicy<DevExecSpace>   dev_range_policy;
 
 typedef Kokkos::View<double*, Layout, MemSpace>   ViewVectorDouble;
 typedef Kokkos::View<double**, Layout, MemSpace>  ViewMatrixDouble;
-typedef Kokkos::View<double*, Layout, MemSpace>   ViewVectorInt;
-typedef Kokkos::View<double**, Layout, MemSpace>  ViewMatrixInt;
+typedef Kokkos::View<int*, Layout, MemSpace>   ViewVectorInt;
+typedef Kokkos::View<int**, Layout, MemSpace>  ViewMatrixInt;
 #endif
