@@ -455,7 +455,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
       		}
 
-      		Kokkos::fence();
+      		
       		// matrixA[i-ibeg][i-ibeg] = pre1;
       		// matrixA[i+nrow-ibeg][i+nrow-ibeg] = pre2;
       		// matrixA_dev(i-ibeg,i-ibeg) = pre1;
@@ -516,7 +516,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	        	matrixA1D[(i+nrow-ibeg)*2*maxparnode	+j+nrow-ibeg] = -L4*area;
       		}
     	}
-    	Kokkos::fence();
+
 
     	for ( i = 0; i < nrow; i++) {
       		rhs[i] = r[i+ibeg];
@@ -535,7 +535,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	  	for ( ii = 0; ii <= nrow2; ii++ ){
 	   		ipiv[ii] = ii; // record pivoting number
 	  	}
-	  	Kokkos::fence();
+
 	  	for ( ii = 0; ii < nrow2; ii++ ) {
 	   		maxA = 0.0;
 	   		imax = ii;
@@ -600,7 +600,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	  	if (flag == nrow2-1){
 			inc = 1;
 	  	}
-	  	Kokkos::fence();
+
 ///////////////////////////////////////////////////////////////
 
 
@@ -643,7 +643,6 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
     	// printf("%f %f \n",matrixA_dev(0,0), matrixA_dev(2*maxparnode,2*maxparnode));
 
-    	Kokkos::fence();
 
   	// }
     });
