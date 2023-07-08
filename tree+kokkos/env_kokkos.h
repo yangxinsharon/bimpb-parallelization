@@ -14,3 +14,5 @@ typedef Kokkos::View<double**, Layout, MemSpace>  ViewMatrixDouble;
 typedef Kokkos::View<int*, Layout, MemSpace>   ViewVectorInt;
 typedef Kokkos::View<int**, Layout, MemSpace>  ViewMatrixInt;
 #endif
+
+// #if defined(USE_UVM)

@@ -333,6 +333,8 @@ int *psolve(double *z, double *r) {
 	Kokkos::kokkos_free(ptr);
 	Kokkos::kokkos_free(matrixA1D);
 
+	// stop, only run once 0707
+	std::abort();
     return NULL;
 }
 
@@ -387,7 +389,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		int nrow = leafarr[1+3*k];
 		int iend = leafarr[2+3*k];
 		int nrow2 = nrow*2;
-	 
+	 	
+	 	// print k; 0707
     	for ( i = ibeg; i <= iend; i++ ) {
    
     		tp[0] = tr_xyz[3*i+0];
@@ -567,11 +570,18 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 			   	//   	matrixA_dev(imax,jj) = ptr[jj];	
 		   	  	// }
 
-		   	  	for (jj = 0; jj < 2*maxparnode; jj++){
+		   	  	for (jj = 0; jj < 2*maxparnode; jj++){ //0707 maxparnode to nrow2
 		   	  		ptr[jj] = matrixA1D[ii*2*maxparnode+jj];
 			   	  	matrixA1D[ii*2*maxparnode+jj] = matrixA1D[imax*2*maxparnode+jj];
 			   	  	matrixA1D[imax*2*maxparnode+jj] = ptr[jj];	
 		   	  	}
+
+		   	  	// for (jj = 0; jj < 2*maxparnode; jj++){ //0707 maxparnode to nrow2
+		   	  	// 	ptr[jj] = matrixA1D[ii*2*maxparnode+jj];
+			   	//   	matrixA1D[ii*2*maxparnode+jj] = matrixA1D[imax*2*maxparnode+jj];
+			   	//   	matrixA1D[imax*2*maxparnode+jj] = ptr[jj];	
+		   	  	// }
+
 		   	  	//counting pivots starting from N (for determinant)
 		   	  	ipiv[nrow2]++;
 		   	}	
@@ -588,7 +598,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	   	  	//  		matrixA_dev(jj,kk) -= matrixA_dev(jj,ii) * matrixA_dev(ii,kk);
 	   	  	// 	}
 	   		// }
-	   		for (jj = ii + 1; jj < nrow2; jj++) {
+	   		for (jj = ii + 1; jj < nrow2; jj++) { 
 	   	  		matrixA1D[jj*2*maxparnode	+ii] /= matrixA1D[ii*2*maxparnode +ii];	
 	   	  		for (kk = ii + 1; kk < nrow2; kk++){
 	   	  	 		matrixA1D[jj*2*maxparnode+ kk] -= matrixA1D[jj*2*maxparnode+ii] * matrixA1D[ii*2*maxparnode+kk];
@@ -642,6 +652,9 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
     	}
 
     	// printf("%f %f \n",matrixA_dev(0,0), matrixA_dev(2*maxparnode,2*maxparnode));
+
+    	printf("%f \n", z[0]); // compare z and rhs, probably z, 0707
+
 
 
   	// }
