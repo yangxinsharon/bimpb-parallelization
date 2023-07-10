@@ -450,10 +450,10 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
         		// matrixA_dev(i-ibeg,j+nrow-ibeg) = -L2*area;
         		// matrixA_dev(i+nrow-ibeg,j-ibeg) = -L3*area;
         		// matrixA_dev(i+nrow-ibeg,j+nrow-ibeg) = -L4*area; 
-        		matrixA1D[(i-ibeg)*2*nrow2		+j-ibeg] = -L1*area;
-        		matrixA1D[(i-ibeg)*2*nrow2		+j+nrow-ibeg] = -L2*area;
-        		matrixA1D[(i+nrow-ibeg)*2*nrow2	+j-ibeg] = -L3*area;
-        		matrixA1D[(i+nrow-ibeg)*2*nrow2	+j+nrow-ibeg] = -L4*area; 
+        		matrixA1D[(i-ibeg)*2*nrow		+j-ibeg] = -L1*area;
+        		matrixA1D[(i-ibeg)*2*nrow		+j+nrow-ibeg] = -L2*area;
+        		matrixA1D[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
+        		matrixA1D[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area; 
 
 
       		}
@@ -463,8 +463,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		// matrixA[i+nrow-ibeg][i+nrow-ibeg] = pre2;
       		// matrixA_dev(i-ibeg,i-ibeg) = pre1;
       		// matrixA_dev(i+nrow-ibeg,i+nrow-ibeg) = pre2;
-      		matrixA1D[(i-ibeg)*2*nrow2			+i-ibeg] = pre1;
-      		matrixA1D[(i+nrow-ibeg)*2*nrow2	+i+nrow-ibeg] = pre2;
+      		matrixA1D[(i-ibeg)*2*nrow			+i-ibeg] = pre1;
+      		matrixA1D[(i+nrow-ibeg)*2*nrow	+i+nrow-ibeg] = pre2;
 
       		for ( j = i+1; j <= iend; j++ ) {			
 
@@ -513,10 +513,10 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	        	// matrixA_dev(i-ibeg,j+nrow-ibeg) = -L2*area;
 	        	// matrixA_dev(i+nrow-ibeg,j-ibeg) = -L3*area;
 	        	// matrixA_dev(i+nrow-ibeg,j+nrow-ibeg) = -L4*area;
-	        	matrixA1D[(i-ibeg)*2*nrow2		+j-ibeg] = -L1*area;
-	        	matrixA1D[(i-ibeg)*2*nrow2		+j+nrow-ibeg] = -L2*area;
-	        	matrixA1D[(i+nrow-ibeg)*2*nrow2	+j-ibeg] = -L3*area;
-	        	matrixA1D[(i+nrow-ibeg)*2*nrow2	+j+nrow-ibeg] = -L4*area;
+	        	matrixA1D[(i-ibeg)*2*nrow		+j-ibeg] = -L1*area;
+	        	matrixA1D[(i-ibeg)*2*nrow		+j+nrow-ibeg] = -L2*area;
+	        	matrixA1D[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
+	        	matrixA1D[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area;
       		}
     	}
 
@@ -545,7 +545,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	   		for (kk = ii; kk < nrow2; kk++){
 	   	  		// if ((absA = fabs(matrixA[kk][ii])) > maxA) {
 	   	  		// if ((absA = fabs(matrixA_dev(kk,ii))) > maxA) {	
-	   	  		if ((absA = fabs(matrixA1D[kk*2*nrow2+ii])) > maxA) {	   			
+	   	  		if ((absA = fabs(matrixA1D[kk*2*nrow+ii])) > maxA) {	   			
 	   	   			maxA = absA;
 	   	    		imax = kk;
 	   			}
@@ -577,9 +577,9 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		   	  	// }
 
 		   	  	for (jj = 0; jj < 2*nrow2; jj++){ //0707 maxparnode to nrow2
-		   	  		ptr[jj] = matrixA1D[ii*2*nrow2+jj];
-			   	  	matrixA1D[ii*2*nrow2+jj] = matrixA1D[imax*2*nrow2+jj];
-			   	  	matrixA1D[imax*2*nrow2+jj] = ptr[jj];	
+		   	  		ptr[jj] = matrixA1D[ii*2*nrow+jj];
+			   	  	matrixA1D[ii*2*nrow+jj] = matrixA1D[imax*2*nrow+jj];
+			   	  	matrixA1D[imax*2*nrow+jj] = ptr[jj];	
 		   	  	}
 
 		   	  	//counting pivots starting from N (for determinant)
@@ -599,9 +599,9 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	   	  	// 	}
 	   		// }
 	   		for (jj = ii + 1; jj < nrow2; jj++) { 
-	   	  		matrixA1D[jj*2*nrow2	+ii] /= matrixA1D[ii*2*nrow2 +ii];	
+	   	  		matrixA1D[jj*2*nrow	+ii] /= matrixA1D[ii*2*nrow +ii];	
 	   	  		for (kk = ii + 1; kk < nrow2; kk++){
-	   	  	 		matrixA1D[jj*2*nrow2+ kk] -= matrixA1D[jj*2*nrow2+ii] * matrixA1D[ii*2*nrow2+kk];
+	   	  	 		matrixA1D[jj*2*nrow+ kk] -= matrixA1D[jj*2*nrow+ii] * matrixA1D[ii*2*nrow+kk];
 	   	  		}
 	   		}
 
@@ -624,7 +624,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 	   		for (kkk = 0; kkk < iii; kkk++){
 	      		// xtemp[iii] -= matrixA[iii][kkk] * xtemp[kkk];
-	      		xtemp[iii] -= matrixA1D[iii*2*nrow2 +kkk] * xtemp[kkk];	   
+	      		xtemp[iii] -= matrixA1D[iii*2*nrow +kkk] * xtemp[kkk];	   
 	      		// printf("%d %d %f \n",iii,kkk,matrixA_dev(iii,kkk));   		
 	   		}
 	  	}
@@ -632,11 +632,11 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	  	for (iii = nrow2 - 1; iii >= 0; iii--) {
 	    	for (kkk = iii + 1; kkk < nrow2; kkk++){
 	      		// xtemp[iii] -= matrixA[iii][kkk] * xtemp[kkk];
-	      		xtemp[iii] -= matrixA1D[iii*2*nrow2 +kkk] * xtemp[kkk];	      		
+	      		xtemp[iii] -= matrixA1D[iii*2*nrow +kkk] * xtemp[kkk];	      		
 	    	}
 
 	    	// xtemp[iii] = xtemp[iii] / matrixA[iii][iii];
-	    	xtemp[iii] = xtemp[iii] / matrixA1D[iii*2*nrow2 +iii];	    	
+	    	xtemp[iii] = xtemp[iii] / matrixA1D[iii*2*nrow +iii];	    	
 	  	}
 
 	  	for (iii = 0; iii < nrow2; iii++) {
