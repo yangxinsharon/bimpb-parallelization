@@ -334,7 +334,7 @@ int *psolve(double *z, double *r) {
 	Kokkos::kokkos_free(matrixA1D);
 
 	// stop, only run once 0707
-	std::abort();
+	// std::abort();
     return NULL;
 }
 
@@ -570,17 +570,17 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 			   	//   	matrixA_dev(imax,jj) = ptr[jj];	
 		   	  	// }
 
-		   	  	for (jj = 0; jj < 2*maxparnode; jj++){ //0707 maxparnode to nrow2
-		   	  		ptr[jj] = matrixA1D[ii*2*maxparnode+jj];
-			   	  	matrixA1D[ii*2*maxparnode+jj] = matrixA1D[imax*2*maxparnode+jj];
-			   	  	matrixA1D[imax*2*maxparnode+jj] = ptr[jj];	
-		   	  	}
-
 		   	  	// for (jj = 0; jj < 2*maxparnode; jj++){ //0707 maxparnode to nrow2
 		   	  	// 	ptr[jj] = matrixA1D[ii*2*maxparnode+jj];
 			   	//   	matrixA1D[ii*2*maxparnode+jj] = matrixA1D[imax*2*maxparnode+jj];
 			   	//   	matrixA1D[imax*2*maxparnode+jj] = ptr[jj];	
 		   	  	// }
+
+		   	  	for (jj = 0; jj < 2*maxparnode; jj++){ //0707 maxparnode to nrow2
+		   	  		ptr[jj] = matrixA1D[ii*2*maxparnode+jj];
+			   	  	matrixA1D[ii*2*maxparnode+jj] = matrixA1D[imax*2*maxparnode+jj];
+			   	  	matrixA1D[imax*2*maxparnode+jj] = ptr[jj];	
+		   	  	}
 
 		   	  	//counting pivots starting from N (for determinant)
 		   	  	ipiv[nrow2]++;
