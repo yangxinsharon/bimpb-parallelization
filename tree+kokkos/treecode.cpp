@@ -389,7 +389,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		int nrow = leafarr[1+3*k];
 		int iend = leafarr[2+3*k];
 		int nrow2 = nrow*2;
-  		printf("nrow maxparnode %d %d \n",nrow, maxparnode);
+  		printf("nrow maxparnode k %d %d \n",nrow, maxparnode, k);
 	 	// print k; 0707
     	for ( i = ibeg; i <= iend; i++ ) {
    
