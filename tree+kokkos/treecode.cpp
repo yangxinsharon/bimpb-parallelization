@@ -653,7 +653,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
     	// printf("%f %f \n",matrixA_dev(0,0), matrixA_dev(2*maxparnode,2*maxparnode));
 
-    	printf("%f \n", rhs[0]); // compare z and rhs, probably z, 0707 // z was 0 for dev
+    	// printf("%f \n", rhs[0]); // compare z and rhs, probably z, 0707 // z was 0 for dev
 
 
 
