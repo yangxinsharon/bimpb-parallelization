@@ -384,7 +384,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   		double G0, kappa_rs, exp_kappa_rs, Gk;
   		double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
   		double G10, G20, G1, G2, G3, G4;
-  		double **matrixA1D = (double *) (Kokkos::kokkos_malloc(2*maxparnode*2*maxparnode * sizeof(double)));
+  		double *matrixA1D = (double *) (Kokkos::kokkos_malloc(2*maxparnode*2*maxparnode * sizeof(double)));
 
 		int ibeg = leafarr[0+3*k];
 		int nrow = leafarr[1+3*k];
