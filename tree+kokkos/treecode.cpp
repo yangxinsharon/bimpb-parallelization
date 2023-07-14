@@ -70,15 +70,15 @@ extern int *ipiv;
 extern double *rhs;
 extern int *leafarr;
 extern int arridx;
-extern double *xtemp;
-extern double *ptr;
+// extern double *xtemp;
+// extern double *ptr;
 extern double *matrixA1D;
 
 /* internal functions */
 int *psolve(double *z, double *r);
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
 	double *z, double *r, double *matrixA1D, int *ipiv, double *rhs, int *leafarr,
-	int arridx, double *xtemp, double *ptr);
+	int arridx);//, double *xtemp, double *ptr);
 int Setup(double xyz_limits[6]);
 int Partition(double *a, double *b, double *c, int *indarr,
 	int ibeg, int iend, double val);
@@ -298,8 +298,8 @@ int *psolve(double *z, double *r) {
 	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
 	leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
 
-    xtemp = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
-    ptr = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
+    // xtemp = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
+    // ptr = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
 
     matrixA1D = (double *) (Kokkos::kokkos_malloc(2*maxparnode*2*maxparnode * sizeof(double)));
 
@@ -319,7 +319,7 @@ int *psolve(double *z, double *r) {
 	}
 
     // psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr);
-    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA1D, ipiv, rhs, leafarr, arridx, xtemp, ptr);
+    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA1D, ipiv, rhs, leafarr, arridx);//, xtemp, ptr);
 
   	Kokkos::kokkos_free(rhs);
 	Kokkos::kokkos_free(ipiv);
@@ -329,8 +329,8 @@ int *psolve(double *z, double *r) {
 	// }	
 	// free(matrixA);
 
-	Kokkos::kokkos_free(xtemp);
-	Kokkos::kokkos_free(ptr);
+	// Kokkos::kokkos_free(xtemp);
+	// Kokkos::kokkos_free(ptr);
 	Kokkos::kokkos_free(matrixA1D);
 
 	// stop, only run once 0707
@@ -341,7 +341,7 @@ int *psolve(double *z, double *r) {
 /**********************************************************/
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
 	double *z, double *r, double *matrixA1D, int *ipiv,
-	double *rhs, int *leafarr, int arridx, double *xtemp, double *ptr) {
+	double *rhs, int *leafarr, int arridx){//, double *xtemp, double *ptr) {
 
 	double pre1, pre2;
   	pre1 = 0.5*(1.0+eps);
@@ -523,6 +523,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		int ii, jj, kk, imax;
 		double maxA, absA, Tol = 1.0e-14;
 		int flag = 0; //yang
+		double ptr[2*maxparnode] = {0.0};
 
 	  	for ( ii = 0; ii <= nrow2; ii++ ){
 	   		ipiv[ii] = ii; // record pivoting number
@@ -564,7 +565,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 			   	//   	matrixA_dev(imax,jj) = ptr[jj];	
 		   	  	// }
 
-		   	  	for (jj = 0; jj < 2*nrow; jj++){ //0707 maxparnode to nrow2
+		   	  	for (jj = 0; jj < 2*maxparnode; jj++){ //0707 maxparnode to nrow2
 		   	  		ptr[jj] = matrixA1DD[ii*2*maxparnode+jj];
 			   	  	matrixA1DD[ii*2*maxparnode+jj] = matrixA1DD[imax*2*maxparnode+jj];
 			   	  	matrixA1DD[imax*2*maxparnode+jj] = ptr[jj];	
@@ -619,7 +620,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 ////////////// lu_solve( matrixA, nrow2, ipiv, rhs ); ////////////
 	// void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 	  	// double *xtemp;
-
+		double xtemp[2*maxparnode] = {0.0};
 		int iii, kkk ;
 	  	for (iii = 0; iii < nrow2; iii++) {
 	   		xtemp[iii] = rhs[ipiv[iii]];
