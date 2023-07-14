@@ -445,10 +445,10 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
         		matrixA1D[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
         		matrixA1D[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area;
 
-        		matrixA1DD[(i-ibeg)*2*maxparnode		+j-ibeg] = -L1*area;
-        		matrixA1DD[(i-ibeg)*2*maxparnode		+j+nrow-ibeg] = -L2*area;
-        		matrixA1DD[(i+nrow-ibeg)*2*maxparnode	+j-ibeg] = -L3*area;
-        		matrixA1DD[(i+nrow-ibeg)*2*maxparnode	+j+nrow-ibeg] = -L4*area; 
+        		// matrixA1DD[(i-ibeg)*2*maxparnode		+j-ibeg] = -L1*area;
+        		// matrixA1DD[(i-ibeg)*2*maxparnode		+j+nrow-ibeg] = -L2*area;
+        		// matrixA1DD[(i+nrow-ibeg)*2*maxparnode	+j-ibeg] = -L3*area;
+        		// matrixA1DD[(i+nrow-ibeg)*2*maxparnode	+j+nrow-ibeg] = -L4*area; 
 
       		}
 
