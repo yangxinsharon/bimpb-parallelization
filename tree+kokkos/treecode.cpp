@@ -334,7 +334,7 @@ int *psolve(double *z, double *r) {
 	Kokkos::kokkos_free(matrixA1D);
 
 	// stop, only run once 0707
-	// std::abort();
+	std::abort();
     return NULL;
 }
 
@@ -375,7 +375,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 	// Kokkos::deep_copy( matrixA_dev, matrixA_h );
 	// for (int k=0; k<arridx; k++){
-	Kokkos::parallel_for("psolvemul", dev_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
+	Kokkos::parallel_for("psolvemul", host_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
 	  	// printf("matrixA_dev(0,0) is %f\n", matrixA_dev(0,0));
 	  	int i,j,inc;
   		double L1, L2, L3, L4, area;
@@ -391,6 +391,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		int nrow2 = nrow*2;
 		// double *matrixA1DD;
   		printf("nrow maxparnode k %d %d %d\n",nrow, maxparnode, k);
+  		printf("ibeg iend nrow nrow2%d %d\n", ibeg, iend, nrow, nrow2);
 	 	// print k; 0707
     	for ( i = ibeg; i <= iend; i++ ) {
    
@@ -452,10 +453,10 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
         		// matrixA_dev(i+nrow-ibeg,j-ibeg) = -L3*area;
         		// matrixA_dev(i+nrow-ibeg,j+nrow-ibeg) = -L4*area; 
 
-        		matrixA1D[(i-ibeg)*2*maxparnode		+j-ibeg] = -L1*area;
-        		matrixA1D[(i-ibeg)*2*maxparnode		+j+nrow-ibeg] = -L2*area;
-        		matrixA1D[(i+nrow-ibeg)*2*maxparnode	+j-ibeg] = -L3*area;
-        		matrixA1D[(i+nrow-ibeg)*2*maxparnode	+j+nrow-ibeg] = -L4*area; 
+        		matrixA1D[(i-ibeg)*2*nrow		+j-ibeg] = -L1*area;
+        		matrixA1D[(i-ibeg)*2*nrow		+j+nrow-ibeg] = -L2*area;
+        		matrixA1D[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
+        		matrixA1D[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area; 
         		// matrixA1DD[(i-ibeg)*2*maxparnode		+j-ibeg] = -L1*area;
         		// matrixA1DD[(i-ibeg)*2*maxparnode		+j+nrow-ibeg] = -L2*area;
         		// matrixA1DD[(i+nrow-ibeg)*2*maxparnode	+j-ibeg] = -L3*area;
@@ -468,8 +469,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		// matrixA[i+nrow-ibeg][i+nrow-ibeg] = pre2;
       		// matrixA_dev(i-ibeg,i-ibeg) = pre1;
       		// matrixA_dev(i+nrow-ibeg,i+nrow-ibeg) = pre2;
-      		matrixA1D[(i-ibeg)*2*maxparnode			+i-ibeg] = pre1;
-      		matrixA1D[(i+nrow-ibeg)*2*maxparnode	+i+nrow-ibeg] = pre2;
+      		matrixA1D[(i-ibeg)*2*nrow			+i-ibeg] = pre1;
+      		matrixA1D[(i+nrow-ibeg)*2*nrow	+i+nrow-ibeg] = pre2;
       		// matrixA1DD[(i-ibeg)*2*maxparnode			+i-ibeg] = pre1;
       		// matrixA1DD[(i+nrow-ibeg)*2*maxparnode	+i+nrow-ibeg] = pre2;
 
@@ -520,10 +521,10 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	        	// matrixA_dev(i-ibeg,j+nrow-ibeg) = -L2*area;
 	        	// matrixA_dev(i+nrow-ibeg,j-ibeg) = -L3*area;
 	        	// matrixA_dev(i+nrow-ibeg,j+nrow-ibeg) = -L4*area;
-	        	matrixA1D[(i-ibeg)*2*maxparnode		+j-ibeg] = -L1*area;
-	        	matrixA1D[(i-ibeg)*2*maxparnode		+j+nrow-ibeg] = -L2*area;
-	        	matrixA1D[(i+nrow-ibeg)*2*maxparnode	+j-ibeg] = -L3*area;
-	        	matrixA1D[(i+nrow-ibeg)*2*maxparnode	+j+nrow-ibeg] = -L4*area;
+	        	matrixA1D[(i-ibeg)*2*nrow		+j-ibeg] = -L1*area;
+	        	matrixA1D[(i-ibeg)*2*nrow		+j+nrow-ibeg] = -L2*area;
+	        	matrixA1D[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
+	        	matrixA1D[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area;
 	        	// matrixA1DD[(i-ibeg)*2*maxparnode		+j-ibeg] = -L1*area;
 	        	// matrixA1DD[(i-ibeg)*2*maxparnode		+j+nrow-ibeg] = -L2*area;
 	        	// matrixA1DD[(i+nrow-ibeg)*2*maxparnode	+j-ibeg] = -L3*area;
@@ -556,7 +557,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	   		for (kk = ii; kk < nrow2; kk++){
 	   	  		// if ((absA = fabs(matrixA[kk][ii])) > maxA) {
 	   	  		// if ((absA = fabs(matrixA_dev(kk,ii))) > maxA) {	
-	   	  		if ((absA = fabs(matrixA1D[kk*2*maxparnode+ii])) > maxA) {	   			
+	   	  		if ((absA = fabs(matrixA1D[kk*2*nrow+ii])) > maxA) {	   			
 	   	   			maxA = absA;
 	   	    		imax = kk;
 	   			}
