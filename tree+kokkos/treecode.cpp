@@ -304,6 +304,7 @@ int *psolve(double *z, double *r) {
     matrixA1D = (double *) (Kokkos::kokkos_malloc(2*maxparnode*2*maxparnode * sizeof(double)));
 
 	int idx = 0, nrow = 0, ibeg = 0, iend = 0;
+	int inc;
 	arridx = 0; // extern variable
 	while ( idx < nface ) {
 	    leaflength(s_tree_root, idx);
@@ -319,7 +320,7 @@ int *psolve(double *z, double *r) {
 	}
 
     // psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr);
-    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA1D, ipiv, rhs, leafarr, arridx);//, xtemp, ptr);
+    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA1D, ipiv, rhs, leafarr, arridx, &inc);//, xtemp, ptr);
 
   	Kokkos::kokkos_free(rhs);
 	Kokkos::kokkos_free(ipiv);
@@ -341,7 +342,7 @@ int *psolve(double *z, double *r) {
 /**********************************************************/
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
 	double *z, double *r, double *matrixA1D, int *ipiv,
-	double *rhs, int *leafarr, int arridx){//, double *xtemp, double *ptr) {
+	double *rhs, int *leafarr, int arridx, int *inc){//, double *xtemp, double *ptr) {
 
 	double pre1, pre2;
   	pre1 = 0.5*(1.0+eps);
@@ -352,7 +353,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	// for (int k=0; k<arridx; k++){
 	Kokkos::parallel_for("psolvemul", dev_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
 	  	// printf("matrixA_dev(0,0) is %f\n", matrixA_dev(0,0));
-	  	int i,j,inc;
+	  	int i,j;
   		double L1, L2, L3, L4, area;
   		double tp[3], tq[3], sp[3], sq[3];
   		double r_s[3], rs, irs, sumrs;
