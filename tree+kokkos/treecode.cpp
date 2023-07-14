@@ -390,8 +390,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		int iend = leafarr[2+3*k];
 		int nrow2 = nrow*2;
 		// double *matrixA1DD;
-  		printf("nrow maxparnode k %d %d %d\n",nrow, maxparnode, k);
-  		printf("ibeg iend nrow nrow2 %d %d %d %d \n", ibeg, iend, nrow, nrow2);
+  		// printf("nrow maxparnode k %d %d %d\n",nrow, maxparnode, k);
+  		// printf("ibeg iend nrow nrow2 %d %d %d %d \n", ibeg, iend, nrow, nrow2);
 	 	// print k; 0707
     	for ( i = ibeg; i <= iend; i++ ) {
    
