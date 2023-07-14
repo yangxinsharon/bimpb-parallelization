@@ -78,7 +78,7 @@ extern double *matrixA1D;
 int *psolve(double *z, double *r);
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
 	double *z, double *r, double *matrixA1D, int *ipiv, double *rhs, int *leafarr,
-	int arridx);//, double *xtemp, double *ptr);
+	int arridx, int *inc);//, double *xtemp, double *ptr);
 int Setup(double xyz_limits[6]);
 int Partition(double *a, double *b, double *c, int *indarr,
 	int ibeg, int iend, double val);
@@ -302,7 +302,7 @@ int *psolve(double *z, double *r) {
     // ptr = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
 
     matrixA1D = (double *) (Kokkos::kokkos_malloc(2*maxparnode*2*maxparnode * sizeof(double)));
-
+    int inc;
 	int idx = 0, nrow = 0, ibeg = 0, iend = 0;
 	arridx = 0; // extern variable
 	while ( idx < nface ) {
@@ -319,7 +319,7 @@ int *psolve(double *z, double *r) {
 	}
 
     // psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr);
-    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA1D, ipiv, rhs, leafarr, arridx);//, xtemp, ptr);
+    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA1D, ipiv, rhs, leafarr, arridx, &inc);//, xtemp, ptr);
 
   	Kokkos::kokkos_free(rhs);
 	Kokkos::kokkos_free(ipiv);
@@ -341,7 +341,7 @@ int *psolve(double *z, double *r) {
 /**********************************************************/
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
 	double *z, double *r, double *matrixA1D, int *ipiv,
-	double *rhs, int *leafarr, int arridx){//, double *xtemp, double *ptr) {
+	double *rhs, int *leafarr, int arridx, int *inc){//, double *xtemp, double *ptr) {
 
 	double pre1, pre2;
   	pre1 = 0.5*(1.0+eps);
@@ -365,7 +365,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	// for (int k=0; k<arridx; k++){
 	Kokkos::parallel_for("psolvemul", host_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
 	  	// printf("matrixA_dev(0,0) is %f\n", matrixA_dev(0,0));
-	  	int i,j,inc;
+	  	int i,j;//,inc;
   		double L1, L2, L3, L4, area;
   		double tp[3], tq[3], sp[3], sq[3];
   		double r_s[3], rs, irs, sumrs;
@@ -554,7 +554,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	   			}
 	   	  	}
 	   		if (maxA < Tol) {
-	   			inc = 0;
+	   			*inc = 0;
 	   			break;
 	   		} //failure, matrix is degenerate	
 	   		if (imax != ii) {
@@ -618,7 +618,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	   		flag = flag + 1;
 	  	}
 	  	if (flag == nrow2-1){
-			inc = 1;
+			*inc = 1;
 	  	}
 
 ///////////////////////////////////////////////////////////////
