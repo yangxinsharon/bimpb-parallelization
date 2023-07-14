@@ -335,7 +335,7 @@ int *psolve(double *z, double *r) {
 	Kokkos::kokkos_free(matrixA1D);
 
 	// stop, only run once 0707
-	// std::abort();
+	std::abort();
     return NULL;
 }
 
