@@ -342,22 +342,10 @@ int *psolve(double *z, double *r) {
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
 	double *z, double *r, double *matrixA1D, int *ipiv,
 	double *rhs, int *leafarr, int arridx, double *xtemp, double *ptr) {
-/* r as original while z as scaled */
-// int *psolve(double *z, double *r) {
-  	// int i, j, k;
-  	// int nrow, nrow2, ibeg = 0, iend = 0;
-  	// int inc;
-  	// double L1, L2, L3, L4, area;
-  	// double tp[3], tq[3], sp[3], sq[3];
-  	// double r_s[3], rs, irs, sumrs;
-  	// double G0, kappa_rs, exp_kappa_rs, Gk;
-  	// double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
-  	// double G10, G20, G1, G2, G3, G4;
 
 	double pre1, pre2;
   	pre1 = 0.5*(1.0+eps);
   	pre2 = 0.5*(1.0+1.0/eps);
-
 
 	timer_start((char*) "psolve time");
 	// Kokkos::View<double**, Kokkos::HostSpace> matrixA_dev("matrixA_dev",2*maxparnode,2*maxparnode);
@@ -375,7 +363,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 	// Kokkos::deep_copy( matrixA_dev, matrixA_h );
 	// for (int k=0; k<arridx; k++){
-	Kokkos::parallel_for("psolvemul", dev_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
+	Kokkos::parallel_for("psolvemul", serial_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
 	  	// printf("matrixA_dev(0,0) is %f\n", matrixA_dev(0,0));
 	  	int i,j,inc;
   		double L1, L2, L3, L4, area;
@@ -389,7 +377,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		int nrow = leafarr[1+3*k];
 		int iend = leafarr[2+3*k];
 		int nrow2 = nrow*2;
-		// double *matrixA1DD;
+		double matrixA1DD[100];
   		printf("nrow maxparnode k %d %d %d\n",nrow, maxparnode, k);
   		printf("ibeg iend nrow nrow2 %d %d %d %d \n", ibeg, iend, nrow, nrow2);
 	 	// print k; 0707
