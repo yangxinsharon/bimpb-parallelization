@@ -377,7 +377,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		int nrow = leafarr[1+3*k];
 		int iend = leafarr[2+3*k];
 		int nrow2 = nrow*2;
-		// double matrixA1DD[2*maxparnode*2*maxparnode]={0.0};
+		double matrixA1DD[2*maxparnode*2*maxparnode]={0.0};
   		// printf("ibeg iend nrow nrow2 k %d %d %d %d %d\n", ibeg, iend, nrow, nrow2, k);
 	 	// print k; 0707
     	for ( i = ibeg; i <= iend; i++ ) {
@@ -445,10 +445,10 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
         		matrixA1D[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
         		matrixA1D[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area;
 
-        		// matrixA1DD[(i-ibeg)*2*maxparnode		+j-ibeg] = -L1*area;
-        		// matrixA1DD[(i-ibeg)*2*maxparnode		+j+nrow-ibeg] = -L2*area;
-        		// matrixA1DD[(i+nrow-ibeg)*2*maxparnode	+j-ibeg] = -L3*area;
-        		// matrixA1DD[(i+nrow-ibeg)*2*maxparnode	+j+nrow-ibeg] = -L4*area; 
+        		matrixA1DD[(i-ibeg)*2*maxparnode		+j-ibeg] = -L1*area;
+        		matrixA1DD[(i-ibeg)*2*maxparnode		+j+nrow-ibeg] = -L2*area;
+        		matrixA1DD[(i+nrow-ibeg)*2*maxparnode	+j-ibeg] = -L3*area;
+        		matrixA1DD[(i+nrow-ibeg)*2*maxparnode	+j+nrow-ibeg] = -L4*area; 
 
       		}
 
