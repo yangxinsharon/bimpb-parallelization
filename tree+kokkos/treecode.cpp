@@ -366,7 +366,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		int iend = leafarr[2+3*k];
 		int nrow2 = nrow*2;
 		double matrixA1DD[2*maxparnode*2*maxparnode]={0.0};
-  		printf("ibeg iend nrow nrow2 k %d %d %d %d %d\n", ibeg, iend, nrow, nrow2, k);
+  		// printf("ibeg iend nrow nrow2 k %d %d %d %d %d\n", ibeg, iend, nrow, nrow2, k);
 	 	// print k; 0707
     	for ( i = ibeg; i <= iend; i++ ) {
    
@@ -428,10 +428,10 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
         		// matrixA_dev(i+nrow-ibeg,j-ibeg) = -L3*area;
         		// matrixA_dev(i+nrow-ibeg,j+nrow-ibeg) = -L4*area; 
 
-        		matrixA1D[(i-ibeg)*2*nrow		+j-ibeg] = -L1*area;
-        		matrixA1D[(i-ibeg)*2*nrow		+j+nrow-ibeg] = -L2*area;
-        		matrixA1D[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
-        		matrixA1D[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area;
+        		// matrixA1D[(i-ibeg)*2*nrow		+j-ibeg] = -L1*area;
+        		// matrixA1D[(i-ibeg)*2*nrow		+j+nrow-ibeg] = -L2*area;
+        		// matrixA1D[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
+        		// matrixA1D[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area;
 
         		matrixA1DD[(i-ibeg)*2*maxparnode		+j-ibeg] = -L1*area;
         		matrixA1DD[(i-ibeg)*2*maxparnode		+j+nrow-ibeg] = -L2*area;
@@ -445,8 +445,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		// matrixA[i+nrow-ibeg][i+nrow-ibeg] = pre2;
       		// matrixA_dev(i-ibeg,i-ibeg) = pre1;
       		// matrixA_dev(i+nrow-ibeg,i+nrow-ibeg) = pre2;
-      		matrixA1D[(i-ibeg)*2*nrow			+i-ibeg] = pre1;
-      		matrixA1D[(i+nrow-ibeg)*2*nrow	+i+nrow-ibeg] = pre2;
+      		// matrixA1D[(i-ibeg)*2*nrow			+i-ibeg] = pre1;
+      		// matrixA1D[(i+nrow-ibeg)*2*nrow	+i+nrow-ibeg] = pre2;
 
       		matrixA1DD[(i-ibeg)*2*maxparnode			+i-ibeg] = pre1;
       		matrixA1DD[(i+nrow-ibeg)*2*maxparnode	+i+nrow-ibeg] = pre2;
@@ -498,10 +498,10 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	        	// matrixA_dev(i-ibeg,j+nrow-ibeg) = -L2*area;
 	        	// matrixA_dev(i+nrow-ibeg,j-ibeg) = -L3*area;
 	        	// matrixA_dev(i+nrow-ibeg,j+nrow-ibeg) = -L4*area;
-	        	matrixA1D[(i-ibeg)*2*nrow		+j-ibeg] = -L1*area;
-	        	matrixA1D[(i-ibeg)*2*nrow		+j+nrow-ibeg] = -L2*area;
-	        	matrixA1D[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
-	        	matrixA1D[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area;
+	        	// matrixA1D[(i-ibeg)*2*nrow		+j-ibeg] = -L1*area;
+	        	// matrixA1D[(i-ibeg)*2*nrow		+j+nrow-ibeg] = -L2*area;
+	        	// matrixA1D[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
+	        	// matrixA1D[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area;
 	        	
 	        	matrixA1DD[(i-ibeg)*2*maxparnode		+j-ibeg] = -L1*area;
 	        	matrixA1DD[(i-ibeg)*2*maxparnode		+j+nrow-ibeg] = -L2*area;
