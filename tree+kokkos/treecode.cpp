@@ -547,7 +547,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	   			}	   			
 	   	  	}
 	   		if (maxA < Tol) {
-	   			inc = 0;
+	   			*inc = 0;
 	   			break;
 	   		} //failure, matrix is degenerate	
 	   		if (imax != ii) {
@@ -612,7 +612,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	   		flag = flag + 1;
 	  	}
 	  	if (flag == nrow2-1){
-			inc = 1;
+			*inc = 1;
 	  	}
 
 ///////////////////////////////////////////////////////////////
