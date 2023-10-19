@@ -61,14 +61,13 @@ $ ./bimpb_kokkos.exe
 
 
 
-SMU SuperPOD (must be on VPN):\
-Login to M3 first, and then login to SuperPOD \
+SMU SuperPOD (must be on VPN): \
 $ ssh username@slogin-01.superpod.smu.edu \
 
-CUDA (SuperPOD):  can make and can run\
+CUDA (SuperPOD):  can make and can run \
 $ module load dev
-$ module load cuda-11.4.4-gcc-10.3.0-ctldo35  \
-$ srun -G 1 ./bimpb_cuda.exe 1ajj 1  \
+$ module load cuda-11.4.4-gcc-10.3.0-ctldo35 \
+$ srun -G 1 ./bimpb_cuda.exe 1ajj 1 \
 
 
 Kokkos (SuperPOD): \
@@ -76,12 +75,13 @@ srun -N 1 -G 1 -c 10 --mem=128G --time=12:00:00 --pty $SHELL
 module load dev
 module load gcc-10.3.0-gcc-9.4.0-d44jwah # GCC 10.3.0
 module load cuda-11.4.4-gcc-10.3.0-ctldo35 # CUDA 11.4.4
+
 module load kokkos-3.7.00-gcc-10.3.0-b7ltc3f # can make new and run new, but cannot run old
 $ module load kokkos-3.6.00-gcc-10.3.0-wh67tbt # can make new and run old, but cannot run new
 
 
 
-////////// 
+ <!-- 
 Kokkos (SuperPOD): can make new and can run new, cannot run old \
 $ module load spack gcc-10.3.0-gcc-9.4.0-d44jwah\
 $ . /hpc/mp/spack/share/spack/setup-env.sh\
@@ -101,7 +101,7 @@ Kokkos::OpenMP::initialize WARNING: OMP_PROC_BIND environment variable  not set 
 3 ./bimpb_kokkos.exe 1ajj 1  \
 count is:519 \
 Segmentation fault (core dumped) \
-} \
+} \ -->
 
 
 
