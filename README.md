@@ -84,9 +84,9 @@ Update on Oct 19, 2023: currently SuperPOD has 3 versions: \
         kokkos/3.7.01-6zpfzzw (return segmentation fault)\
         kokkos/4.0.01-el36ysw \
 
-module load gcc/11.2.0 
-module load cuda/11.8.0-vbvgppx
-module load kokkos/4.0.01-el36ysw
+module load gcc/11.2.0 \
+module load cuda/11.8.0-vbvgppx \
+module load kokkos/4.0.01-el36ysw \
 <!-- module load kokkos-3.7.00-gcc-10.3.0-b7ltc3f # can make new and run new, but cannot run old
 
 $ module load kokkos-3.6.00-gcc-10.3.0-wh67tbt # can make new and run old, but cannot run new -->
