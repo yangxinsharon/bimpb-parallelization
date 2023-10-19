@@ -57,7 +57,7 @@ $ . /hpc/spack/share/spack/setup-env.sh \
 $ spack load kokkos/qu45u5v \
 $ cmake . \
 $ make \
-$ ./bimpb_kokkos.exe
+$ ./bimpb_kokkos.exe \
 
 
 
@@ -65,7 +65,7 @@ SMU SuperPOD (must be on VPN): \
 $ ssh username@slogin-01.superpod.smu.edu \
 
 CUDA (SuperPOD):  can make and can run \
-$ module load dev
+$ module load dev \
 $ module load cuda-11.4.4-gcc-10.3.0-ctldo35 \
 $ srun -G 1 ./bimpb_cuda.exe 1ajj 1 \
 
