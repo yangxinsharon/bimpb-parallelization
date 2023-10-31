@@ -28,12 +28,13 @@ extern double *h_pot;
 // extern double *dev_tr_xyz, *dev_tr_q, *dev_tr_area, *dev_bvct;
 extern const double eps;
 extern double **tr_xyz2D, **tr_q2D;
-extern int *ipiv;
-extern double *rhs;
-extern double **matrixA;
+// extern int *ipiv;
+// extern double *rhs;
+// extern double **matrixA;
 extern int *leafarr;
 extern double *xtemp;
 extern int Nleaf;
+extern int arridx;
 
 #ifdef __cplusplus
 extern "C"
@@ -70,6 +71,7 @@ int main(int argc, char *argv[]) {
    extern void timer_end(void); // yang
    extern int TreecodeInitialization();
 	extern int TreecodeFinalization();
+	extern void leaflength(TreeNode *p, int idx);
 
    Kokkos::initialize(argc, argv);
    {
@@ -98,10 +100,25 @@ int main(int argc, char *argv[]) {
 	work=(double *) (Kokkos::kokkos_malloc(ldw*(RESTRT+4) * sizeof(double)));
 	h=(double *) (Kokkos::kokkos_malloc(ldh*(RESTRT+2) * sizeof(double)));
 
-	// leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
 
 	TreecodeInitialization();
 	// Kokkos::fence();
+	
+	leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
+	int idx = 0, nrow = 0, ibeg = 0, iend = 0;
+	arridx = 0; // extern variable
+	while ( idx < nface ) {
+	   leaflength(s_tree_root, idx);
+	   nrow  = Nrow;
+	   ibeg  = idx;
+	   iend  = idx + nrow - 1;	
+	   leafarr[0+3*arridx] = ibeg;
+	   leafarr[1+3*arridx] = nrow;
+	   leafarr[2+3*arridx] = iend;    
+		// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
+		arridx += 1;
+		idx += nrow;
+	}
 
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 // int gmres_(n, b, x, restrt, work, ldw, h, ldh, iter, resid, matvec, psolve, 
@@ -160,8 +177,8 @@ int main(int argc, char *argv[]) {
 	// 	free(matrixA[i]);
 	// }	
 	// free(matrixA);
-	// Kokkos::kokkos_free(leafarr);  
-	
+	Kokkos::kokkos_free(leafarr);  
+
 	Kokkos::kokkos_free(tr_xyz);
 	Kokkos::kokkos_free(tr_q);
 
