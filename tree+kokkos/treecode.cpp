@@ -285,7 +285,24 @@ void leaflength(TreeNode *p, int idx) {
 }
 
 /********************************************************/
+leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
+int idx = 0, nrow = 0, ibeg = 0, iend = 0;
+arridx = 0; // extern variable
+while ( idx < nface ) {
+    leaflength(s_tree_root, idx);
+    nrow  = Nrow;
+    ibeg  = idx;
+    iend  = idx + nrow - 1;	
+   	leafarr[0+3*arridx] = ibeg;
+    leafarr[1+3*arridx] = nrow;
+    leafarr[2+3*arridx] = iend;    
+	// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
+	arridx += 1;
+	idx += nrow;
+}
+Kokkos::kokkos_free(leafarr);   
 
+/********************************************************/
 
 int *psolve(double *z, double *r) {
 	// printf("test1\n");
@@ -297,34 +314,37 @@ int *psolve(double *z, double *r) {
 	// ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
 	// rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
 
-	leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
+	// leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
 
     // xtemp = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
     // ptr = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
 
     // matrixA1D = (double *) (Kokkos::kokkos_malloc(2*maxparnode*2*maxparnode * sizeof(double)));
     int inc;
-	int idx = 0, nrow = 0, ibeg = 0, iend = 0;
-	arridx = 0; // extern variable
-	while ( idx < nface ) {
-	    leaflength(s_tree_root, idx);
-	    nrow  = Nrow;
-	    ibeg  = idx;
-	    iend  = idx + nrow - 1;	
-	   	leafarr[0+3*arridx] = ibeg;
-	    leafarr[1+3*arridx] = nrow;
-	    leafarr[2+3*arridx] = iend;    
-		// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
-		arridx += 1;
-		idx += nrow;
-	}
+
+	// int idx = 0, nrow = 0, ibeg = 0, iend = 0;
+	// arridx = 0; // extern variable
+	// while ( idx < nface ) {
+	//     leaflength(s_tree_root, idx);
+	//     nrow  = Nrow;
+	//     ibeg  = idx;
+	//     iend  = idx + nrow - 1;	
+	//    	leafarr[0+3*arridx] = ibeg;
+	//     leafarr[1+3*arridx] = nrow;
+	//     leafarr[2+3*arridx] = iend;    
+	// 	// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
+	// 	arridx += 1;
+	// 	idx += nrow;
+	// }
 
     // psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr);
     psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, leafarr, arridx, &inc);//, xtemp, ptr);matrixA1D, ipiv, rhs,
 
   	// Kokkos::kokkos_free(rhs);
 	// Kokkos::kokkos_free(ipiv);
-  	Kokkos::kokkos_free(leafarr);    
+
+  	// Kokkos::kokkos_free(leafarr);    
+
 	// for(int i=0;i<2*maxparnode;i++) {
 	// 	free(matrixA[i]);
 	// }	
@@ -693,7 +713,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 	Kokkos::fence();
 	// timer_end();
-  	printf("Nleafc is %d\n",Nleafc);
+  	// printf("Nleafc is %d\n",Nleafc);
 
 }
 
