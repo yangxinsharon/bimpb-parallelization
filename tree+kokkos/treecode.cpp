@@ -285,7 +285,7 @@ void leaflength(TreeNode *p, int idx) {
 }
 
 /********************************************************/
-leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
+// leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
 int idx = 0, nrow = 0, ibeg = 0, iend = 0;
 arridx = 0; // extern variable
 while ( idx < nface ) {
@@ -300,7 +300,7 @@ while ( idx < nface ) {
 	arridx += 1;
 	idx += nrow;
 }
-Kokkos::kokkos_free(leafarr);   
+// Kokkos::kokkos_free(leafarr);   
 
 /********************************************************/
 

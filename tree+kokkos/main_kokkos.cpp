@@ -97,7 +97,9 @@ int main(int argc, char *argv[]) {
 	xvct=(double *) (Kokkos::kokkos_malloc(N * sizeof(double)));
 	work=(double *) (Kokkos::kokkos_malloc(ldw*(RESTRT+4) * sizeof(double)));
 	h=(double *) (Kokkos::kokkos_malloc(ldh*(RESTRT+2) * sizeof(double)));
-	
+
+	leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
+
 	TreecodeInitialization();
 	// Kokkos::fence();
 
@@ -158,7 +160,8 @@ int main(int argc, char *argv[]) {
 	// 	free(matrixA[i]);
 	// }	
 	// free(matrixA);
-
+	Kokkos::kokkos_free(leafarr);  
+	
 	Kokkos::kokkos_free(tr_xyz);
 	Kokkos::kokkos_free(tr_q);
 
