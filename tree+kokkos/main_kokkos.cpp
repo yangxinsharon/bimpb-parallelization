@@ -35,6 +35,7 @@ extern int *leafarr;
 extern double *xtemp;
 extern int Nleaf;
 extern int arridx;
+extern TreeNode *s_tree_root;
 
 #ifdef __cplusplus
 extern "C"
@@ -103,7 +104,7 @@ int main(int argc, char *argv[]) {
 
 	TreecodeInitialization();
 	// Kokkos::fence();
-	
+
 	leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
 	int idx = 0, nrow = 0, ibeg = 0, iend = 0;
 	arridx = 0; // extern variable
