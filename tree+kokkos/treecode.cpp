@@ -77,7 +77,8 @@ extern double *matrixA1D;
 /* internal functions */
 int *psolve(double *z, double *r);
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-	double *z, double *r, int *leafarr, int arridx, int *inc);//, double *xtemp, double *ptr);double *matrixA1D, int *ipiv, double *rhs,
+	double *z, double *r, double *matrixA1D, int *ipiv, double *rhs, 
+	int *leafarr, int arridx, int *inc);//, double *xtemp, double *ptr);double *matrixA1D, int *ipiv, double *rhs,
 int Setup(double xyz_limits[6]);
 int Partition(double *a, double *b, double *c, int *indarr,
 	int ibeg, int iend, double val);
@@ -294,8 +295,8 @@ int *psolve(double *z, double *r) {
 	// rhs = (double *) calloc(2*maxparnode , sizeof(double));
 	// leafarr = (int *) calloc(3*Nleaf, sizeof(int));
 
-	// ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
-	// rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
+	ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
+	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
 
 	leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
 
@@ -320,7 +321,7 @@ int *psolve(double *z, double *r) {
 	}
 
     // psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr);
-    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, leafarr, arridx, &inc);//, xtemp, ptr);matrixA1D, ipiv, rhs,
+    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA1D, ipiv, rhs, leafarr, arridx, &inc);//, xtemp, ptr);matrixA1D, ipiv, rhs,
 
   	// Kokkos::kokkos_free(rhs);
 	// Kokkos::kokkos_free(ipiv);
@@ -342,7 +343,7 @@ int *psolve(double *z, double *r) {
 
 /**********************************************************/
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-	double *z, double *r, int *leafarr, int arridx, int *inc){//, double *xtemp, double *ptr) {
+	double *z, double *r, double *matrixA1D, int *ipiv,double *rhs, int *leafarr, int arridx, int *inc){//, double *xtemp, double *ptr) {
 // double *matrixA1D, int *ipiv,double *rhs,
 	double pre1, pre2;
   	pre1 = 0.5*(1.0+eps);
@@ -382,8 +383,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		// 0828: matrixA size is changing, and should be private, lu_decpm &
 		// lu_solve need to be careful to deal with matrixA
 
-		int ipiv[2*maxparnode]={0};
-		double rhs[2*maxparnode]={0.0};
+		// int ipiv[2*maxparnode]={0};
+		// double rhs[2*maxparnode]={0.0};
 		double matrixA1DD[2*maxparnode*2*maxparnode]={0.0};
   		// printf("ibeg iend nrow nrow2 k %d %d %d %d %d\n", ibeg, iend, nrow, nrow2, k);
 	 	// print k; 0707
