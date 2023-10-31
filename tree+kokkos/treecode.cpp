@@ -69,7 +69,7 @@ extern int Nleaf;
 // extern int *ipiv;
 // extern double *rhs;
 extern int *leafarr;
-// extern int arridx;
+extern int arridx;
 // extern double *xtemp;
 // extern double *ptr;
 // extern double *matrixA1D;
@@ -325,7 +325,7 @@ int *psolve(double *z, double *r) {
     int inc;
 
 	int idx = 0, nrow = 0, ibeg = 0, iend = 0;
-	int arridx = 0; // extern variable
+	arridx = 0; // extern variable
 	while ( idx < nface ) {
 	    leaflength(s_tree_root, idx);
 	    nrow  = Nrow;
