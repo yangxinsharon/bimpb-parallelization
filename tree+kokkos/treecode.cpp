@@ -325,7 +325,7 @@ int *psolve(double *z, double *r) {
     int inc;
 
 	int idx = 0, nrow = 0, ibeg = 0, iend = 0;
-	arridx = 0; // extern variable
+	int arridx = 0; // extern variable
 	while ( idx < nface ) {
 	    leaflength(s_tree_root, idx);
 	    nrow  = Nrow;
