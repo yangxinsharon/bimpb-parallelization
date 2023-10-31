@@ -528,11 +528,11 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		}
     	}
 
-		for ( i = iend+1; i <= 2*maxparnode; i++ ) {
+		// for ( i = iend+1; i <= 2*maxparnode; i++ ) {
 
-	       	matrixA1DD[(i-ibeg)*2*maxparnode			+i-ibeg] = 1.0;
-      		matrixA1DD[(i+nrow-ibeg)*2*maxparnode	+i+nrow-ibeg] = 1.0;			
-		}	
+	    //    	matrixA1DD[(i-ibeg)*2*maxparnode			+i-ibeg] = 1.0;
+      	// 	matrixA1DD[(i+nrow-ibeg)*2*maxparnode	+i+nrow-ibeg] = 1.0;			
+		// }	
 
     	for ( i = 0; i < nrow; i++) {
       		rhs[i] = r[i+ibeg];
