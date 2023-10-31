@@ -294,15 +294,15 @@ int *psolve(double *z, double *r) {
 	// rhs = (double *) calloc(2*maxparnode , sizeof(double));
 	// leafarr = (int *) calloc(3*Nleaf, sizeof(int));
 
-	ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
-	rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
+	// ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
+	// rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
 
 	leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
 
     // xtemp = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
     // ptr = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
 
-    matrixA1D = (double *) (Kokkos::kokkos_malloc(2*maxparnode*2*maxparnode * sizeof(double)));
+    // matrixA1D = (double *) (Kokkos::kokkos_malloc(2*maxparnode*2*maxparnode * sizeof(double)));
     int inc;
 	int idx = 0, nrow = 0, ibeg = 0, iend = 0;
 	arridx = 0; // extern variable
@@ -332,7 +332,7 @@ int *psolve(double *z, double *r) {
 
 	// Kokkos::kokkos_free(xtemp);
 	// Kokkos::kokkos_free(ptr);
-	Kokkos::kokkos_free(matrixA1D);
+	// Kokkos::kokkos_free(matrixA1D);
 
 	// stop, only run once 0707
 
