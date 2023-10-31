@@ -164,6 +164,25 @@ int TreecodeInitialization() {
 		}
 	}
 
+	// compute leaves
+	int idx = 0, nrow = 0, ibeg = 0, iend = 0;
+	arridx = 0; // extern variable
+	leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
+	while ( idx < nface ) {
+	    leaflength(s_tree_root, idx);
+	    nrow  = Nrow;
+	    ibeg  = idx;
+	    iend  = idx + nrow - 1;	
+	   	leafarr[0+3*arridx] = ibeg;
+	    leafarr[1+3*arridx] = nrow;
+	    leafarr[2+3*arridx] = iend;    
+		// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
+		arridx += 1;
+		idx += nrow;
+	}
+
+
+
 
 	return 0;
 }
@@ -239,6 +258,7 @@ int TreecodeFinalization()
     RemoveNode(s_tree_root);
     free(s_tree_root);
 
+  	Kokkos::kokkos_free(leafarr);   
     // free_vector(s_order_arr);
 /*****************************************/
 

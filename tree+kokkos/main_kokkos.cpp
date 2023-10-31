@@ -34,8 +34,8 @@ extern double **tr_xyz2D, **tr_q2D;
 extern int *leafarr;
 extern double *xtemp;
 extern int Nleaf;
-extern int arridx;
-extern TreeNode *s_tree_root;
+// extern int arridx;
+// extern TreeNode *s_tree_root;
 
 #ifdef __cplusplus
 extern "C"
@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
    extern void timer_end(void); // yang
    extern int TreecodeInitialization();
 	extern int TreecodeFinalization();
-	extern void leaflength(TreeNode *p, int idx);
+	// extern void leaflength(TreeNode *p, int idx);
 
    Kokkos::initialize(argc, argv);
    {
@@ -105,21 +105,21 @@ int main(int argc, char *argv[]) {
 	TreecodeInitialization();
 	// Kokkos::fence();
 
-	leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
-	int idx = 0, nrow = 0, ibeg = 0, iend = 0;
-	arridx = 0; // extern variable
-	while ( idx < nface ) {
-	   leaflength(s_tree_root, idx);
-	   nrow  = Nrow;
-	   ibeg  = idx;
-	   iend  = idx + nrow - 1;	
-	   leafarr[0+3*arridx] = ibeg;
-	   leafarr[1+3*arridx] = nrow;
-	   leafarr[2+3*arridx] = iend;    
-		// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
-		arridx += 1;
-		idx += nrow;
-	}
+	// leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
+	// int idx = 0, nrow = 0, ibeg = 0, iend = 0;
+	// arridx = 0; // extern variable
+	// while ( idx < nface ) {
+	//    leaflength(s_tree_root, idx);
+	//    nrow  = Nrow;
+	//    ibeg  = idx;
+	//    iend  = idx + nrow - 1;	
+	//    leafarr[0+3*arridx] = ibeg;
+	//    leafarr[1+3*arridx] = nrow;
+	//    leafarr[2+3*arridx] = iend;    
+	// 	// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
+	// 	arridx += 1;
+	// 	idx += nrow;
+	// }
 
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 // int gmres_(n, b, x, restrt, work, ldw, h, ldh, iter, resid, matvec, psolve, 
@@ -178,7 +178,7 @@ int main(int argc, char *argv[]) {
 	// 	free(matrixA[i]);
 	// }	
 	// free(matrixA);
-	Kokkos::kokkos_free(leafarr);  
+	// Kokkos::kokkos_free(leafarr);  
 
 	Kokkos::kokkos_free(tr_xyz);
 	Kokkos::kokkos_free(tr_q);
