@@ -109,10 +109,10 @@ int main(int argc, char *argv[]) {
 
 	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
 	Kokkos::fence();
-	timer_end();
+	// timer_end();
 	TreecodeFinalization();
 	Kokkos::fence();
-
+	timer_end();
 	/* free memory */
 	for(i=0;i<3;i++) {
 		free(extr_v[i]);

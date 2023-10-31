@@ -348,7 +348,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	pre1 = 0.5*(1.0+eps);
   	pre2 = 0.5*(1.0+1.0/eps);
 
-	timer_start((char*) "psolve time");
+	// timer_start((char*) "psolve time");
 	// Kokkos::View<double**, Kokkos::HostSpace> matrixA_dev("matrixA_dev",2*maxparnode,2*maxparnode);
 
 
@@ -691,7 +691,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	
 
 	Kokkos::fence();
-	timer_end();
+	// timer_end();
   	printf("Nleafc is %d\n",Nleafc);
 
 }
