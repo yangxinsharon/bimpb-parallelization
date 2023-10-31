@@ -634,8 +634,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 ////////////// lu_solve( matrixA, nrow2, ipiv, rhs ); ////////////
 	// void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 	  	// double *xtemp;
-		double xtemp[2*nrow2]={0.0};
-	  	// double xtemp[2*maxparnode];
+	  	double xtemp[2*maxparnode]={0.0};
 		int iii, kkk ;
 
 	  	for (iii = 0; iii < nrow2; iii++) {
