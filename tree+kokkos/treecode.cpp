@@ -528,6 +528,11 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		}
     	}
 
+		for ( i = iend+1; i <= 2*maxparnode; i++ ) {
+
+	       	matrixA1DD[(i-ibeg)*2*maxparnode			+i-ibeg] = 1.0;
+      		matrixA1DD[(i+nrow-ibeg)*2*maxparnode	+i+nrow-ibeg] = 1.0;			
+		}	
 
     	for ( i = 0; i < nrow; i++) {
       		rhs[i] = r[i+ibeg];
@@ -579,7 +584,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 			   	//   	matrixA_dev(ii,jj) = matrixA_dev(imax,jj);
 			   	//   	matrixA_dev(imax,jj) = ptr[jj];	
 		   	  	// }
-// maxparnode -> nrow2
+
+// maxparnode -> nrow2 ok for host_range_policy
 		   	  	for (jj = 0; jj < 2*nrow2; jj++){ //0707 maxparnode to nrow2
 		   	  		ptr[jj] = matrixA1DD[ii*2*maxparnode+jj];
 			   	  	matrixA1DD[ii*2*maxparnode+jj] = matrixA1DD[imax*2*maxparnode+jj];
