@@ -316,7 +316,7 @@ int *psolve(double *z, double *r) {
 	// ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
 	// rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
 
-	// leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
+	leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
 
     // xtemp = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
     // ptr = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
@@ -345,7 +345,7 @@ int *psolve(double *z, double *r) {
   	// Kokkos::kokkos_free(rhs);
 	// Kokkos::kokkos_free(ipiv);
 
-  	// Kokkos::kokkos_free(leafarr);    
+  	Kokkos::kokkos_free(leafarr);    
 
 	// for(int i=0;i<2*maxparnode;i++) {
 	// 	free(matrixA[i]);
