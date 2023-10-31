@@ -91,11 +91,12 @@ int s_ComputeTreePB(TreeNode *p, double tempq[2][16], double peng[2]);
 int s_ComputeDirectPB(int ibeg, int iend, double *tpoten_old,
                              double peng[2]);
 int RemoveNode(TreeNode *p);
+int Nrow;
 
 /**********************************************************/
 int TreecodeInitialization() {
     
-    int level, i, j, k, mm, nn, idx, ijk[3];
+    int level, i, j, k, mm, nn, ijk[3];
 
     /* variables needed for reorder */
     double *temp_area, *temp_source;
@@ -288,7 +289,7 @@ int RemoveNode(TreeNode *p)
 
 /********************************************************/
 /* preconditioning calculation */
-int Nrow;
+// int Nrow;
 void leaflength(TreeNode *p, int idx) {
 	/* find the leaf length */
 	int i;
