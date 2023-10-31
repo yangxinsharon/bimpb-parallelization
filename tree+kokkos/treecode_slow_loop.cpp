@@ -322,8 +322,8 @@ int *psolve(double *z, double *r) {
     // psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, matrixA, ipiv, rhs, leafarr);
     psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, leafarr, arridx, &inc);//, xtemp, ptr);matrixA1D, ipiv, rhs,
 
-  	// Kokkos::kokkos_free(rhs);
-	// Kokkos::kokkos_free(ipiv);
+  	Kokkos::kokkos_free(rhs);
+	Kokkos::kokkos_free(ipiv);
   	Kokkos::kokkos_free(leafarr);    
 	// for(int i=0;i<2*maxparnode;i++) {
 	// 	free(matrixA[i]);
@@ -381,13 +381,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		// double matrixA1D[2*nrow*2*nrow]={0.0};
 		// 0828: matrixA size is changing, and should be private, lu_decpm &
 		// lu_solve need to be careful to deal with matrixA
-		double *rhs;
-		int *ipiv;
-		ipiv = (int *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(int)));
-		rhs = (double *) (Kokkos::kokkos_malloc(2*maxparnode * sizeof(double)));
-
-		// int ipiv[2*maxparnode]={0};
-		// double rhs[2*maxparnode]={0.0};
+		int ipiv[2*maxparnode]={0};
+		double rhs[2*maxparnode]={0.0};
 		double matrixA1DD[2*maxparnode*2*maxparnode]={0.0};
   		// printf("ibeg iend nrow nrow2 k %d %d %d %d %d\n", ibeg, iend, nrow, nrow2, k);
 	 	// print k; 0707
