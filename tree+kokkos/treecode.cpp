@@ -580,7 +580,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 			   	//   	matrixA_dev(imax,jj) = ptr[jj];	
 		   	  	// }
 // maxparnode -> nrow2
-		   	  	for (jj = 0; jj < 2*nrow2; jj++){ //0707 maxparnode to nrow2
+		   	  	for (jj = 0; jj < 2*maxparnode; jj++){ //0707 maxparnode to nrow2
 		   	  		ptr[jj] = matrixA1DD[ii*2*maxparnode+jj];
 			   	  	matrixA1DD[ii*2*maxparnode+jj] = matrixA1DD[imax*2*maxparnode+jj];
 			   	  	matrixA1DD[imax*2*maxparnode+jj] = ptr[jj];	
