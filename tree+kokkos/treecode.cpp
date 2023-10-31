@@ -91,7 +91,24 @@ int s_ComputeTreePB(TreeNode *p, double tempq[2][16], double peng[2]);
 int s_ComputeDirectPB(int ibeg, int iend, double *tpoten_old,
                              double peng[2]);
 int RemoveNode(TreeNode *p);
+
+/********************************************************/
+/* preconditioning calculation */
 int Nrow;
+void leaflength(TreeNode *p, int idx) {
+	/* find the leaf length */
+	int i;
+	if (idx == p->ibeg && p->num_children == 0 ) {
+   		Nrow = p->numpar;
+  	} else {
+    	if ( p->num_children != 0 ) {
+      		for ( i = 0; i < p->num_children; i++ ){
+        		leaflength(p->child[i], idx);
+      		}
+    	}
+  	}
+
+}
 
 /**********************************************************/
 int TreecodeInitialization() {
@@ -290,20 +307,20 @@ int RemoveNode(TreeNode *p)
 /********************************************************/
 /* preconditioning calculation */
 // int Nrow;
-void leaflength(TreeNode *p, int idx) {
-	/* find the leaf length */
-	int i;
-	if (idx == p->ibeg && p->num_children == 0 ) {
-   		Nrow = p->numpar;
-  	} else {
-    	if ( p->num_children != 0 ) {
-      		for ( i = 0; i < p->num_children; i++ ){
-        		leaflength(p->child[i], idx);
-      		}
-    	}
-  	}
+// void leaflength(TreeNode *p, int idx) {
+// 	/* find the leaf length */
+// 	int i;
+// 	if (idx == p->ibeg && p->num_children == 0 ) {
+//    		Nrow = p->numpar;
+//   	} else {
+//     	if ( p->num_children != 0 ) {
+//       		for ( i = 0; i < p->num_children; i++ ){
+//         		leaflength(p->child[i], idx);
+//       		}
+//     	}
+//   	}
 
-}
+// }
 
 /********************************************************/
 // leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
