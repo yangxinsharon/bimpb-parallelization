@@ -344,20 +344,20 @@ int RemoveNode(TreeNode *p)
 
 /********************************************************/
 
-// int *psolve(double *z, double *r) {
-// 	int inc;
+int *psolve(double *z, double *r) {
+	int inc;
 
-//     psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, leafarr, arridx, &inc);//, xtemp, ptr);matrixA1D, ipiv, rhs,
+    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, leafarr, arridx, &inc);//, xtemp, ptr);matrixA1D, ipiv, rhs,
 
-//     return NULL;
-// }
+    return NULL;
+}
 
 /**********************************************************/
-int *psolve(double *z, double *r) {
-// void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-// 	double *z, double *r, int *leafarr, int arridx, int *inc){//, double *xtemp, double *ptr) {
+// int *psolve(double *z, double *r) {
+void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
+	double *z, double *r, int *leafarr, int arridx, int *inc){//, double *xtemp, double *ptr) {
 // double *matrixA1D, int *ipiv,double *rhs,
-	int inc;
+	// int inc;
 	double pre1, pre2;
   	pre1 = 0.5*(1.0+eps);
   	pre2 = 0.5*(1.0+1.0/eps);
@@ -612,7 +612,7 @@ int *psolve(double *z, double *r) {
 
 	Kokkos::fence();
 	timer_end();
-	return NULL;
+
 
 }
 
