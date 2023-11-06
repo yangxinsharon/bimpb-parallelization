@@ -363,7 +363,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	pre1 = 0.5*(1.0+eps);
   	pre2 = 0.5*(1.0+1.0/eps);
 
-	// timer_start((char*) "psolve time");
+	timer_start((char*) "psolve time");
 	// Kokkos::Timer timer;
 	Kokkos::parallel_for("psolvemul", dev_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
 	  	// printf("matrixA_dev(0,0) is %f\n", matrixA_dev(0,0));
@@ -505,7 +505,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
     	}
     	// timer_end();
     	// std::abort();
-    	timer_start((char*) "LU time");
+    	// timer_start((char*) "LU time");
 		// double MATtime = timer.seconds();
 		// timer.reset();
 	    // printf("MATtime is %f \n",MATtime);  
