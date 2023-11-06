@@ -503,8 +503,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		rhs[i] = r[i+ibeg];
       		rhs[i+nrow] = r[i+ibeg+nface];
     	}
-    	timer_end();
-    	std::abort();
+    	// timer_end();
+    	// std::abort();
     	// timer_start((char*) "LU time");
 		// double MATtime = timer.seconds();
 		// timer.reset();
@@ -558,7 +558,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		   	  	ipiv[nrow2]++;
 		   	}	
 
-
+    	timer_end();
+    	std::abort();
 
 	   		for (jj = ii + 1; jj < nrow2; jj++) { 
 	   	  		matrixA1DD[jj*2*nrow	+ii] /= matrixA1DD[ii*2*nrow +ii];	
