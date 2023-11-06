@@ -503,8 +503,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		rhs[i] = r[i+ibeg];
       		rhs[i+nrow] = r[i+ibeg+nface];
     	}
-    	// timer_end();
-    	// std::abort();
+    	timer_end();
+    	std::abort();
     	// timer_start((char*) "LU time");
 		// double MATtime = timer.seconds();
 		// timer.reset();
@@ -614,8 +614,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		z[i+ibeg] = rhs[i];
       		z[i+ibeg+nface] = rhs[i+nrow];
     	}
-    	timer_end();
-    	std::abort();
+    	// timer_end();
+    	// std::abort();
 		// double Soltime = timer.seconds();
 		// timer.reset();
 	    // printf("Soltime is %f \n",Soltime);  
