@@ -364,7 +364,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	pre2 = 0.5*(1.0+1.0/eps);
 
 	timer_start((char*) "psolve time");
-	Kokkos::Timer timer;
+	// Kokkos::Timer timer;
 	Kokkos::parallel_for("psolvemul", dev_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
 	  	// printf("matrixA_dev(0,0) is %f\n", matrixA_dev(0,0));
 	  	int i,j;//,inc;
@@ -503,9 +503,11 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		rhs[i] = r[i+ibeg];
       		rhs[i+nrow] = r[i+ibeg+nface];
     	}
-		double MATtime = timer.seconds();
+    	timer_end();
+    	std::abort();
+		// double MATtime = timer.seconds();
 		// timer.reset();
-	    printf("MATtime is %f \n",MATtime);  
+	    // printf("MATtime is %f \n",MATtime);  
 		// std::abort();
     	// inc = lu_decomp( matrixA, nrow2, ipiv );
     	// lu_solve( matrixA, nrow2, ipiv, rhs );
@@ -569,9 +571,9 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	  	if (flag == nrow2-1){
 			*inc = 1;
 	  	}
-		double Dectime = timer.seconds();
+		// double Dectime = timer.seconds();
 		// timer.reset();
-	    printf("Dectime is %f \n",Dectime);  
+	    // printf("Dectime is %f \n",Dectime);  
 ///////////////////////////////////////////////////////////////
 
 
@@ -612,9 +614,9 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		z[i+ibeg+nface] = rhs[i+nrow];
     	}
 
-		double Soltime = timer.seconds();
+		// double Soltime = timer.seconds();
 		// timer.reset();
-	    printf("Soltime is %f \n",Soltime);  
+	    // printf("Soltime is %f \n",Soltime);  
   	// }
     });
 	
