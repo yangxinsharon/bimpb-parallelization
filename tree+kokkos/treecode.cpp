@@ -504,7 +504,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		rhs[i+nrow] = r[i+ibeg+nface];
     	}
 		double MATtime = timer.seconds();
-		timer.reset();
+		// timer.reset();
 	    printf("MATtime is %f \n",MATtime);  
 		// std::abort();
     	// inc = lu_decomp( matrixA, nrow2, ipiv );
@@ -570,7 +570,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 			*inc = 1;
 	  	}
 		double Dectime = timer.seconds();
-		timer.reset();
+		// timer.reset();
 	    printf("Dectime is %f \n",Dectime);  
 ///////////////////////////////////////////////////////////////
 
@@ -613,7 +613,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
     	}
 
 		double Soltime = timer.seconds();
-		timer.reset();
+		// timer.reset();
 	    printf("Soltime is %f \n",Soltime);  
   	// }
     });
