@@ -558,9 +558,6 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		   	  	ipiv[nrow2]++;
 		   	}	
 
-    	timer_end();
-    	std::abort();
-
 	   		for (jj = ii + 1; jj < nrow2; jj++) { 
 	   	  		matrixA1DD[jj*2*nrow	+ii] /= matrixA1DD[ii*2*nrow +ii];	
 	   	  		for (kk = ii + 1; kk < nrow2; kk++){
@@ -578,6 +575,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	    // printf("Dectime is %f \n",Dectime);  
 ///////////////////////////////////////////////////////////////
 
+    	timer_end();
+    	std::abort();
 
 ////////////// lu_solve( matrixA, nrow2, ipiv, rhs ); ////////////
 	// void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
