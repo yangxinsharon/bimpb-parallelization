@@ -503,8 +503,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		rhs[i] = r[i+ibeg];
       		rhs[i+nrow] = r[i+ibeg+nface];
     	}
-    	// timer_end();
-    	// std::abort();
+
     	// timer_start((char*) "LU time");
 		// double MATtime = timer.seconds();
 		// timer.reset();
@@ -512,7 +511,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		// std::abort();
     	// inc = lu_decomp( matrixA, nrow2, ipiv );
     	// lu_solve( matrixA, nrow2, ipiv, rhs );
-
+/*
 /////////inc = lu_decomp( matrixA, nrow2, ipiv );/////////////////
 	// int lu_decomp( double **A, int N, int *ipiv ) {
 		int ii, jj, kk, imax;
@@ -586,15 +585,15 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		// timer_end();
     	// std::abort();
 
-	  	// for (iii = 0; iii < nrow2; iii++) {
-	   	// 	xtemp[iii] = rhs[ipiv[iii]];
+	  	for (iii = 0; iii < nrow2; iii++) {
+	   		xtemp[iii] = rhs[ipiv[iii]];
 
-	   	// 	for (kkk = 0; kkk < iii; kkk++){
+	   		for (kkk = 0; kkk < iii; kkk++){
    
-	    //   		xtemp[iii] -= matrixA1DD[iii*2*nrow +kkk] * xtemp[kkk];	
-	    //   		// printf("%d %d %f \n",iii,kkk,matrixA_dev(iii,kkk));   		
-	   	// 	}
-	  	// }
+	      		xtemp[iii] -= matrixA1DD[iii*2*nrow +kkk] * xtemp[kkk];	
+	      		// printf("%d %d %f \n",iii,kkk,matrixA_dev(iii,kkk));   		
+	   		}
+	  	}
 	  	// timer_end();
     	// std::abort();
 
@@ -606,8 +605,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 	    	xtemp[iii] = xtemp[iii] / matrixA1DD[iii*2*nrow +iii];    	
 	  	}
-	  	timer_end();
-    	std::abort();
+	  	// timer_end();
+    	// std::abort();
 	  	for (iii = 0; iii < nrow2; iii++) {
 	    	rhs[iii] = xtemp[iii];
 	  	}
@@ -626,11 +625,12 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		// timer.reset();
 	    // printf("Soltime is %f \n",Soltime);  
   	// }
+*/
     });
 	
 
 	Kokkos::fence();
-	// timer_end();
+	timer_end();
 
 
 }
