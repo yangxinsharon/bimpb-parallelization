@@ -511,7 +511,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		// std::abort();
     	// inc = lu_decomp( matrixA, nrow2, ipiv );
     	// lu_solve( matrixA, nrow2, ipiv, rhs );
-//
+/*//
 /////////inc = lu_decomp( matrixA, nrow2, ipiv );/////////////////
 	// int lu_decomp( double **A, int N, int *ipiv ) {
 		int ii, jj, kk, imax;
@@ -613,7 +613,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 //////////////////////////////////////////////////////////////
     	// timer_end();
     	// std::abort();
-//
+*///
     	for ( i = 0; i < nrow; i++) {
       		z[i+ibeg] = rhs[i];
       		z[i+ibeg+nface] = rhs[i+nrow];
