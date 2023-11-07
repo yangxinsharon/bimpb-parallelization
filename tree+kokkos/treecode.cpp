@@ -583,8 +583,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	  	// double *xtemp;
 	  	double xtemp[2*maxparnode]={0.0};
 		int iii, kkk ;
-		timer_end();
-    	std::abort();
+		// timer_end();
+    	// std::abort();
 
 	  	for (iii = 0; iii < nrow2; iii++) {
 	   		xtemp[iii] = rhs[ipiv[iii]];
@@ -595,6 +595,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	      		// printf("%d %d %f \n",iii,kkk,matrixA_dev(iii,kkk));   		
 	   		}
 	  	}
+	  	timer_end();
+    	std::abort();
 
 	  	for (iii = nrow2 - 1; iii >= 0; iii--) {
 	    	for (kkk = iii + 1; kkk < nrow2; kkk++){
