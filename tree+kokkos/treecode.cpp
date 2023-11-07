@@ -574,8 +574,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		// timer.reset();
 	    // printf("Dectime is %f \n",Dectime);  
 ///////////////////////////////////////////////////////////////
-    	timer_end();
-    	std::abort();
+    	// timer_end();
+    	// std::abort();
 
 
 ////////////// lu_solve( matrixA, nrow2, ipiv, rhs ); ////////////
@@ -607,7 +607,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	    	rhs[iii] = xtemp[iii];
 	  	}
 //////////////////////////////////////////////////////////////
-
+    	timer_end();
+    	std::abort();
 
     	for ( i = 0; i < nrow; i++) {
       		z[i+ibeg] = rhs[i];
