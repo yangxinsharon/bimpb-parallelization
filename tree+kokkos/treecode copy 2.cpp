@@ -78,7 +78,7 @@ extern int arridx;
 /* internal functions */
 int *psolve(double *z, double *r);
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-	double *z, double *r, int *leafarr, int arridx, int *inc);
+	double *z, double *r, int *leafarr, int arridx, int *inc);//, double *xtemp, double *ptr);double *matrixA1D, int *ipiv, double *rhs,
 int Setup(double xyz_limits[6]);
 int Partition(double *a, double *b, double *c, int *indarr,
 	int ibeg, int iend, double val);
@@ -108,6 +108,7 @@ void leaflength(TreeNode *p, int idx) {
       		}
     	}
   	}
+
 }
 
 /**********************************************************/
@@ -198,6 +199,7 @@ int TreecodeInitialization() {
 		arridx += 1;
 		idx += nrow;
 	}
+
 
 
 
@@ -302,12 +304,51 @@ int RemoveNode(TreeNode *p)
     return 0;
 }
 
+
+/********************************************************/
+/* preconditioning calculation */
+// int Nrow;
+// void leaflength(TreeNode *p, int idx) {
+// 	/* find the leaf length */
+// 	int i;
+// 	if (idx == p->ibeg && p->num_children == 0 ) {
+//    		Nrow = p->numpar;
+//   	} else {
+//     	if ( p->num_children != 0 ) {
+//       		for ( i = 0; i < p->num_children; i++ ){
+//         		leaflength(p->child[i], idx);
+//       		}
+//     	}
+//   	}
+
+// }
+
+/********************************************************/
+// leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
+
+// int idx_ = 0, nrow_ = 0, ibeg_ = 0, iend_ = 0;
+// int arridx = 0; // extern variable
+// while ( idx_ < nface ) {
+//     leaflength(s_tree_root, idx_);
+//     nrow_  = Nrow;
+//     ibeg_  = idx_;
+//     iend_  = idx_ + nrow_ - 1;	
+//    	leafarr[0+3*arridx] = ibeg_;
+//     leafarr[1+3*arridx] = nrow_;
+//     leafarr[2+3*arridx] = iend_;    
+// 	// printf("ibeg iend nrow is %d, %d, %d\n",ibeg,iend,nrow);
+// 	arridx += 1;
+// 	idx_ += nrow_;
+// }
+
+// Kokkos::kokkos_free(leafarr);   
+
 /********************************************************/
 
 int *psolve(double *z, double *r) {
 	int inc;
 
-    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, leafarr, arridx, &inc);
+    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, leafarr, arridx, &inc);//, xtemp, ptr);matrixA1D, ipiv, rhs,
 
     return NULL;
 }
@@ -325,6 +366,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	timer_start((char*) "psolve time");
 	// Kokkos::Timer timer;
 	Kokkos::parallel_for("psolvemul", dev_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
+	  	// printf("matrixA_dev(0,0) is %f\n", matrixA_dev(0,0));
 	  	int i,j;//,inc;
 		// timer_start((char*) "matrixA time");
   		double L1, L2, L3, L4, area;
@@ -338,14 +380,15 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		int nrow = leafarr[1+3*k];
 		int iend = leafarr[2+3*k];
 		int nrow2 = nrow*2;
-		// double matrixA1D[2*nrow*2*nrow]={0.0}; // cannot change size since nrow is chaning
+		// double matrixA1D[2*nrow*2*nrow]={0.0};
 		// 0828: matrixA size is changing, and should be private, lu_decpm &
 		// lu_solve need to be careful to deal with matrixA
 
 		int ipiv[2*maxparnode]={0};
 		double rhs[2*maxparnode]={0.0};
-		double matrixA1D[2*maxparnode*2*maxparnode]={0.0};
-
+		double matrixA1DD[2*maxparnode*2*maxparnode]={0.0};
+  		// printf("ibeg iend nrow nrow2 k %d %d %d %d %d\n", ibeg, iend, nrow, nrow2, k);
+	 	// print k; 0707
     	for ( i = ibeg; i <= iend; i++ ) {
    
     		tp[0] = tr_xyz[3*i+0];
@@ -354,6 +397,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 			tq[0] = tr_q[3*i+0];
 			tq[1] = tr_q[3*i+1];
 			tq[2] = tr_q[3*i+2];
+			// printf("test 1-1 loop %d\n", i);
 			
       		for ( j = ibeg; j < i; j++ ) {
    			
@@ -396,16 +440,16 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
         		L3 = G4 - G3;
         		L4 = G10 - G20/eps;
 
-        		matrixA1D[(i-ibeg)*2*nrow		+j-ibeg] = -L1*area;
-        		matrixA1D[(i-ibeg)*2*nrow		+j+nrow-ibeg] = -L2*area;
-        		matrixA1D[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
-        		matrixA1D[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area; 
+        		matrixA1DD[(i-ibeg)*2*nrow		+j-ibeg] = -L1*area;
+        		matrixA1DD[(i-ibeg)*2*nrow		+j+nrow-ibeg] = -L2*area;
+        		matrixA1DD[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
+        		matrixA1DD[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area; 
 
 
       		}
 
-      		matrixA1D[(i-ibeg)*2*nrow			+i-ibeg] = pre1;
-      		matrixA1D[(i+nrow-ibeg)*2*nrow	+i+nrow-ibeg] = pre2;
+      		matrixA1DD[(i-ibeg)*2*nrow			+i-ibeg] = pre1;
+      		matrixA1DD[(i+nrow-ibeg)*2*nrow	+i+nrow-ibeg] = pre2;
 
       		for ( j = i+1; j <= iend; j++ ) {			
 
@@ -447,10 +491,10 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	        	L4 = G10 - G20/eps;
 		
    	
-	        	matrixA1D[(i-ibeg)*2*nrow		+j-ibeg] = -L1*area;
-	        	matrixA1D[(i-ibeg)*2*nrow		+j+nrow-ibeg] = -L2*area;
-	        	matrixA1D[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
-	        	matrixA1D[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area;
+	        	matrixA1DD[(i-ibeg)*2*nrow		+j-ibeg] = -L1*area;
+	        	matrixA1DD[(i-ibeg)*2*nrow		+j+nrow-ibeg] = -L2*area;
+	        	matrixA1DD[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
+	        	matrixA1DD[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area;
       		}
     	}
 	
@@ -460,12 +504,14 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		rhs[i+nrow] = r[i+ibeg+nface];
     	}
 
+    	// timer_start((char*) "LU time");
 		// double MATtime = timer.seconds();
 		// timer.reset();
 	    // printf("MATtime is %f \n",MATtime);  
 		// std::abort();
-
-
+    	// inc = lu_decomp( matrixA, nrow2, ipiv );
+    	// lu_solve( matrixA, nrow2, ipiv, rhs );
+/*//
 /////////inc = lu_decomp( matrixA, nrow2, ipiv );/////////////////
 	// int lu_decomp( double **A, int N, int *ipiv ) {
 		int ii, jj, kk, imax;
@@ -482,13 +528,13 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	   		imax = ii;
 	   		for (kk = ii; kk < nrow2; kk++){
   
-	   	  		if ((absA = fabs(matrixA1D[kk*nrow2+ii])) > maxA) {	 			
+	   	  		if ((absA = fabs(matrixA1DD[kk*2*nrow+ii])) > maxA) {	 			
 	   	   			maxA = absA;
 	   	    		imax = kk;
 	   			}
 	   	  	}
 	   		if (maxA < Tol) {
-	   			// *inc = 0;
+	   			*inc = 0;
 	   			break;
 	   		} //failure, matrix is degenerate	
 	   		if (imax != ii) {
@@ -496,12 +542,15 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		   	  	jj = ipiv[ii];
 		   	  	ipiv[ii] = ipiv[imax];
 		   	  	ipiv[imax] = jj;	
+
+
 // maxparnode -> nrow ok for host_range_policy
-		   	  	for (jj = 0; jj < nrow2; jj++){ //0707 maxparnode to nrow2
-		   	  		ptr[jj] = matrixA1D[ii*nrow2+jj];
-			   	  	matrixA1D[ii*nrow2+jj] = matrixA1D[imax*nrow2+jj];
-			   	  	matrixA1D[imax*nrow2+jj] = ptr[jj];	
+		   	  	for (jj = 0; jj < 2*nrow; jj++){ //0707 maxparnode to nrow2
+		   	  		ptr[jj] = matrixA1DD[ii*2*nrow+jj];
+			   	  	matrixA1DD[ii*2*nrow+jj] = matrixA1DD[imax*2*nrow+jj];
+			   	  	matrixA1DD[imax*2*nrow+jj] = ptr[jj];	
 		   	  	}
+
 
 
 		   	  	//counting pivots starting from N (for determinant)
@@ -509,30 +558,30 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		   	}	
 
 	   		for (jj = ii + 1; jj < nrow2; jj++) { 
-	   	  		matrixA1D[jj*nrow2	+ii] /= matrixA1D[ii*nrow2 +ii];	
+	   	  		matrixA1DD[jj*2*nrow	+ii] /= matrixA1DD[ii*2*nrow +ii];	
 	   	  		for (kk = ii + 1; kk < nrow2; kk++){
-	   	  	 		matrixA1D[jj*nrow2+ kk] -= matrixA1D[jj*nrow2+ii] * matrixA1D[ii*nrow2+kk];
+	   	  	 		matrixA1DD[jj*2*nrow+ kk] -= matrixA1DD[jj*2*nrow+ii] * matrixA1DD[ii*2*nrow+kk];
 	   	  		}
-	   		}
+	   		}	   		
 
-	   		// flag = flag + 1;
+	   		flag = flag + 1;
 	  	}
-	  	// if (flag == nrow2-1){
-		// 	*inc = 1;
-	  	// }
-
+	  	if (flag == nrow2-1){
+			*inc = 1;
+	  	}
 		// double Dectime = timer.seconds();
 		// timer.reset();
 	    // printf("Dectime is %f \n",Dectime);  
+///////////////////////////////////////////////////////////////
+    	// timer_end();
     	// std::abort();
 
-///////////////////////////////////////////////////////////////
+
 ////////////// lu_solve( matrixA, nrow2, ipiv, rhs ); ////////////
 	// void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 	  	// double *xtemp;
 	  	double xtemp[2*maxparnode]={0.0};
 		int iii, kkk ;
-
 		// timer_end();
     	// std::abort();
 
@@ -541,18 +590,20 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 	   		for (kkk = 0; kkk < iii; kkk++){
    
-	      		xtemp[iii] -= matrixA1D[iii*2*nrow +kkk] * xtemp[kkk];	
+	      		xtemp[iii] -= matrixA1DD[iii*2*nrow +kkk] * xtemp[kkk];	
 	      		// printf("%d %d %f \n",iii,kkk,matrixA_dev(iii,kkk));   		
 	   		}
 	  	}
+	  	// timer_end();
+    	// std::abort();
 
 	  	for (iii = nrow2 - 1; iii >= 0; iii--) {
 	    	for (kkk = iii + 1; kkk < nrow2; kkk++){
 	
-	      		xtemp[iii] -= matrixA1D[iii*2*nrow +kkk] * xtemp[kkk];	     		
+	      		xtemp[iii] -= matrixA1DD[iii*2*nrow +kkk] * xtemp[kkk];	     		
 	    	}
 
-	    	xtemp[iii] = xtemp[iii] / matrixA1D[iii*2*nrow +iii];    	
+	    	xtemp[iii] = xtemp[iii] / matrixA1DD[iii*2*nrow +iii];    	
 	  	}
 	  	// timer_end();
     	// std::abort();
@@ -560,18 +611,23 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	    	rhs[iii] = xtemp[iii];
 	  	}
 //////////////////////////////////////////////////////////////
-
+    	// timer_end();
+    	// std::abort();
+*///
     	for ( i = 0; i < nrow; i++) {
       		z[i+ibeg] = rhs[i];
       		z[i+ibeg+nface] = rhs[i+nrow];
     	}
 
+    	// timer_end();
+    	// std::abort();
+  	// }
 
     });
 	
 
 	Kokkos::fence();
-	// timer_end();
+	timer_end();
 
 
 }
