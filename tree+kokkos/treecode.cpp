@@ -471,7 +471,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		double maxA, absA, Tol = 1.0e-14;
 		int flag = 0; //yang
 		double ptr[2*maxparnode] = {0.0};
-		timer_end();
+		// timer_end();
 		std::abort();
 	  	for ( ii = 0; ii <= nrow2; ii++ ){
 	   		ipiv[ii] = ii; // record pivoting number
