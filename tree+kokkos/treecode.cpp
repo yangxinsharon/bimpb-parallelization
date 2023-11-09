@@ -461,7 +461,6 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
     	}
 
 		double MATtime = timer.seconds();
-		timer.reset();
 	    printf("MATtime is %f \n",MATtime);  
 		std::abort();
 
