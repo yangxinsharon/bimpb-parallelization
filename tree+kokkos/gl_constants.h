@@ -15,3 +15,15 @@ const int order=3;
 const int maxparnode=10;
 const double theta=0.8;
 #endif
+
+// add_executable(bimpb_treekokkos.openmp main_kokkos.cpp readin.cpp matvec_kokkos.cpp treecode.cpp utilities.cpp pp_timer.cpp)
+// target_compile_definitions(bimpb_treekokkos.openmp PRIVATE -DUSE_OPENMP)
+// target_link_libraries(bimpb_treekokkos.openmp gmres Kokkos::kokkos)
+
+// add_executable(bimpb_treekokkos.cuda main_kokkos.cpp readin.cpp matvec_kokkos.cpp treecode.cpp utilities.cpp pp_timer.cpp)
+// target_compile_definitions(bimpb_treekokkos.cuda PRIVATE -DUSE_CUDA)
+// target_link_libraries(bimpb_treekokkos.cuda gmres Kokkos::kokkos)
+
+// add_executable(bimpb_treekokkos.uvm main_kokkos.cpp readin.cpp matvec_kokkos.cpp treecode.cpp utilities.cpp pp_timer.cpp)
+// target_compile_definitions(bimpb_treekokkos.uvm PRIVATE -DUSE_UVM)
+// target_link_libraries(bimpb_treekokkos.uvm gmres Kokkos::kokkos)
