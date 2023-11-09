@@ -326,7 +326,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	// Kokkos::Timer timer;
 	Kokkos::parallel_for("psolvemul", dev_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
 	  	int i,j;//,inc;
-		timer_start((char*) "matrixA time");
+		// timer_start((char*) "matrixA time");
   		double L1, L2, L3, L4, area;
   		double tp[3], tq[3], sp[3], sq[3];
   		double r_s[3], rs, irs, sumrs;
@@ -472,7 +472,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		int flag = 0; //yang
 		double ptr[2*maxparnode] = {0.0};
 		// timer_end();
-		std::abort();
+		// std::abort();
 	  	for ( ii = 0; ii <= nrow2; ii++ ){
 	   		ipiv[ii] = ii; // record pivoting number
 	  	}
