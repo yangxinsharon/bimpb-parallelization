@@ -198,7 +198,7 @@ int TreecodeInitialization() {
 		arridx += 1;
 		idx += nrow;
 	}
-
+	printf("arridx is %d \n",arridx);
 
 
 	return 0;
