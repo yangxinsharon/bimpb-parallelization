@@ -200,10 +200,12 @@ int TreecodeInitialization() {
 	}
 	printf("arridx is %d \n",arridx);
 
-	TensorDouble matrixA("matrixA",maxparnode,maxparnode,arridx);
+	// TensorDouble matrixA("matrixA",maxparnode,maxparnode,arridx);
 
 	return 0;
 }
+
+TensorDouble matrixA("matrixA",maxparnode,maxparnode,arridx);
 
 /********************************************************/
 int TreecodeFinalization()
