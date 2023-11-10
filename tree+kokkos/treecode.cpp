@@ -520,10 +520,16 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 			   	//   	matrixA1D[ii*nrow2+jj] = matrixA1D[imax*nrow2+jj];
 			   	//   	matrixA1D[imax*nrow2+jj] = ptr[jj];	
 		   	  	// }
+		   	  	for (jj = 0; jj < nrow2; jj++){ //0707 maxparnode to nrow2
+		   	  		ptr[jj] = matrixAt_k(ii,jj);
+			   	  	matrixAt_k(ii,jj) = matrixAt_k(imax,jj);
+			   	  	matrixAt_k(imax,jj) = ptr[jj];	
+		   	  	}
 
-		   	  	ptr = matrixAt_k(i,:);
-		   	  	matrixAt_k(i,:) = matrixAt_k(imax,:);
-		   	  	matrixAt_k(imax,:) = ptr;
+		   	  	// ptr = matrixAt_k(i,:);
+		   	  	// matrixAt_k(i,:) = matrixAt_k(imax,:);
+		   	  	// matrixAt_k(imax,:) = ptr;
+
 		   	  	//counting pivots starting from N (for determinant)
 		   	  	ipiv[nrow2]++;
 		   	}	
