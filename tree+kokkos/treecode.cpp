@@ -200,7 +200,7 @@ int TreecodeInitialization() {
 	}
 	printf("arridx is %d \n",arridx);
 
-	Kokkos::View<double[maxparnode][maxparnode][arridx]> matrixA("matrixA");
+	Kokkos::View<double***> matrixA("matrixA",maxparnode,maxparnode,arridx);
 
 	return 0;
 }
