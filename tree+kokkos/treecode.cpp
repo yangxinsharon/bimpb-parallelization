@@ -205,7 +205,7 @@ int TreecodeInitialization() {
 	return 0;
 }
 
-TensorDouble matrixA("matrixA",maxparnode,maxparnode,arridx);
+TensorDouble matrixAt("matrixAtensor",maxparnode,maxparnode,arridx);
 
 /********************************************************/
 int TreecodeFinalization()
