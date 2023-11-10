@@ -407,10 +407,10 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
         		matrixA1D[(i-ibeg)*2*nrow		+j+nrow-ibeg] = -L2*area;
         		matrixA1D[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
         		matrixA1D[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area; 
-        		matrixAt_k(i-ibeg,j-ibeg) = -L1*area;
-        		matrixAt_k(i-ibeg,j+nrow-ibeg) = -L2*area;
-        		matrixAt_k(i+nrow-ibeg,j-ibeg) = -L3*area;
-        		matrixAt_k(i+nrow-ibeg,j+nrow-ibeg) = -L4*area; 
+        		// matrixAt_k(i-ibeg,j-ibeg) = -L1*area;
+        		// matrixAt_k(i-ibeg,j+nrow-ibeg) = -L2*area;
+        		// matrixAt_k(i+nrow-ibeg,j-ibeg) = -L3*area;
+        		// matrixAt_k(i+nrow-ibeg,j+nrow-ibeg) = -L4*area; 
 
       		}
 
