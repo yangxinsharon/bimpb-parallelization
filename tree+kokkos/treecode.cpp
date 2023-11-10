@@ -200,6 +200,7 @@ int TreecodeInitialization() {
 	}
 	printf("arridx is %d \n",arridx);
 
+	Kokkos::View<double[maxparnode][maxparnode][arridx]> matrixA("matrixA");
 
 	return 0;
 }
@@ -324,7 +325,9 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 	timer_start((char*) "psolve time");
 	// Kokkos::Timer timer;
-	Kokkos::parallel_for("psolvemul", dev_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
+	// Kokkos::parallel_for("psolvemul", dev_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
+	Kokkos::parallel_for("psolvemul", team_policy(arridx,Kokkos::AUTO), KOKKOS_LAMBDA(member_type team_member) {
+	  	int k = team_member.league_rank () * team_member.team_size () +team_member.team_rank ();
 	  	int i,j;//,inc;
 		// timer_start((char*) "matrixA time");
   		double L1, L2, L3, L4, area;
@@ -345,6 +348,9 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		int ipiv[2*maxparnode]={0};
 		double rhs[2*maxparnode]={0.0};
 		double matrixA1D[2*maxparnode*2*maxparnode]={0.0};
+
+
+		auto A_slice_k = Kokkos::subview(matrixA, k, Kokkos::ALL );
 
     	for ( i = ibeg; i <= iend; i++ ) {
    
@@ -464,7 +470,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	    // printf("MATtime is %f \n",MATtime);  
 		// std::abort();
 
-/*
+
 /////////inc = lu_decomp( matrixA, nrow2, ipiv );/////////////////
 	// int lu_decomp( double **A, int N, int *ipiv ) {
 		int ii, jj, kk, imax;
@@ -560,7 +566,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	    	rhs[iii] = xtemp[iii];
 	  	}
 //////////////////////////////////////////////////////////////
-*/
+
     	for ( i = 0; i < nrow; i++) {
       		z[i+ibeg] = rhs[i];
       		z[i+ibeg+nface] = rhs[i+nrow];
