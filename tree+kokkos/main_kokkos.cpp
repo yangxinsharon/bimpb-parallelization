@@ -101,8 +101,6 @@ int main(int argc, char *argv[]) {
 	work=(double *) (Kokkos::kokkos_malloc(ldw*(RESTRT+4) * sizeof(double)));
 	h=(double *) (Kokkos::kokkos_malloc(ldh*(RESTRT+2) * sizeof(double)));
 
-	// Kokkos::View<int[maxpa]> *a_ptr = (Kokkos::View<int*>*) malloc(10*sizeof(View<int*);
-
 	TreecodeInitialization();
 	// Kokkos::fence();
 
