@@ -503,6 +503,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
         		// matrixA[i-ibeg][j+nrow-ibeg] = -L2*area;
         		// matrixA[i+nrow-ibeg][j-ibeg] = -L3*area;
         		// matrixA[i+nrow-ibeg][j+nrow-ibeg] = -L4*area;
+
         		// matrixA_dev(i-ibeg,j-ibeg) = -L1*area;
         		// matrixA_dev(i-ibeg,j+nrow-ibeg) = -L2*area;
         		// matrixA_dev(i+nrow-ibeg,j-ibeg) = -L3*area;
