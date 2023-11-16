@@ -329,7 +329,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	// Kokkos::parallel_for("psolvemul", dev_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
 	Kokkos::parallel_for("psolvemul", team_policy(arridx,Kokkos::AUTO), KOKKOS_LAMBDA(const member_type &team_member) {
 	  	// int k = team_member.league_rank () * team_member.team_size () +team_member.team_rank ();
-	  	int k = teamMember.league_rank();
+	  	int k = team_member.league_rank();
 	  	printf("k is %d \n",k); 
 	  	int i,j;//,inc;
 		// timer_start((char*) "matrixA time");
@@ -353,7 +353,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		double matrixA1D[2*maxparnode*2*maxparnode]={0.0};
 
 
-		auto matrixAt_k = Kokkos::subview(matrixAt, maxparnode,maxparnode,k);
+		// auto matrixAt_k = Kokkos::subview(matrixAt, maxparnode,maxparnode,k);
 
 		// Kokkos::parallel_for( Kokkos::TeamThreadRange( teamMember, M ), const int i) {
     	for ( i = ibeg; i <= iend; i++ ) {
