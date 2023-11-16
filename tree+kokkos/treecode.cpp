@@ -332,7 +332,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	  	// int k = team_member.league_rank();
 	  	printf("k is %d \n",k); 
 	  	int i,j;//,inc;
-		timer_start((char*) "matrixA time");
+		// timer_start((char*) "matrixA time");
   		double L1, L2, L3, L4, area;
   		double tp[3], tq[3], sp[3], sq[3];
   		double r_s[3], rs, irs, sumrs;
@@ -484,8 +484,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 		// double MATtime = timer.seconds();
 	    // printf("MATtime is %f \n",MATtime);  
-	    timer_end();
-		std::abort();
+	    // timer_end();
+		// std::abort();
 
 
 /////////inc = lu_decomp( matrixA, nrow2, ipiv );/////////////////
