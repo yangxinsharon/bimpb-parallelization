@@ -332,7 +332,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	  	// int k = team_member.league_rank();
 	  	printf("k is %d \n",k); 
 	  	int i,j;//,inc;
-		// timer_start((char*) "matrixA time");
+		timer_start((char*) "matrixA time");
   		double L1, L2, L3, L4, area;
   		double tp[3], tq[3], sp[3], sq[3];
   		double r_s[3], rs, irs, sumrs;
@@ -357,6 +357,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 		// Kokkos::parallel_for( Kokkos::TeamThreadRange( teamMember, M ), const int i) {
     	for ( i = ibeg; i <= iend; i++ ) {
+    	// Kokkos::parallel_for("block_row", dev_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
    			// i = i + ibeg
    			// iend = ibeg + nrow
     		tp[0] = tr_xyz[3*i+0];
@@ -473,7 +474,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	        	// matrixAt_k(i+nrow-ibeg,j+nrow-ibeg) = -L4*area;      		
       		}
     	}
-    	
+
 		// team_member.team_barrier();
 
     	for ( i = 0; i < nrow; i++) {
@@ -483,7 +484,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 		// double MATtime = timer.seconds();
 	    // printf("MATtime is %f \n",MATtime);  
-		// std::abort();
+	    timer_end();
+		std::abort();
 
 
 /////////inc = lu_decomp( matrixA, nrow2, ipiv );/////////////////
