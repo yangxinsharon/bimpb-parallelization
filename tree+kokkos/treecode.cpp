@@ -484,8 +484,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 		// double MATtime = timer.seconds();
 	    // printf("MATtime is %f \n",MATtime);  
-	    // timer_end();
-		// std::abort();
+	    timer_end();
+		std::abort();
 
 
 /////////inc = lu_decomp( matrixA, nrow2, ipiv );/////////////////
