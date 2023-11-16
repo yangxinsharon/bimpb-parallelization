@@ -357,8 +357,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 		// Kokkos::parallel_for( Kokkos::TeamThreadRange( teamMember, M ), const int i) {
     	for ( i = ibeg; i <= iend; i++ ) {
-   			i = i + ibeg
-   			iend = ibeg + nrow
+   			// i = i + ibeg
+   			// iend = ibeg + nrow
     		tp[0] = tr_xyz[3*i+0];
 			tp[1] = tr_xyz[3*i+1];
 			tp[2] = tr_xyz[3*i+2];
