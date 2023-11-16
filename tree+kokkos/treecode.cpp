@@ -487,7 +487,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	    // timer_end();
 		// std::abort();
 
-
+/*
 /////////inc = lu_decomp( matrixA, nrow2, ipiv );/////////////////
 	// int lu_decomp( double **A, int N, int *ipiv ) {
 		int ii, jj, kk, imax;
@@ -565,7 +565,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 ////////////// lu_solve( matrixA, nrow2, ipiv, rhs ); ////////////
 	// void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 	  	// double *xtemp;
-/*
+
 	  	double xtemp[2*maxparnode]={0.0};
 		int iii, kkk ;
 
