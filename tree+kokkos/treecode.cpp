@@ -474,7 +474,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		}
     	}
     	
-		team_member.team_barrier();
+		// team_member.team_barrier();
 
     	for ( i = 0; i < nrow; i++) {
       		rhs[i] = r[i+ibeg];
