@@ -324,7 +324,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	pre2 = 0.5*(1.0+1.0/eps);
 	TensorDouble matrixAt("matrixAtensor",2*maxparnode,2*maxparnode,arridx);
 
-	// timer_start((char*) "psolve time");
+	timer_start((char*) "psolve time");
 	// Kokkos::Timer timer;
 	Kokkos::parallel_for("psolvemul", dev_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
 	// Kokkos::parallel_for("psolvemul", team_policy(arridx,Kokkos::AUTO), KOKKOS_LAMBDA(const member_type &team_member) {
@@ -332,7 +332,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	  	// int k = team_member.league_rank();
 	  	printf("k is %d \n",k); 
 	  	int i,j;//,inc;
-		timer_start((char*) "matrixA time");
+		// timer_start((char*) "matrixA time");
   		double L1, L2, L3, L4, area;
   		double tp[3], tq[3], sp[3], sq[3];
   		double r_s[3], rs, irs, sumrs;
@@ -484,8 +484,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 		// double MATtime = timer.seconds();
 	    // printf("MATtime is %f \n",MATtime);  
-	    timer_end();
-		std::abort();
+	    // timer_end();
+		// std::abort();
 
 
 /////////inc = lu_decomp( matrixA, nrow2, ipiv );/////////////////
@@ -565,6 +565,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 ////////////// lu_solve( matrixA, nrow2, ipiv, rhs ); ////////////
 	// void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
 	  	// double *xtemp;
+/*
 	  	double xtemp[2*maxparnode]={0.0};
 		int iii, kkk ;
 
@@ -607,10 +608,11 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
     });
 	
+*/
 
 	Kokkos::fence();
-	// timer_end();
-	// std::abort();
+	timer_end();
+	std::abort();
 
 }
 
