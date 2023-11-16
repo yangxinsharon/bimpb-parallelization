@@ -15,8 +15,8 @@ typedef Kokkos::View<int*, Layout, MemSpace>   ViewVectorInt;
 typedef Kokkos::View<int**, Layout, MemSpace>  ViewMatrixInt;
 typedef Kokkos::View<double***, Layout, MemSpace>  TensorDouble;
 
-typedef Kokkos::TeamPolicy<DevExecSpace>  team_policy;
-typedef Kokkos::TeamPolicy<DevExecSpace>::member_type  member_type;
+typedef Kokkos::TeamPolicy<>  team_policy;
+typedef Kokkos::TeamPolicy<>::member_type  member_type;
 #endif
 
 // #if defined(USE_UVM)
