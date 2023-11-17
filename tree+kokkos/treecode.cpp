@@ -71,8 +71,8 @@ extern int arridx;
 
 /* internal functions */
 int *psolve(double *z, double *r);
-// void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-// 	double *z, double *r, int *leafarr, int arridx);//, int *inc);
+void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
+	double *z, double *r, int *leafarr, int arridx);//, int *inc);
 int Setup(double xyz_limits[6]);
 int Partition(double *a, double *b, double *c, int *indarr,
 	int ibeg, int iend, double val);
@@ -299,18 +299,17 @@ int RemoveNode(TreeNode *p)
 
 /********************************************************/
 
-// int *psolve(double *z, double *r) {
+int *psolve(double *z, double *r) {
 
-//     psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, leafarr, arridx);
+    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, leafarr, arridx);
 
-//     return NULL;
-// }
+    return NULL;
+}
 
 /**********************************************************/
-int *psolve(double *z, double *r) {
-// void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-// 	double *z, double *r, int *leafarr, int arridx){//, int *inc){
-	
+// int *psolve(double *z, double *r) {
+void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
+	double *z, double *r, int *leafarr, int arridx){//, int *inc){
 // double *matrixA1D, int *ipiv,double *rhs,
 	// int inc;
 	double pre1, pre2;
@@ -607,7 +606,6 @@ int *psolve(double *z, double *r) {
 	Kokkos::fence();
 	// timer_end();
 	// std::abort();
-	return NULL;
 
 }
 
