@@ -598,6 +598,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	  	for (iii = 0; iii < nrow2; iii++) {
 	    	rhs[iii] = xtemp[iii];
 	  	}
+*/
 //////////////////////////////////////////////////////////////
 
     	for ( i = 0; i < nrow; i++) {
@@ -605,7 +606,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		z[i+ibeg+nface] = rhs[i+nrow];
     	}
 
-*/
+
     });
 	
 
