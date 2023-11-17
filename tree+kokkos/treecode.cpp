@@ -324,7 +324,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	pre2 = 0.5*(1.0+1.0/eps);
 	// TensorDouble matrixAt("matrixAtensor",2*maxparnode,2*maxparnode,arridx);
 
-	timer_start((char*) "psolve time");
+	// timer_start((char*) "psolve time");
 	// Kokkos::Timer timer;
 	Kokkos::parallel_for("psolvemul", dev_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
 	// Kokkos::parallel_for("psolvemul", team_policy(arridx,Kokkos::AUTO), KOKKOS_LAMBDA(const member_type &team_member) {
@@ -611,7 +611,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	
 
 	Kokkos::fence();
-	timer_end();
+	// timer_end();
 	// std::abort();
 
 }
