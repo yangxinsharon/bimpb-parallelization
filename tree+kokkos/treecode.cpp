@@ -330,7 +330,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	// Kokkos::parallel_for("psolvemul", team_policy(arridx,Kokkos::AUTO), KOKKOS_LAMBDA(const member_type &team_member) {
 	  	// int k = team_member.league_rank () * team_member.team_size () +team_member.team_rank ();
 	  	// int k = team_member.league_rank();
-	  	printf("k is %d \n",k); 
+	  	// printf("k is %d \n",k); 
 	  	int i,j;//,inc;
 		// timer_start((char*) "matrixA time");
   		double L1, L2, L3, L4, area;
