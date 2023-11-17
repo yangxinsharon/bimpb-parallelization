@@ -66,19 +66,13 @@ static TreeNode *s_tree_root = NULL;
 static int Nleafc = 0;
 
 extern int Nleaf;
-// extern double **matrixA;
-// extern int *ipiv;
-// extern double *rhs;
 extern int *leafarr;
 extern int arridx;
-// extern double *xtemp;
-// extern double *ptr;
-// extern double *matrixA1D;
 
 /* internal functions */
 int *psolve(double *z, double *r);
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-	double *z, double *r, int *leafarr, int arridx, int *inc);
+	double *z, double *r, int *leafarr, int arridx);//, int *inc);
 int Setup(double xyz_limits[6]);
 int Partition(double *a, double *b, double *c, int *indarr,
 	int ibeg, int iend, double val);
@@ -198,7 +192,7 @@ int TreecodeInitialization() {
 		arridx += 1;
 		idx += nrow;
 	}
-	printf("arridx is %d \n",arridx);
+	// printf("arridx is %d \n",arridx);
 
 	// TensorDouble matrixA("matrixA",maxparnode,maxparnode,arridx);
 
@@ -306,9 +300,9 @@ int RemoveNode(TreeNode *p)
 /********************************************************/
 
 int *psolve(double *z, double *r) {
-	int inc;
+	// int inc;
 
-    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, leafarr, arridx, &inc);
+    psolvemul(nface, tr_xyz, tr_q, tr_area, z, r, leafarr, arridx);//, &inc);
 
     return NULL;
 }
@@ -316,7 +310,7 @@ int *psolve(double *z, double *r) {
 /**********************************************************/
 // int *psolve(double *z, double *r) {
 void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area, 
-	double *z, double *r, int *leafarr, int arridx, int *inc){//, double *xtemp, double *ptr) {
+	double *z, double *r, int *leafarr, int arridx){//, int *inc){//, double *xtemp, double *ptr) {
 // double *matrixA1D, int *ipiv,double *rhs,
 	// int inc;
 	double pre1, pre2;
