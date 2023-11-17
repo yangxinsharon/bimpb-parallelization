@@ -322,7 +322,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	double pre1, pre2;
   	pre1 = 0.5*(1.0+eps);
   	pre2 = 0.5*(1.0+1.0/eps);
-	TensorDouble matrixAt("matrixAtensor",2*maxparnode,2*maxparnode,arridx);
+	// TensorDouble matrixAt("matrixAtensor",2*maxparnode,2*maxparnode,arridx);
 
 	timer_start((char*) "psolve time");
 	// Kokkos::Timer timer;
