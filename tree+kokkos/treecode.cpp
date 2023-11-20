@@ -473,27 +473,17 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 /////////inc = lu_decomp( matrixA, nrow2, ipiv );/////////////////
 	// int lu_decomp( double **A, int N, int *ipiv ) {
 		timer_start((char*) "lu_decomp time");
-		int *ipiv;
-		ipiv=(int *) calloc(2*maxparnode, sizeof(int));
-		double **matrixA;
-		matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
-		for (i=0; i<nrow2;i++){
-			for (j=0; j <nrow2;j++)
-				matrixA[i][j] = matrixA1D[i*nrow2+j];
-		}
-		int inc;
-		inc = lu_decomp(matrixA, nrow2, ipiv );
-/*
+
 		int ii, jj, kk, imax;
 		double maxA, absA, Tol = 1.0e-14;
 		double ptr[2*maxparnode] = {0.0};
-		// double *ptr;
-		// timer_end();
-		// std::abort();
+		timer_end();
+		timer_start((char*) "lu_decomp_l1 time");
 	  	for ( ii = 0; ii <= nrow2; ii++ ){
 	   		ipiv[ii] = ii; // record pivoting number
 	  	}
-
+		timer_end();
+		timer_start((char*) "lu_decomp_l2 time");
 	  	for ( ii = 0; ii < nrow2; ii++ ) {
 	   		maxA = 0.0;
 	   		imax = ii;
@@ -538,7 +528,6 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	   		}
 
 	  	}
-*/
 		timer_end();
 
 
