@@ -340,7 +340,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		// auto matrixAt_k = Kokkos::subview(matrixAt, maxparnode,maxparnode,k);
 
 
-		timer_start((char*) "matrix time");
+		// timer_start((char*) "matrix time");
 		// Kokkos::parallel_for( Kokkos::TeamThreadRange( teamMember, M ), const int i) {
     	for ( i = ibeg; i <= iend; i++ ) {
     	// Kokkos::parallel_for("block_row", dev_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
@@ -469,11 +469,11 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		rhs[i+nrow] = r[i+ibeg+nface];
     	}
 
-		timer_end();
+		// timer_end();
 
 /////////inc = lu_decomp( matrixA, nrow2, ipiv );/////////////////
 	// int lu_decomp( double **A, int N, int *ipiv ) {
-		timer_start((char*) "lu_decomp time");
+		// timer_start((char*) "lu_decomp time");
 		int ii, jj, kk, imax;
 		double maxA, absA, Tol = 1.0e-14;
 		double ptr[2*maxparnode] = {0.0};
@@ -535,7 +535,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	   	// 	}		
 
 	  	// }
-	  	timer_end();
+	  	// timer_end();
 
 ///////////////////////////////////////////////////////////////
 /* time costs more
@@ -571,7 +571,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 ///////////////////////////////////////////////////////////////
 ////////////// lu_solve( matrixA, nrow2, ipiv, rhs ); ////////////
 	// void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
-		timer_start((char*) "lu_solve time");
+		// timer_start((char*) "lu_solve time");
 	  	double xtemp[2*maxparnode]={0.0};
 		int iii, kkk ;
 
@@ -611,7 +611,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
       		z[i+ibeg+nface] = rhs[i+nrow];
     	}
 
-    	timer_end();
+    	// timer_end();
 
     });
 
