@@ -517,33 +517,32 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		   	}	
 
 //!!!!!!!!!!!! timer_start((char*) "lu_decomp_ifor2 time"); // time cost !!!!!!!!!!!!
-	   		// for (jj = ii + 1; jj < nrow2; jj++) { 
-	   	  	// 	matrixA1D[jj*nrow2	+ii] /= matrixA1D[ii*nrow2 +ii];	
-	   	  	// 	// matrixAt_k(j,i) /=matrixAt_k(i,i);
-	   	  	// 	for (kk = ii + 1; kk < nrow2; kk++){
-	   	  	//  		matrixA1D[jj*nrow2+ kk] -= matrixA1D[jj*nrow2+ii] * matrixA1D[ii*nrow2+kk];
-	   	  	//  		// matrixAt_k(j,k) -=matrixAt_k(j,i)*matrixAt_k(i,k);
-	   	  	// 	}
-	   		// }
-	   	}
-// timer_end();
-	   	for (jj = ii + 1; jj < nrow2; jj++) { 
-	   		for ( ii = 0; ii < nrow2; ii++ ) {
+	   		for (jj = ii + 1; jj < nrow2; jj++) { 
 	   	  		matrixA1D[jj*nrow2	+ii] /= matrixA1D[ii*nrow2 +ii];	
 	   	  		// matrixAt_k(j,i) /=matrixAt_k(i,i);
 	   	  		for (kk = ii + 1; kk < nrow2; kk++){
 	   	  	 		matrixA1D[jj*nrow2+ kk] -= matrixA1D[jj*nrow2+ii] * matrixA1D[ii*nrow2+kk];
 	   	  	 		// matrixAt_k(j,k) -=matrixAt_k(j,i)*matrixAt_k(i,k);
 	   	  		}
-	   		}		
+	   		}
+	   	}
+// timer_end();
+	   	// for (jj = ii + 1; jj < nrow2; jj++) { 
+	   	// 	for ( ii = 0; ii < nrow2; ii++ ) {
+	   	//   		matrixA1D[jj*nrow2	+ii] /= matrixA1D[ii*nrow2 +ii];	
+	   	//   		// matrixAt_k(j,i) /=matrixAt_k(i,i);
+	   	//   		for (kk = ii + 1; kk < nrow2; kk++){
+	   	//   	 		matrixA1D[jj*nrow2+ kk] -= matrixA1D[jj*nrow2+ii] * matrixA1D[ii*nrow2+kk];
+	   	//   	 		// matrixAt_k(j,k) -=matrixAt_k(j,i)*matrixAt_k(i,k);
+	   	//   		}
+	   	// 	}		
 
-	  	}
+	  	// }
 	  	timer_end();
 
 ///////////////////////////////////////////////////////////////
-/*
+
 		timer_start((char*) "lu_decomp2 time");
-	   	int ii = 0, jj = 0, kk = 0;
 	   	double l[2*maxparnode*2*maxparnode] = {0.0};
 	   	double u[2*maxparnode*2*maxparnode] = {0.0};
 	   	for (ii = 0; ii < nrow2; ii++) {
@@ -571,7 +570,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	      	}
 	   	}
 		timer_end();
-*/
+
 ///////////////////////////////////////////////////////////////
 ////////////// lu_solve( matrixA, nrow2, ipiv, rhs ); ////////////
 	// void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
