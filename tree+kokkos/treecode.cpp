@@ -472,7 +472,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 /////////inc = lu_decomp( matrixA, nrow2, ipiv );/////////////////
 	// int lu_decomp( double **A, int N, int *ipiv ) {
-
+		timer_start((char*) "lu_decomp time");
 		int ii, jj, kk, imax;
 		double maxA, absA, Tol = 1.0e-14;
 		double ptr[2*maxparnode] = {0.0};
@@ -484,7 +484,6 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	  	for ( ii = 0; ii < nrow2; ii++ ) {
 	   		maxA = 0.0;
 	   		imax = ii;
-	   		timer_start((char*) "lu_decomp_ifor time");
 	   		for (kk = ii; kk < nrow2; kk++){
   
 	   	  		if ((absA = fabs(matrixA1D[kk*nrow2+ii])) > maxA) {	 			
@@ -493,14 +492,11 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	   	    		imax = kk;
 	   			}
 	   	  	}
-	   	  	timer_end();
-	   	  	timer_start((char*) "lu_decomp_iif time");
 	   		if (maxA < Tol) {
 	   			// *inc = 0;
 	   			break;
 	   		} //failure, matrix is degenerate	
-	   		timer_end();
-	   		timer_start((char*) "lu_decomp_iif2 time");
+
 	   		if (imax != ii) {
 		   	  	//pivoting P
 		   	  	jj = ipiv[ii];
@@ -519,9 +515,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		   	  	//counting pivots starting from N (for determinant)
 		   	  	ipiv[nrow2]++;
 		   	}	
-		   	timer_end();
-
-			timer_start((char*) "lu_decomp_ifor2 time");
+/*
+			// timer_start((char*) "lu_decomp_ifor2 time"); // time cost !!!!
 	   		for (jj = ii + 1; jj < nrow2; jj++) { 
 	   	  		matrixA1D[jj*nrow2	+ii] /= matrixA1D[ii*nrow2 +ii];	
 	   	  		// matrixAt_k(j,i) /=matrixAt_k(i,i);
@@ -530,9 +525,10 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	   	  	 		// matrixAt_k(j,k) -=matrixAt_k(j,i)*matrixAt_k(i,k);
 	   	  		}
 	   		}
-			timer_end();
+			// timer_end();
+			*/
 	  	}
-
+	  	timer_end();
 
 ///////////////////////////////////////////////////////////////
 /*
