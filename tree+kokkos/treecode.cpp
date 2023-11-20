@@ -469,12 +469,12 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
     	}
 
 		timer_end();
+
 		timer_start((char*) "lu_decomp time");
 /////////inc = lu_decomp( matrixA, nrow2, ipiv );/////////////////
 	// int lu_decomp( double **A, int N, int *ipiv ) {
 		int ii, jj, kk, imax;
 		double maxA, absA, Tol = 1.0e-14;
-		int flag = 0; //yang
 		double ptr[2*maxparnode] = {0.0};
 		// double *ptr;
 		// timer_end();
@@ -503,20 +503,16 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		   	  	jj = ipiv[ii];
 		   	  	ipiv[ii] = ipiv[imax];
 		   	  	ipiv[imax] = jj;	
-
 		   	  	for (jj = 0; jj < nrow2; jj++){ 
 		   	  		ptr[jj] = matrixA1D[ii*nrow2+jj];
 			   	  	matrixA1D[ii*nrow2+jj] = matrixA1D[imax*nrow2+jj];
 			   	  	matrixA1D[imax*nrow2+jj] = ptr[jj];	
 		   	  	}
-
 		   	  	// for (jj = 0; jj < nrow2; jj++){ //0707 maxparnode to nrow2
 		   	  	// 	ptr[jj] = matrixAt_k(ii,jj);
 			   	//   	matrixAt_k(ii,jj) = matrixAt_k(imax,jj);
 			   	//   	matrixAt_k(imax,jj) = ptr[jj];	
 		   	  	// }
-
-
 		   	  	//counting pivots starting from N (for determinant)
 		   	  	ipiv[nrow2]++;
 		   	}	
@@ -532,11 +528,41 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 	  	}
 		timer_end();
-		timer_start((char*) "lu_solve time");
+		timer_start((char*) "lu_decomp2 time");
+///////////////////////////////////////////////////////////////
+	   	int ii = 0, jj = 0, kk = 0;
+	   	double l[2*maxparnode*2*maxparnode] = {0.0};
+	   	double u[2*maxparnode*2*maxparnode] = {0.0};
+	   	for (ii = 0; ii < nrow2; ii++) {
+	      	for (jj = 0; jj < nrow2; jj++) {
+	         	if (jj < ii)
+	         	l[jj*nrow2+ii] = 0;
+	         	else {
+	            	l[jj*nrow2+ii] = matrixA1D[jj*nrow2+ii];
+	            	for (kk = 0; kk < ii; kk++) {
+	               	l[jj*nrow2+ii] = l[jj*nrow2+ii] - l[jj*nrow2+kk] * u[kk*nrow2+ii];
+	            	}
+	         	}
+	      	}
+	      	for (jj = 0; jj < nrow2; jj++) {
+	         	if (jj < ii)
+	         	u[ii*nrow2+jj] = 0;
+	         	else if (jj == ii)
+	         	u[ii*nrow2+jj] = 1;
+	         	else {
+	            	u[ii*nrow2+jj] = matrixA1D[ii*nrow2+jj] / l[ii*nrow2+ii];
+	            	for (kk = 0; kk < ii; kk++) {
+	               	u[ii*nrow2+jj] = u[ii*nrow2+jj] - ((l[ii*nrow2+kk] * u[kk*nrow2+jj]) / l[ii*nrow2+ii]);
+	            	}
+	         	}
+	      	}
+	   	}
+		timer_end();
+
 ///////////////////////////////////////////////////////////////
 ////////////// lu_solve( matrixA, nrow2, ipiv, rhs ); ////////////
 	// void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
-
+		timer_start((char*) "lu_solve time");
 	  	double xtemp[2*maxparnode]={0.0};
 		int iii, kkk ;
 
