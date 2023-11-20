@@ -472,8 +472,16 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 /////////inc = lu_decomp( matrixA, nrow2, ipiv );/////////////////
 	// int lu_decomp( double **A, int N, int *ipiv ) {
-/*
 		timer_start((char*) "lu_decomp time");
+		int *ipiv;
+		ipiv=(int *) calloc(2*maxparnode, sizeof(int));
+		matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
+		for (i=0; i<nrow2;i++){
+			for (j=0; j <nrow2;j++)
+				matrixA[i][j] = matrixA1D[ii*nrow2+jj];
+		}
+		inc = lu_decomp(matrixA, nrow2, ipiv );
+/*
 		int ii, jj, kk, imax;
 		double maxA, absA, Tol = 1.0e-14;
 		double ptr[2*maxparnode] = {0.0};
@@ -528,10 +536,12 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	   		}
 
 	  	}
-		timer_end();
 */
-		
+		timer_end();
+
+
 ///////////////////////////////////////////////////////////////
+/*
 		timer_start((char*) "lu_decomp2 time");
 	   	int ii = 0, jj = 0, kk = 0;
 	   	double l[2*maxparnode*2*maxparnode] = {0.0};
@@ -561,7 +571,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	      	}
 	   	}
 		timer_end();
-
+*/
 ///////////////////////////////////////////////////////////////
 ////////////// lu_solve( matrixA, nrow2, ipiv, rhs ); ////////////
 	// void lu_solve( double **matrixA, int N, int *ipiv, double *rhs ) {
