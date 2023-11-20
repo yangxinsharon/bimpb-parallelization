@@ -480,14 +480,14 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	  	for ( ii = 0; ii <= nrow2; ii++ ){
 	   		ipiv[ii] = ii; // record pivoting number
 	  	}
-		
+
 	  	for ( ii = 0; ii < nrow2; ii++ ) {
 	   		maxA = 0.0;
 	   		imax = ii;
 	   		for (kk = ii; kk < nrow2; kk++){
-
-	   	  		// if ((absA = fabs(matrixA1D[kk*nrow2+ii])) > maxA) {	 			
-	   	  		if ((absA = fabs(matrixA1D[ii*nrow2+kk])) > maxA) {	 
+  
+	   	  		if ((absA = fabs(matrixA1D[kk*nrow2+ii])) > maxA) {	 			
+	   	  		// if ((absA = fabs(matrixAt_k(kk,ii))) > maxA) {	
 	   	   			maxA = absA;
 	   	    		imax = kk;
 	   			}
@@ -518,10 +518,10 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 //!!!!!!!!!!!! timer_start((char*) "lu_decomp_ifor2 time"); // time cost !!!!!!!!!!!!
 	   		for (jj = ii + 1; jj < nrow2; jj++) { 
-	   	  		// matrixA1D[jj*nrow2	+ii] /= matrixA1D[ii*nrow2 +ii];	
-	   	  		matrixA1D[ii*nrow2	+jj] /= matrixA1D[ii*nrow2 +ii];
+	   	  		matrixA1D[jj*nrow2	+ii] /= matrixA1D[ii*nrow2 +ii];	
+	   	  		// matrixAt_k(j,i) /=matrixAt_k(i,i);
 	   	  		for (kk = ii + 1; kk < nrow2; kk++){
-	   	  	 		matrixA1D[jj*nrow2+ kk] -= matrixA1D[ii*nrow2+jj] * matrixA1D[ii*nrow2+kk];
+	   	  	 		matrixA1D[jj*nrow2+ kk] -= matrixA1D[jj*nrow2+ii] * matrixA1D[ii*nrow2+kk];
 	   	  	 		// matrixAt_k(j,k) -=matrixAt_k(j,i)*matrixAt_k(i,k);
 	   	  		}
 	   		}
