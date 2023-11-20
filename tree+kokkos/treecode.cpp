@@ -475,11 +475,13 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		timer_start((char*) "lu_decomp time");
 		int *ipiv;
 		ipiv=(int *) calloc(2*maxparnode, sizeof(int));
+		double **matrixA;
 		matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
 		for (i=0; i<nrow2;i++){
 			for (j=0; j <nrow2;j++)
 				matrixA[i][j] = matrixA1D[ii*nrow2+jj];
 		}
+		int inc;
 		inc = lu_decomp(matrixA, nrow2, ipiv );
 /*
 		int ii, jj, kk, imax;
