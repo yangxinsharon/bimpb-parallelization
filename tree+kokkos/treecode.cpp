@@ -317,7 +317,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	Kokkos::parallel_for("psolvemul", host_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
 	// Kokkos::parallel_for("psolvemul", team_policy(arridx,Kokkos::AUTO), KOKKOS_LAMBDA(const member_type &team_member) {
 	  	// int k = team_member.league_rank () * team_member.team_size () +team_member.team_rank ();
-	  	int k = team_member.league_rank(); // total rank = 128
+	  	// int k = team_member.league_rank(); // total rank = 128
 	  	printf("k is %d \n",k); 
 
 	  	int i,j;
