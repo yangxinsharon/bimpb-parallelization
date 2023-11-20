@@ -313,7 +313,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	ViewMatrixDouble matrixA("matrixA", 2*maxparnode*arridx,2*maxparnode*arridx);
 	// timer_start((char*) "psolve time");
 	// Kokkos::Timer timer;
-	Kokkos::parallel_for("psolvemul", dev_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
+	Kokkos::parallel_for("psolvemul", host_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
 	// Kokkos::parallel_for("psolvemul", team_policy(arridx,Kokkos::AUTO), KOKKOS_LAMBDA(const member_type &team_member) {
 	  	// int k = team_member.league_rank () * team_member.team_size () +team_member.team_rank ();
 	  	// int k = team_member.league_rank(); // total rank = 128
@@ -399,18 +399,18 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
         		// matrixAt_k(i-ibeg,j+nrow-ibeg) = -L2*area;
         		// matrixAt_k(i+nrow-ibeg,j-ibeg) = -L3*area;
         		// matrixAt_k(i+nrow-ibeg,j+nrow-ibeg) = -L4*area; 
-        		matrixA(i*2*nrow		,j) = -L1*area;
-        		matrixA(i*2*nrow		,j+nrow) = -L2*area;
-        		matrixA((i+nrow)*2*nrow	,j) = -L3*area;
-        		matrixA((i+nrow)*2*nrow	,j+nrow) = -L4*area; 
+        		matrixA(i		,j) = -L1*area;
+        		matrixA(i		,j+nrow) = -L2*area;
+        		matrixA(i+nrow	,j) = -L3*area;
+        		matrixA(i+nrow	,j+nrow) = -L4*area; 
       		}
 
       		// matrixA1D[(i-ibeg)*2*nrow			+i-ibeg] = pre1;
       		// matrixA1D[(i+nrow-ibeg)*2*nrow	+i+nrow-ibeg] = pre2;
       		// matrixAt_k(i-ibeg,i-ibeg) = pre1;
       		// matrixAt_k(i+nrow-ibeg,i+nrow-ibeg) = pre2;
-      		matrixA((i)*2*nrow			,i-ibeg) = pre1;
-      		matrixA((i+nrow)*2*nrow	,i+nrow-ibeg) = pre2;
+      		matrixA(i		,i) = pre1;
+      		matrixA(i+nrow	,i+nrow) = pre2;
 
       		for ( j = i+1; j <= iend; j++ ) {			
 
@@ -460,10 +460,10 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	        	// matrixAt_k(i-ibeg,j+nrow-ibeg) = -L2*area;
 	        	// matrixAt_k(i+nrow-ibeg,j-ibeg) = -L3*area;
 	        	// matrixAt_k(i+nrow-ibeg,j+nrow-ibeg) = -L4*area;      		
-	        	matrixA((i)*2*nrow		,j-ibeg)= -L1*area;
-	        	matrixA((i)*2*nrow		,j+nrow-ibeg) = -L2*area;
-	        	matrixA((i+nrow)*2*nrow	,j-ibeg) = -L3*area;
-	        	matrixA((i+nrow)*2*nrow	,j+nrow-ibeg) = -L4*area;
+	        	matrixA(i		,j)= -L1*area;
+	        	matrixA(i		,j+nrow) = -L2*area;
+	        	matrixA(i+nrow	,j) = -L3*area;
+	        	matrixA(i+nrow	,j+nrow) = -L4*area;
       		}
     	}
 
@@ -514,9 +514,9 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		   	  		// ptr[jj] = matrixA1D[ii*nrow2+jj];
 			   	  	// matrixA1D[ii*nrow2+jj] = matrixA1D[imax*nrow2+jj];
 			   	  	// matrixA1D[imax*nrow2+jj] = ptr[jj];	
-		   	  		ptr[jj] = matrixA1D[ii*nrow2+jj];
-			   	  	matrixA(ii*nrow2,jj) = matrixA1D[imax*nrow2+jj];
-			   	  	matrixA(imax*nrow2,jj) = ptr[jj];	
+		   	  		ptr[jj] = matrixA(ii,jj);
+			   	  	matrixA(ii,jj) = matrixA(imax,jj);
+			   	  	matrixA(imax,jj) = ptr[jj];	
 		   	  	}
 
 		   	  	//counting pivots starting from N (for determinant)
@@ -525,10 +525,11 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 //!!!!!!!!!!!! timer_start((char*) "lu_decomp_ifor2 time"); // time cost !!!!!!!!!!!!
 	   		for (jj = ii + 1; jj < nrow2; jj++) { 
-	   	  		matrixA1D[jj*nrow2	+ii] /= matrixA1D[ii*nrow2 +ii];	
+	   	  		// matrixA1D[jj*nrow2	+ii] /= matrixA1D[ii*nrow2 +ii];
+	   	  		matrixA(jj,	ii) /= matrixA(ii,ii);	
 	   	  		// matrixAt_k(j,i) /=matrixAt_k(i,i);
 	   	  		for (kk = ii + 1; kk < nrow2; kk++){
-	   	  	 		matrixA1D[jj*nrow2+ kk] -= matrixA1D[jj*nrow2+ii] * matrixA1D[ii*nrow2+kk];
+	   	  	 		matrixA(jj,kk)-= matrixA(jj,ii) * matrixA(ii,kk);
 	   	  	 		// matrixAt_k(j,k) -=matrixAt_k(j,i)*matrixAt_k(i,k);
 	   	  		}
 	   		}
@@ -593,20 +594,20 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 	   		for (kkk = 0; kkk < iii; kkk++){
    
-	      		xtemp[iii] -= matrixA1D[iii*2*nrow +kkk] * xtemp[kkk];
-	      		// xtemp[iii] -= matrixAt_k(iii,kkk) * xtemp[kkk];			
+	      		// xtemp[iii] -= matrixA1D[iii*2*nrow +kkk] * xtemp[kkk];
+	      		xtemp[iii] -= matrixA(iii,kkk) * xtemp[kkk];			
 	   		}
 	  	}
 
 	  	for (iii = nrow2 - 1; iii >= 0; iii--) {
 	    	for (kkk = iii + 1; kkk < nrow2; kkk++){
 	
-	      		xtemp[iii] -= matrixA1D[iii*2*nrow +kkk] * xtemp[kkk];
-	      		// xtemp[iii] -= matrixAt_k(iii,kkk) * xtemp[kkk];	     		
+	      		// xtemp[iii] -= matrixA1D[iii*2*nrow +kkk] * xtemp[kkk];
+	      		xtemp[iii] -= matrixA(iii,kkk) * xtemp[kkk];	     		
 	    	}
 
-	    	xtemp[iii] = xtemp[iii] / matrixA1D[iii*2*nrow +iii];  
-	    	// xtemp[iii] = xtemp[iii] / matrixAt_k(iii,iii);    	
+	    	// xtemp[iii] = xtemp[iii] / matrixA1D[iii*2*nrow +iii];  
+	    	xtemp[iii] = xtemp[iii] / matrixAt(iii,iii);    	
 	  	}
 	  	// timer_end();
     	// std::abort();
