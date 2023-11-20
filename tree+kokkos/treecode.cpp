@@ -394,26 +394,26 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
         		L3 = G4 - G3;
         		L4 = G10 - G20/eps;
 
-        		matrixA1D[(i-ibeg)*2*nrow		+j-ibeg] = -L1*area;
-        		matrixA1D[(i-ibeg)*2*nrow		+j+nrow-ibeg] = -L2*area;
-        		matrixA1D[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
-        		matrixA1D[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area;
+        		// matrixA1D[(i-ibeg)*2*nrow		+j-ibeg] = -L1*area;
+        		// matrixA1D[(i-ibeg)*2*nrow		+j+nrow-ibeg] = -L2*area;
+        		// matrixA1D[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
+        		// matrixA1D[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area;
         		// matrixAt_k(i-ibeg,j-ibeg) = -L1*area;
         		// matrixAt_k(i-ibeg,j+nrow-ibeg) = -L2*area;
         		// matrixAt_k(i+nrow-ibeg,j-ibeg) = -L3*area;
         		// matrixAt_k(i+nrow-ibeg,j+nrow-ibeg) = -L4*area; 
-        		// matrixA(i		,j) = -L1*area;
-        		// matrixA(i		,j+nrow) = -L2*area;
-        		// matrixA(i+nrow	,j) = -L3*area;
-        		// matrixA(i+nrow	,j+nrow) = -L4*area; 
+        		matrixA(i		,j) = -L1*area;
+        		matrixA(i		,j+nrow) = -L2*area;
+        		matrixA(i+nrow	,j) = -L3*area;
+        		matrixA(i+nrow	,j+nrow) = -L4*area; 
       		}
 
-      		matrixA1D[(i-ibeg)*2*nrow			+i-ibeg] = pre1;
-      		matrixA1D[(i+nrow-ibeg)*2*nrow	+i+nrow-ibeg] = pre2;
+      		// matrixA1D[(i-ibeg)*2*nrow			+i-ibeg] = pre1;
+      		// matrixA1D[(i+nrow-ibeg)*2*nrow	+i+nrow-ibeg] = pre2;
       		// matrixAt_k(i-ibeg,i-ibeg) = pre1;
       		// matrixAt_k(i+nrow-ibeg,i+nrow-ibeg) = pre2;
-      		// matrixA(i		,i) = pre1;
-      		// matrixA(i+nrow	,i+nrow) = pre2;
+      		matrixA(i		,i) = pre1;
+      		matrixA(i+nrow	,i+nrow) = pre2;
 
       		for ( j = i+1; j <= iend; j++ ) {			
 
@@ -455,18 +455,18 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	        	L4 = G10 - G20/eps;
 		
    	
-	        	matrixA1D[(i-ibeg)*2*nrow		+j-ibeg] = -L1*area;
-	        	matrixA1D[(i-ibeg)*2*nrow		+j+nrow-ibeg] = -L2*area;
-	        	matrixA1D[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
-	        	matrixA1D[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area;
+	        	// matrixA1D[(i-ibeg)*2*nrow		+j-ibeg] = -L1*area;
+	        	// matrixA1D[(i-ibeg)*2*nrow		+j+nrow-ibeg] = -L2*area;
+	        	// matrixA1D[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
+	        	// matrixA1D[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area;
 	        	// matrixAt_k(i-ibeg,j-ibeg) = -L1*area;
 	        	// matrixAt_k(i-ibeg,j+nrow-ibeg) = -L2*area;
 	        	// matrixAt_k(i+nrow-ibeg,j-ibeg) = -L3*area;
 	        	// matrixAt_k(i+nrow-ibeg,j+nrow-ibeg) = -L4*area;      		
-	        	// matrixA(i		,j)= -L1*area;
-	        	// matrixA(i		,j+nrow) = -L2*area;
-	        	// matrixA(i+nrow	,j) = -L3*area;
-	        	// matrixA(i+nrow	,j+nrow) = -L4*area;
+	        	matrixA(i		,j)= -L1*area;
+	        	matrixA(i		,j+nrow) = -L2*area;
+	        	matrixA(i+nrow	,j) = -L3*area;
+	        	matrixA(i+nrow	,j+nrow) = -L4*area;
       		}
     	}
 
