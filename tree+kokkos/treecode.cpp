@@ -515,18 +515,28 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		   	  	//counting pivots starting from N (for determinant)
 		   	  	ipiv[nrow2]++;
 		   	}	
-/*
-			// timer_start((char*) "lu_decomp_ifor2 time"); // time cost !!!!
-	   		for (jj = ii + 1; jj < nrow2; jj++) { 
+
+//!!!!!!!!!!!! timer_start((char*) "lu_decomp_ifor2 time"); // time cost !!!!!!!!!!!!
+	   		// for (jj = ii + 1; jj < nrow2; jj++) { 
+	   	  	// 	matrixA1D[jj*nrow2	+ii] /= matrixA1D[ii*nrow2 +ii];	
+	   	  	// 	// matrixAt_k(j,i) /=matrixAt_k(i,i);
+	   	  	// 	for (kk = ii + 1; kk < nrow2; kk++){
+	   	  	//  		matrixA1D[jj*nrow2+ kk] -= matrixA1D[jj*nrow2+ii] * matrixA1D[ii*nrow2+kk];
+	   	  	//  		// matrixAt_k(j,k) -=matrixAt_k(j,i)*matrixAt_k(i,k);
+	   	  	// 	}
+	   		// }
+	   	}
+// timer_end();
+	   	for (jj = ii + 1; jj < nrow2; jj++) { 
+	   		for ( ii = 0; ii < nrow2; ii++ ) {
 	   	  		matrixA1D[jj*nrow2	+ii] /= matrixA1D[ii*nrow2 +ii];	
 	   	  		// matrixAt_k(j,i) /=matrixAt_k(i,i);
 	   	  		for (kk = ii + 1; kk < nrow2; kk++){
 	   	  	 		matrixA1D[jj*nrow2+ kk] -= matrixA1D[jj*nrow2+ii] * matrixA1D[ii*nrow2+kk];
 	   	  	 		// matrixAt_k(j,k) -=matrixAt_k(j,i)*matrixAt_k(i,k);
 	   	  		}
-	   		}
-			// timer_end();
-			*/
+	   		}		
+
 	  	}
 	  	timer_end();
 
