@@ -479,7 +479,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		matrixA=Make2DDoubleArray(2*maxparnode, 2*maxparnode, "matrixA");
 		for (i=0; i<nrow2;i++){
 			for (j=0; j <nrow2;j++)
-				matrixA[i][j] = matrixA1D[ii*nrow2+jj];
+				matrixA[i][j] = matrixA1D[i*nrow2+j];
 		}
 		int inc;
 		inc = lu_decomp(matrixA, nrow2, ipiv );
