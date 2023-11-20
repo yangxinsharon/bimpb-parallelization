@@ -310,7 +310,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	pre1 = 0.5*(1.0+eps);
   	pre2 = 0.5*(1.0+1.0/eps);
 	// TensorDouble matrixAt("matrixAtensor",2*maxparnode,2*maxparnode,arridx);
-  	ViewMatrixDouble matrixA("matrixA", 2*maxparnode*arridx,2*maxparnode*arridx);
+  	// ViewMatrixDouble matrixA("matrixA", 2*maxparnode*arridx,2*maxparnode*arridx);
 	// timer_start((char*) "psolve time");
 	// Kokkos::Timer timer;
 	Kokkos::parallel_for("psolvemul", host_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
@@ -394,26 +394,26 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
         		L3 = G4 - G3;
         		L4 = G10 - G20/eps;
 
-        		// matrixA1D[(i-ibeg)*2*nrow		+j-ibeg] = -L1*area;
-        		// matrixA1D[(i-ibeg)*2*nrow		+j+nrow-ibeg] = -L2*area;
-        		// matrixA1D[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
-        		// matrixA1D[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area;
+        		matrixA1D[(i-ibeg)*2*nrow		+j-ibeg] = -L1*area;
+        		matrixA1D[(i-ibeg)*2*nrow		+j+nrow-ibeg] = -L2*area;
+        		matrixA1D[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
+        		matrixA1D[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area;
         		// matrixAt_k(i-ibeg,j-ibeg) = -L1*area;
         		// matrixAt_k(i-ibeg,j+nrow-ibeg) = -L2*area;
         		// matrixAt_k(i+nrow-ibeg,j-ibeg) = -L3*area;
         		// matrixAt_k(i+nrow-ibeg,j+nrow-ibeg) = -L4*area; 
-        		matrixA(i*nrow2	,j) = -L1*area;
-        		matrixA(i*nrow2		,j+nrow) = -L2*area;
-        		matrixA((i+nrow)*nrow2	,j) = -L3*area;
-        		matrixA((i+nrow)*nrow2	,j+nrow) = -L4*area; 
+        		// matrixA(i*nrow2	,j) = -L1*area;
+        		// matrixA(i*nrow2		,j+nrow) = -L2*area;
+        		// matrixA((i+nrow)*nrow2	,j) = -L3*area;
+        		// matrixA((i+nrow)*nrow2	,j+nrow) = -L4*area; 
       		}
 
-      		// matrixA1D[(i-ibeg)*2*nrow			+i-ibeg] = pre1;
-      		// matrixA1D[(i+nrow-ibeg)*2*nrow	+i+nrow-ibeg] = pre2;
+      		matrixA1D[(i-ibeg)*2*nrow			+i-ibeg] = pre1;
+      		matrixA1D[(i+nrow-ibeg)*2*nrow	+i+nrow-ibeg] = pre2;
       		// matrixAt_k(i-ibeg,i-ibeg) = pre1;
       		// matrixAt_k(i+nrow-ibeg,i+nrow-ibeg) = pre2;
-      		matrixA(i*nrow2		,i) = pre1;
-      		matrixA((i+nrow)*nrow2	,i+nrow) = pre2;
+      		// matrixA(i*nrow2		,i) = pre1;
+      		// matrixA((i+nrow)*nrow2	,i+nrow) = pre2;
 
       		for ( j = i+1; j <= iend; j++ ) {			
 
@@ -455,18 +455,18 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	        	L4 = G10 - G20/eps;
 		
    	
-	        	// matrixA1D[(i-ibeg)*2*nrow		+j-ibeg] = -L1*area;
-	        	// matrixA1D[(i-ibeg)*2*nrow		+j+nrow-ibeg] = -L2*area;
-	        	// matrixA1D[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
-	        	// matrixA1D[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area;
+	        	matrixA1D[(i-ibeg)*2*nrow		+j-ibeg] = -L1*area;
+	        	matrixA1D[(i-ibeg)*2*nrow		+j+nrow-ibeg] = -L2*area;
+	        	matrixA1D[(i+nrow-ibeg)*2*nrow	+j-ibeg] = -L3*area;
+	        	matrixA1D[(i+nrow-ibeg)*2*nrow	+j+nrow-ibeg] = -L4*area;
 	        	// matrixAt_k(i-ibeg,j-ibeg) = -L1*area;
 	        	// matrixAt_k(i-ibeg,j+nrow-ibeg) = -L2*area;
 	        	// matrixAt_k(i+nrow-ibeg,j-ibeg) = -L3*area;
 	        	// matrixAt_k(i+nrow-ibeg,j+nrow-ibeg) = -L4*area;      		
-	        	matrixA(i*nrow2		,j)= -L1*area;
-	        	matrixA(i*nrow2		,j+nrow) = -L2*area;
-	        	matrixA((i+nrow)*nrow2	,j) = -L3*area;
-	        	matrixA((i+nrow)*nrow2	,j+nrow) = -L4*area;
+	        	// matrixA(i*nrow2		,j)= -L1*area;
+	        	// matrixA(i*nrow2		,j+nrow) = -L2*area;
+	        	// matrixA((i+nrow)*nrow2	,j) = -L3*area;
+	        	// matrixA((i+nrow)*nrow2	,j+nrow) = -L4*area;
       		}
     	}
 
@@ -480,7 +480,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		// timer_end();
 
 
-/*
+
 /////////inc = lu_decomp( matrixA, nrow2, ipiv );/////////////////
 	// int lu_decomp( double **A, int N, int *ipiv ) {
 		// timer_start((char*) "lu_decomp time");
@@ -497,8 +497,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	   		imax = ii;
 	   		for (kk = ii; kk < nrow2; kk++){
   
-	   	  		// if ((absA = fabs(matrixA1D[kk*nrow2+ii])) > maxA) {	 			
-	   	  		if ((absA = fabs(matrixA(kk,ii))) > maxA) {	
+	   	  		if ((absA = fabs(matrixA1D[kk*nrow2+ii])) > maxA) {	 			
+	   	  		// if ((absA = fabs(matrixA(kk,ii))) > maxA) {	
 	   	   			maxA = absA;
 	   	    		imax = kk;
 	   			}
@@ -514,12 +514,12 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		   	  	ipiv[ii] = ipiv[imax];
 		   	  	ipiv[imax] = jj;	
 		   	  	for (jj = 0; jj < nrow2; jj++){ 
-		   	  		// ptr[jj] = matrixA1D[ii*nrow2+jj];
-			   	  	// matrixA1D[ii*nrow2+jj] = matrixA1D[imax*nrow2+jj];
-			   	  	// matrixA1D[imax*nrow2+jj] = ptr[jj];	
-		   	  		ptr[jj] = matrixA(ii,jj);
-			   	  	matrixA(ii,jj) = matrixA(imax,jj);
-			   	  	matrixA(imax,jj) = ptr[jj];	
+		   	  		ptr[jj] = matrixA1D[ii*nrow2+jj];
+			   	  	matrixA1D[ii*nrow2+jj] = matrixA1D[imax*nrow2+jj];
+			   	  	matrixA1D[imax*nrow2+jj] = ptr[jj];	
+		   	  		// ptr[jj] = matrixA(ii,jj);
+			   	  	// matrixA(ii,jj) = matrixA(imax,jj);
+			   	  	// matrixA(imax,jj) = ptr[jj];	
 		   	  	}
 
 		   	  	//counting pivots starting from N (for determinant)
@@ -528,11 +528,12 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 //!!!!!!!!!!!! timer_start((char*) "lu_decomp_ifor2 time"); // time cost !!!!!!!!!!!!
 	   		for (jj = ii + 1; jj < nrow2; jj++) { 
-	   	  		// matrixA1D[jj*nrow2	+ii] /= matrixA1D[ii*nrow2 +ii];
-	   	  		matrixA(jj,	ii) /= matrixA(ii,ii);	
+	   	  		matrixA1D[jj*nrow2	+ii] /= matrixA1D[ii*nrow2 +ii];
+	   	  		// matrixA(jj,	ii) /= matrixA(ii,ii);	
 	   	  		// matrixAt_k(j,i) /=matrixAt_k(i,i);
 	   	  		for (kk = ii + 1; kk < nrow2; kk++){
-	   	  	 		matrixA(jj,kk)-= matrixA(jj,ii) * matrixA(ii,kk);
+	   	  			matrixA1D[jj*nrow2+ kk] -= matrixA1D[jj*nrow2+ii] * matrixA1D[ii*nrow2+kk];
+	   	  	 		// matrixA(jj,kk)-= matrixA(jj,ii) * matrixA(ii,kk);
 	   	  	 		// matrixAt_k(j,k) -=matrixAt_k(j,i)*matrixAt_k(i,k);
 	   	  		}
 	   		}
@@ -597,27 +598,27 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 	   		for (kkk = 0; kkk < iii; kkk++){
    
-	      		// xtemp[iii] -= matrixA1D[iii*2*nrow +kkk] * xtemp[kkk];
-	      		xtemp[iii] -= matrixA(iii,kkk) * xtemp[kkk];			
+	      		xtemp[iii] -= matrixA1D[iii*2*nrow +kkk] * xtemp[kkk];
+	      		// xtemp[iii] -= matrixA(iii,kkk) * xtemp[kkk];			
 	   		}
 	  	}
 
 	  	for (iii = nrow2 - 1; iii >= 0; iii--) {
 	    	for (kkk = iii + 1; kkk < nrow2; kkk++){
 	
-	      		// xtemp[iii] -= matrixA1D[iii*2*nrow +kkk] * xtemp[kkk];
-	      		xtemp[iii] -= matrixA(iii,kkk) * xtemp[kkk];	     		
+	      		xtemp[iii] -= matrixA1D[iii*2*nrow +kkk] * xtemp[kkk];
+	      		// xtemp[iii] -= matrixA(iii,kkk) * xtemp[kkk];	     		
 	    	}
 
-	    	// xtemp[iii] = xtemp[iii] / matrixA1D[iii*2*nrow +iii];  
-	    	xtemp[iii] = xtemp[iii] / matrixAt(iii,iii);    	
+	    	xtemp[iii] = xtemp[iii] / matrixA1D[iii*2*nrow +iii];  
+	    	// xtemp[iii] = xtemp[iii] / matrixAt(iii,iii);    	
 	  	}
 	  	// timer_end();
     	// std::abort();
 	  	for (iii = 0; iii < nrow2; iii++) {
 	    	rhs[iii] = xtemp[iii];
 	  	}
-*/
+
 //////////////////////////////////////////////////////////////
 
     	for ( i = 0; i < nrow; i++) {
