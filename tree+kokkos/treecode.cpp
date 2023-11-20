@@ -333,7 +333,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		int iend = leafarr[2+3*k];
 		int nrow2 = nrow*2;
 
-		int ipiv[2*maxparnode]={0};
+		// int ipiv[2*maxparnode]={0};
 		double rhs[2*maxparnode]={0.0};
 		double matrixA1D[2*maxparnode*2*maxparnode]={0.0};
 		// auto matrixAt_k = Kokkos::subview(matrixAt, maxparnode,maxparnode,k);
