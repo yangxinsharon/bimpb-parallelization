@@ -335,7 +335,8 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 
 		int ipiv[2*maxparnode]={0};
 		double rhs[2*maxparnode]={0.0};
-		double matrixA1D[2*maxparnode*2*maxparnode]={0.0};
+		// double matrixA1D[2*maxparnode*2*maxparnode]={0.0};
+		double *matrixA1D = (double *) (Kokkos::kokkos_malloc(2*maxparnode*2*maxparnode * sizeof(double)));
 		// auto matrixAt_k = Kokkos::subview(matrixAt, maxparnode,maxparnode,k);
 
 
@@ -507,11 +508,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 			   	  	matrixA1D[ii*nrow2+jj] = matrixA1D[imax*nrow2+jj];
 			   	  	matrixA1D[imax*nrow2+jj] = ptr[jj];	
 		   	  	}
-		   	  	// for (jj = 0; jj < nrow2; jj++){ //0707 maxparnode to nrow2
-		   	  	// 	ptr[jj] = matrixAt_k(ii,jj);
-			   	//   	matrixAt_k(ii,jj) = matrixAt_k(imax,jj);
-			   	//   	matrixAt_k(imax,jj) = ptr[jj];	
-		   	  	// }
+
 		   	  	//counting pivots starting from N (for determinant)
 		   	  	ipiv[nrow2]++;
 		   	}	
