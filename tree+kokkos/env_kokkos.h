@@ -4,7 +4,7 @@
 #include <Kokkos_Core.hpp>
 typedef Kokkos::Serial   HostExecSpace;
 typedef Kokkos::Cuda     DevExecSpace;
-typedef Kokkos::CudaSpace    MemSpace;
+typedef Kokkos::CudaUVMSpace    MemSpace;
 // typedef Kokkos::LayoutRight  Layout;
 
 typedef Kokkos::LayoutLeft  Layout;

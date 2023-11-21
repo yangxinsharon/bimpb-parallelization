@@ -544,7 +544,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		   	  	ipiv[imax] = jj;	
 
 
-// maxparnode -> nrow ok for host_range_policy
+
 		   	  	for (jj = 0; jj < 2*nrow; jj++){ //0707 maxparnode to nrow2
 		   	  		ptr[jj] = matrixA1D[ii*2*nrow+jj];
 			   	  	matrixA1D[ii*2*nrow+jj] = matrixA1D[imax*2*nrow+jj];
@@ -556,7 +556,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		   	  	//counting pivots starting from N (for determinant)
 		   	  	ipiv[nrow2]++;
 		   	}	
-
+// time cost: memory page?
 	   		for (jj = ii + 1; jj < nrow2; jj++) { 
 	   	  		matrixA1D[jj*2*nrow	+ii] /= matrixA1D[ii*2*nrow +ii];	
 	   	  		for (kk = ii + 1; kk < nrow2; kk++){

@@ -318,7 +318,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	  	// int k = team_member.league_rank () * team_member.team_size () +team_member.team_rank ();
 	  	// int k = team_member.league_rank(); // total rank = 128
 	  	printf("k is %d \n",k); 
-
+		ViewMatrixDouble matrixA("matrixA", 2*maxparnode,2*maxparnode);
 	  	int i,j;
   		double L1, L2, L3, L4, area;
   		double tp[3], tq[3], sp[3], sq[3];
