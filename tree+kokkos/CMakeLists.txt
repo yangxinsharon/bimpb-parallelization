@@ -9,7 +9,8 @@ if(SPACK_CXX)
 endif()
 
 set(Kokkos_DIR "$ENV{Kokkos_ROOT}" CACHE STRING "Kokkos root directory")
-find_package(Kokkos KokkosKernels REQUIRED)
+find_package(Kokkos REQUIRED)
+find_package(KokkosKernels REQUIRED)
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/gmres SRCLIST)
 add_library(gmres STATIC ${SRCLIST})
