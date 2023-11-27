@@ -12,6 +12,12 @@ set(Kokkos_DIR "$ENV{Kokkos_ROOT}" CACHE STRING "Kokkos root directory")
 find_package(Kokkos REQUIRED)
 find_package(KokkosKernels REQUIRED)
 
+if(NOT DEFINED KokkosKernels_SOURCE_DIR)
+ message( FATAL_ERROR "Please specify KokkosKernels_SOURCE_DIR to include necessary test headers." )
+endif()
+
+include_directories(${KokkosKernels_SOURCE_DIR}/test_common)
+
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/gmres SRCLIST)
 add_library(gmres STATIC ${SRCLIST})
 
