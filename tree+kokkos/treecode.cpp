@@ -17,8 +17,11 @@
 #include <Kokkos_Core.hpp>
 #include "pp_timer.h"
 
-#include <KokkosKernels_IOUtils.hpp>
-#include "KokkosKernels_Test_Structured_Matrix.hpp"
+#include<Kokkos_Random.hpp>
+#include<KokkosBlas_gesv.hpp>
+
+// #include <KokkosKernels_IOUtils.hpp>
+// #include "KokkosKernels_Test_Structured_Matrix.hpp"
 
 
 extern int nface, nspt, natm, nchr;
