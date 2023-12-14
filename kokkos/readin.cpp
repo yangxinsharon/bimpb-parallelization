@@ -71,7 +71,7 @@ void readin(char fname[16], char density[16]) {
 	printf("count is:%d\n",count); //yang
 	fclose(fp);
 
-
+	printf("test is"); //yang
 	fp=fopen(fname_tp,"r");
 	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
    	fpw=fopen(fname_tp,"w");
@@ -81,7 +81,7 @@ void readin(char fname[16], char density[16]) {
 	// if ((atmrad=(double *) (Kokkos::kokkos_malloc(natm*sizeof(double))))==NULL) {
 	// 	printf("error in allcating atmrad");
 	// }
-   	printf("test is"); //yang
+
 	if ((atmrad=(double *) malloc(natm*sizeof(double)))==NULL) {
 		printf("error in allcating atmrad");
 	}
