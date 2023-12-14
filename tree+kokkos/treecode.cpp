@@ -17,12 +17,13 @@
 #include <Kokkos_Core.hpp>
 #include "pp_timer.h"
 
-#include<Kokkos_Random.hpp>
-#include<KokkosBlas_gesv.hpp>
 
-// #include <KokkosKernels_IOUtils.hpp>
-// #include "KokkosKernels_Test_Structured_Matrix.hpp"
-
+#include <KokkosBlas1_nrm2.hpp>
+#include <KokkosSparse_CrsMatrix.hpp>
+#include <KokkosSparse_spmv.hpp>
+#include <KokkosSparse_spiluk.hpp>
+#include <KokkosKernels_IOUtils.hpp>
+#include "KokkosKernels_Test_Structured_Matrix.hpp"
 
 extern int nface, nspt, natm, nchr;
 extern int **extr_v;						//[3][nspt]
@@ -319,12 +320,12 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
   	// ViewMatrixDouble matrixA("matrixA", 2*maxparnode*arridx,2*maxparnode*arridx);
 	// timer_start((char*) "psolve time");
 	// Kokkos::Timer timer;
-	Kokkos::parallel_for("psolvemul", host_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
+	Kokkos::parallel_for("psolvemul", dev_range_policy(0,arridx), KOKKOS_LAMBDA(int k) {
 	// Kokkos::parallel_for("psolvemul", team_policy(arridx,Kokkos::AUTO), KOKKOS_LAMBDA(const member_type &team_member) {
 	  	// int k = team_member.league_rank () * team_member.team_size () +team_member.team_rank ();
 	  	// int k = team_member.league_rank(); // total rank = 128
 	  	printf("k is %d \n",k); 
-		ViewMatrixDouble matrixA("matrixA", 2*maxparnode,2*maxparnode);
+		// ViewMatrixDouble matrixA("matrixA", 2*maxparnode,2*maxparnode);
 	  	int i,j;
   		double L1, L2, L3, L4, area;
   		double tp[3], tq[3], sp[3], sq[3];
@@ -341,7 +342,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 		int ipiv[2*maxparnode]={0};
 		double rhs[2*maxparnode]={0.0};
 		// double *matrixA1D=(double *) (Kokkos::kokkos_malloc(2*maxparnode*2*maxparnode*sizeof(double)));
-		// double matrixA1D[2*maxparnode*2*maxparnode]={0.0};
+		double matrixA1D[2*maxparnode*2*maxparnode]={0.0};
 
 		// auto matrixAt_k = Kokkos::subview(matrixAt, maxparnode,maxparnode,k);
 
@@ -559,36 +560,7 @@ void psolvemul(int nface, double *tr_xyz, double *tr_q, double *tr_area,
 	  	// }
 	  	// timer_end();
 
-///////////////////////////////////////////////////////////////
-// time costs more
-// 		timer_start((char*) "lu_decomp2 time");
-// 	   	double l[2*maxparnode*2*maxparnode] = {0.0};
-// 	   	double u[2*maxparnode*2*maxparnode] = {0.0};
-// 	   	for (ii = 0; ii < nrow2; ii++) {
-// 	      	for (jj = 0; jj < nrow2; jj++) {
-// 	         	if (jj < ii)
-// 	         	l[jj*nrow2+ii] = 0;
-// 	         	else {
-// 	            	l[jj*nrow2+ii] = matrixA1D[jj*nrow2+ii];
-// 	            	for (kk = 0; kk < ii; kk++) {
-// 	               	l[jj*nrow2+ii] = l[jj*nrow2+ii] - l[jj*nrow2+kk] * u[kk*nrow2+ii];
-// 	            	}
-// 	         	}
-// 	      	}
-// 	      	for (jj = 0; jj < nrow2; jj++) {
-// 	         	if (jj < ii)
-// 	         	u[ii*nrow2+jj] = 0;
-// 	         	else if (jj == ii)
-// 	         	u[ii*nrow2+jj] = 1;
-// 	         	else {
-// 	            	u[ii*nrow2+jj] = matrixA1D[ii*nrow2+jj] / l[ii*nrow2+ii];
-// 	            	for (kk = 0; kk < ii; kk++) {
-// 	               	u[ii*nrow2+jj] = u[ii*nrow2+jj] - ((l[ii*nrow2+kk] * u[kk*nrow2+jj]) / l[ii*nrow2+ii]);
-// 	            	}
-// 	         	}
-// 	      	}
-// 	   	}
-// 		timer_end();
+
 
 ///////////////////////////////////////////////////////////////
 ////////////// lu_solve( matrixA, nrow2, ipiv, rhs ); ////////////
