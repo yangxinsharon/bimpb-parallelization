@@ -18,12 +18,12 @@
 #include "pp_timer.h"
 
 
-#include <KokkosBlas1_nrm2.hpp>
-#include <KokkosSparse_CrsMatrix.hpp>
-#include <KokkosSparse_spmv.hpp>
-#include <KokkosSparse_spiluk.hpp>
-#include <KokkosKernels_IOUtils.hpp>
-#include "KokkosKernels_Test_Structured_Matrix.hpp"
+// #include <KokkosBlas1_nrm2.hpp>
+// #include <KokkosSparse_CrsMatrix.hpp>
+// #include <KokkosSparse_spmv.hpp>
+// #include <KokkosSparse_spiluk.hpp>
+// #include <KokkosKernels_IOUtils.hpp>
+// #include "KokkosKernels_Test_Structured_Matrix.hpp"
 
 extern int nface, nspt, natm, nchr;
 extern int **extr_v;						//[3][nspt]
