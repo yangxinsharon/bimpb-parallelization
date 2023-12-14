@@ -69,9 +69,10 @@ void readin(char fname[16], char density[16]) {
 		}
 	}
 	printf("count is:%d\n",count); //yang
+	printf("test is"); //yang
 	fclose(fp);
 
-	printf("test is"); //yang
+
 	fp=fopen(fname_tp,"r");
 	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
    	fpw=fopen(fname_tp,"w");
