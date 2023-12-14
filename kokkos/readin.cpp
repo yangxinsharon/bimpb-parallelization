@@ -81,11 +81,11 @@ void readin(char fname[16], char density[16]) {
 	// if ((atmrad=(double *) (Kokkos::kokkos_malloc(natm*sizeof(double))))==NULL) {
 	// 	printf("error in allcating atmrad");
 	// }
-
+   	printf("test is"); //yang
 	if ((atmrad=(double *) malloc(natm*sizeof(double)))==NULL) {
 		printf("error in allcating atmrad");
 	}
-	
+
 	atmpos=Make2DDoubleArray(3,natm,(char*) "atmpos");
 	if ((atmchr=(double *) (Kokkos::kokkos_malloc(nchr*sizeof(double))))==NULL) {
 		printf("error in allcating atmchr");
