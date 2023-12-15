@@ -61,7 +61,7 @@ $ ./bimpb_kokkos.exe \
 
 
 
-SMU SuperPOD (must be on VPN): \
+## SMU SuperPOD (must use VPN):
 $ ssh username@slogin-01.superpod.smu.edu \
 
 CUDA (SuperPOD):  can make and can run \
@@ -71,96 +71,21 @@ $ srun -G 1 ./bimpb_cuda.exe 1ajj 1 \
 
 
 Kokkos (SuperPOD): \
-srun -N 1 -G 1 -c 10 --mem=128G --time=12:00:00 --pty $SHELL
-
-<!-- module load dev
-
-module load gcc-10.3.0-gcc-9.4.0-d44jwah # GCC 10.3.0
-
-module load cuda-11.4.4-gcc-10.3.0-ctldo35 # CUDA 11.4.4
- -->
+srun -N 1 -G 1 -c 128 --mem=128G --time=12:00:00 --pty $SHELL \
 Update on Oct 19, 2023: currently SuperPOD has 3 versions: \
-        kokkos/3.7.01-jzhgq6o (not make)\
-        kokkos/3.7.01-6zpfzzw (return segmentation fault)\
+        kokkos/3.7.01-jzhgq6o (not make) \
+        kokkos/3.7.01-6zpfzzw (return segmentation fault) \
         kokkos/4.0.01-el36ysw \
+Load the following packages in order: \
+$ module load gcc/11.2.0 \
+$ module load cuda/11.8.0-vbvgppx \
+$ module load kokkos/4.0.01-el36ysw \
 
+## To use Kokkos Kernels on SuperPOD at SMU:
+Load the packages in order: \
 module load gcc/11.2.0 \
+module load cmake/3.26.3-utseokk \
 module load cuda/11.8.0-vbvgppx \
-module load kokkos/4.0.01-el36ysw \
-<!-- module load kokkos-3.7.00-gcc-10.3.0-b7ltc3f # can make new and run new, but cannot run old
-
-$ module load kokkos-3.6.00-gcc-10.3.0-wh67tbt # can make new and run old, but cannot run new -->
-
-
-
- <!-- 
-Kokkos (SuperPOD): can make new and can run new, cannot run old \
-$ module load spack gcc-10.3.0-gcc-9.4.0-d44jwah\
-$ . /hpc/mp/spack/share/spack/setup-env.sh\
-$ spack load kokkos/b7ltc3f # can make new and run new, cannot run old\
-error:{\
-$ ./bimpb_kokkos_old.exe 1ajj 1 \
-./bimpb_kokkos_old.exe: error while loading shared libraries: libcudart.so.11.0: cannot open shared object file: No such file or directory\
-}\
-
-$ spack load kokkos/wh67tbt # can make new, cannot run both \
-error: { \
-$ ./bimpb_kokkos.exe 1ajj 1 \
-Kokkos::OpenMP::initialize WARNING: OMP_PROC_BIND environment variable  not set \
-  In general, for best performance with OpenMP 4.0 or better set OMP_PROC_BIND=spread and OMP_PLACES=threads \
-  For best performance with OpenMP 3.1 set OMP_PROC_BIND=true \
-  For unit testing set OMP_PROC_BIND=false \
-3 ./bimpb_kokkos.exe 1ajj 1  \
-count is:519 \
-Segmentation fault (core dumped) \
-} \ -->
-
-
-
-<!-- 
-#
-MSMS terminated normally
-Total Time real: 0.28 user: 0.18 sys: 0.00
-../test_proteins/1a63.vert
-nspt=10134, natm=2065, den=1.000000, prob=1.400000
-finish reading vertices file...
-nface=20264, natm=2065, den=1.000000, prob=1.400000
-finish reading face file...
-finish reading position file...
-Segmentation fault (core dumped)
-
-#
-Thread 1 "bimpb_kokkos.ex" received signal SIGSEGV, Segmentation fault.
-0x00007ffff5db0d9b in ?? () from /lib/x86_64-linux-gnu/libc.so.6
-(gdb) 
-
-error while loading shared libraries: libcuda.so.1: cannot open shared object file: No such file or directory
-
-#
-Kokkos::OpenMP::initialize WARNING: OMP_PROC_BIND environment variable not set
-  In general, for best performance with OpenMP 4.0 or better set OMP_PROC_BIND=spread and OMP_PLACES=threads
-  For best performance with OpenMP 3.1 set OMP_PROC_BIND=true
-  For unit testing set OMP_PROC_BIND=false
-3 ./bimpb_kokkos.exe 1ajj 1 
-count is:519
-Segmentation fault (core dumped)
-
-
-///////////\
-# cannot make files\
-For bash/zsh/sh:\
-$ . /hpc/mp/spack/share/spack/setup-env.sh\
-For csh/tcsh:\
-$ source /hpc/mp/spack/share/spack/setup-env.csh\
-For fish:\
-$ source /hpc/mp/spack/share/spack/setup-env.fish\
-For Windows batch:\
-$ source /hpc/mp/spack/share/spack/spack_cmd.bat\
-$ spack load kokkos/75xmg2y
-
-
-
-
-
-
- -->
+module load kokkos/4.1.00-n7m5qva \
+module load kokkos-kernels/4.1.00-xo4ovdm \
+module load kokkos-nvcc-wrapper/4.1.00-hbetgcu \
