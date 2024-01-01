@@ -86,6 +86,7 @@ Load the packages in order: \
 module load gcc/11.2.0 \
 module load cmake/3.26.3-utseokk \
 module load cuda/11.8.0-vbvgppx \
-module load kokkos/4.1.00-n7m5qva \
+module load kokkos/4.1.00-n7m5qva (segmentation fault) \
 module load kokkos-kernels/4.1.00-xo4ovdm \
 module load kokkos-nvcc-wrapper/4.1.00-hbetgcu \
+cmake . -DKokkosKernels_SOURCE_DIR=$HOME/repos/kokkos-kernels \
