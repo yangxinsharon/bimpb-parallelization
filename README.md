@@ -77,9 +77,9 @@ Update on Oct 19, 2023: currently SuperPOD has 3 versions: \
         kokkos/3.7.01-6zpfzzw (return segmentation fault) \
         kokkos/4.0.01-el36ysw \
 Load the following packages in order: \
-$ module load gcc/11.2.0 \
-$ module load cuda/11.8.0-vbvgppx \
-$ module load kokkos/4.0.01-el36ysw \
+module load gcc/11.2.0 \
+module load cuda/11.8.0-vbvgppx \
+module load kokkos/4.0.01-el36ysw \
 
 ## To use Kokkos Kernels on SuperPOD at SMU:
 Load the packages in order: \
