@@ -186,6 +186,7 @@ int TreecodeInitialization() {
 	int idx = 0, nrow = 0, ibeg = 0, iend = 0;
 	arridx = 0; // extern variable
 	leafarr = (int *) Kokkos::kokkos_malloc(3*Nleaf* sizeof(int));
+	printf("test 1");
 	while ( idx < nface ) {
 	    leaflength(s_tree_root, idx);
 	    nrow  = Nrow;
